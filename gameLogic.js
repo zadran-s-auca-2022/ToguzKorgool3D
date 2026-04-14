@@ -630,15 +630,7 @@ function initSettings() {
 }
 
 function initSplash() {
-    splashStartBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-
-        splashEl.style.opacity = '0';
-        setTimeout(() => {
-            splashEl.style.display = 'none';
-        }, 400);
-        resetGame();
-    });
+    // no listener needed now
 }
 
 // new game button always AI
@@ -659,4 +651,17 @@ document.addEventListener('DOMContentLoaded', () => {
     renderAll();
 });
 
+function startGameFromSplash(e) {
+    if (e) e.stopPropagation();
+
+    splashEl.style.opacity = '0';
+
+    setTimeout(() => {
+        splashEl.style.display = 'none';
+    }, 400);
+
+    resetGame();
+}
+
+window.startGameFromSplash = startGameFromSplash;
 window.handlePitClick = handlePitClick;
