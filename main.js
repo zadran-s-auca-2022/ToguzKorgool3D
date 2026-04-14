@@ -183,6 +183,21 @@ const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
 
 window.addEventListener('click', (event) => {
+    const splash = document.getElementById('splash');
+    const settingsOverlay = document.getElementById('settingsOverlay');
+
+    if (splash && splash.style.display !== 'none') return;
+    if (settingsOverlay && !settingsOverlay.classList.contains('hidden')) return;
+
+    if (
+        event.target.closest('button') ||
+        event.target.closest('#splash') ||
+        event.target.closest('#settingsOverlay') ||
+        event.target.closest('.history-container')
+    ) {
+        return;
+    }
+
     mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
     mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 

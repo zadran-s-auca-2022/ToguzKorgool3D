@@ -630,7 +630,9 @@ function initSettings() {
 }
 
 function initSplash() {
-    splashStartBtn.addEventListener('click', () => {
+    splashStartBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+
         splashEl.style.opacity = '0';
         setTimeout(() => {
             splashEl.style.display = 'none';
