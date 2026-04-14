@@ -293,10 +293,25 @@ function renderHistory() {
     historyListEl.scrollTop = historyListEl.scrollHeight;
 }
 
+function notify3D() {
+    if (typeof window.sync3DBoardFromGameState === "function") {
+        window.sync3DBoardFromGameState({
+            pits: [...pits],
+            storeA,
+            storeB,
+            tuzA,
+            tuzB,
+            currentPlayer,
+            isGameOver
+        });
+    }
+}
+
 function renderAll() {
     renderPits();
     renderStores();
     renderHistory();
+    notify3D();
 }
 
 // ----------------- GAME LOGIC -----------------
@@ -639,4 +654,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Do not start game until splash is closed
     setStatus('Click "Start Game" to begin');
+    renderAll();
 });
+
+window.handlePitClick = handlePitClick;
