@@ -603,19 +603,6 @@ h1 {
     }
 }
 
-.container {
-    position: relative;
-    z-index: 10;
-}
-
-.container * {
-    pointer-events: auto;
-}
-
-canvas {
-    pointer-events: none !important;
-}
-
 .splash {
     position: fixed;
     inset: 0;
@@ -624,18 +611,4 @@ canvas {
 
 button {
     cursor: pointer;
-}
-
-.settings-overlay {
-    z-index: 1001;
-}
-
-button,
-#splash,
-#settingsOverlay,
-.history-container,
-.status,
-.scores,
-h1 {
-    pointer-events: auto;
 }
