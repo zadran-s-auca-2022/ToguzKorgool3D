@@ -606,11 +606,24 @@ h1 {
 .container {
     position: relative;
     z-index: 10;
-    pointer-events: none;
+}
+
+.container * {
+    pointer-events: auto;
+}
+
+canvas {
+    pointer-events: none !important;
 }
 
 .splash {
-    z-index: 1000;
+    position: fixed;
+    inset: 0;
+    z-index: 9999; /* VERY HIGH */
+}
+
+button {
+    cursor: pointer;
 }
 
 .settings-overlay {
