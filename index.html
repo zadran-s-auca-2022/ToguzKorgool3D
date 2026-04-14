@@ -115,5 +115,30 @@
 
 <script type="module" src="main.js"></script>
 <script defer src="gameLogic.js"></script>
+
+<script>
+window.addEventListener('load', () => {
+    const btn = document.getElementById('splashStartBtn');
+    const splash = document.getElementById('splash');
+
+    if (!btn || !splash) return;
+
+    btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        splash.style.opacity = '0';
+
+        setTimeout(() => {
+            splash.style.display = 'none';
+        }, 400);
+
+        if (typeof window.resetGame === 'function') {
+            window.resetGame();
+        }
+    });
+});
+</script>
+
 </body>
 </html>

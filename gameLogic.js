@@ -665,3 +665,4 @@ function startGameFromSplash(e) {
 
 window.startGameFromSplash = startGameFromSplash;
 window.handlePitClick = handlePitClick;
+window.resetGame = resetGame;
