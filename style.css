@@ -602,3 +602,27 @@ h1 {
         top: -9px;
     }
 }
+
+.container {
+    position: relative;
+    z-index: 10;
+    pointer-events: none;
+}
+
+.splash {
+    z-index: 1000;
+}
+
+.settings-overlay {
+    z-index: 1001;
+}
+
+button,
+#splash,
+#settingsOverlay,
+.history-container,
+.status,
+.scores,
+h1 {
+    pointer-events: auto;
+}
