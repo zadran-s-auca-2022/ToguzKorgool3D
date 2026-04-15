@@ -1,124 +1,279 @@
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js';
 
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(0x111111);
+scene.background = new THREE.Color(0x0f0a07);
 
+// Camera
 const camera = new THREE.PerspectiveCamera(
-    60,
+    45,
     window.innerWidth / window.innerHeight,
     0.1,
     1000
 );
-
-camera.position.set(0, 14, 20);
+camera.position.set(0, 18, 24);
 camera.lookAt(0, 0, 0);
 
+// Renderer
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.domElement.style.position = "fixed";
-renderer.domElement.style.top = "0";
-renderer.domElement.style.left = "0";
-renderer.domElement.style.zIndex = "1";
-renderer.domElement.style.width = "100%";
-renderer.domElement.style.height = "100%";
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.domElement.style.position = 'fixed';
+renderer.domElement.style.top = '0';
+renderer.domElement.style.left = '0';
+renderer.domElement.style.zIndex = '0';
 document.body.appendChild(renderer.domElement);
 
-const light = new THREE.DirectionalLight(0xffffff, 1.2);
-light.position.set(8, 12, 8);
-scene.add(light);
-
-const ambient = new THREE.AmbientLight(0xffffff, 0.55);
+// ---------- LIGHTING ----------
+const ambient = new THREE.AmbientLight(0xfff1d6, 0.7);
 scene.add(ambient);
 
-// BOARD
-const board = new THREE.Mesh(
-    new THREE.BoxGeometry(18, 1.2, 8),
-    new THREE.MeshStandardMaterial({ color: 0x8b5a2b })
+const mainLight = new THREE.DirectionalLight(0xffe2b8, 1.4);
+mainLight.position.set(12, 20, 10);
+mainLight.castShadow = true;
+mainLight.shadow.mapSize.width = 2048;
+mainLight.shadow.mapSize.height = 2048;
+mainLight.shadow.camera.left = -30;
+mainLight.shadow.camera.right = 30;
+mainLight.shadow.camera.top = 30;
+mainLight.shadow.camera.bottom = -30;
+scene.add(mainLight);
+
+const fillLight = new THREE.DirectionalLight(0xd9c2a3, 0.6);
+fillLight.position.set(-10, 10, -8);
+scene.add(fillLight);
+
+const pointGlow = new THREE.PointLight(0xffcc88, 0.9, 60);
+pointGlow.position.set(0, 10, 0);
+scene.add(pointGlow);
+
+// ---------- FLOOR ----------
+const floor = new THREE.Mesh(
+    new THREE.CircleGeometry(60, 80),
+    new THREE.MeshStandardMaterial({
+        color: 0x120c09,
+        roughness: 0.95,
+        metalness: 0.05
+    })
 );
-board.position.set(0, 0, 0);
-scene.add(board);
+floor.rotation.x = -Math.PI / 2;
+floor.position.y = -1.8;
+floor.receiveShadow = true;
+scene.add(floor);
+
+// ---------- MATERIALS ----------
+const woodMaterial = new THREE.MeshStandardMaterial({
+    color: 0x6e3f1f,
+    roughness: 0.55,
+    metalness: 0.08
+});
+
+const darkWoodMaterial = new THREE.MeshStandardMaterial({
+    color: 0x3b1f0f,
+    roughness: 0.7,
+    metalness: 0.05
+});
+
+const goldMaterial = new THREE.MeshStandardMaterial({
+    color: 0xcaa35f,
+    roughness: 0.28,
+    metalness: 0.55
+});
 
 const pitMaterial = new THREE.MeshStandardMaterial({
-    color: 0x5c3517,
-    emissive: 0x000000
+    color: 0x2c1409,
+    roughness: 0.88,
+    metalness: 0.03
 });
-const storeMaterial = new THREE.MeshStandardMaterial({ color: 0x6f421f });
 
-const pitGeometry = new THREE.CylinderGeometry(0.7, 0.7, 0.35, 32);
+const ivoryMaterial = new THREE.MeshStandardMaterial({
+    color: 0xf5e7c8,
+    roughness: 0.28,
+    metalness: 0.12
+});
 
+// ---------- BOARD BASE ----------
+const boardGroup = new THREE.Group();
+scene.add(boardGroup);
+
+const boardBase = new THREE.Mesh(
+    new THREE.BoxGeometry(24, 1.8, 11),
+    woodMaterial
+);
+boardBase.castShadow = true;
+boardBase.receiveShadow = true;
+boardGroup.add(boardBase);
+
+// top decorative panel
+const boardTop = new THREE.Mesh(
+    new THREE.BoxGeometry(22.8, 0.45, 9.8),
+    new THREE.MeshStandardMaterial({
+        color: 0x8b572c,
+        roughness: 0.45,
+        metalness: 0.08
+    })
+);
+boardTop.position.y = 0.9;
+boardTop.castShadow = true;
+boardTop.receiveShadow = true;
+boardGroup.add(boardTop);
+
+// gold trim
+const trimOuter = new THREE.Mesh(
+    new THREE.BoxGeometry(23.4, 0.22, 10.3),
+    goldMaterial
+);
+trimOuter.position.y = 1.12;
+trimOuter.castShadow = true;
+boardGroup.add(trimOuter);
+
+const trimInner = new THREE.Mesh(
+    new THREE.BoxGeometry(22.2, 0.18, 9.1),
+    darkWoodMaterial
+);
+trimInner.position.y = 1.21;
+trimInner.castShadow = true;
+boardGroup.add(trimInner);
+
+// corner decorations
+function addCornerOrnament(x, z) {
+    const ornament = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.34, 0.34, 0.22, 18),
+        goldMaterial
+    );
+    ornament.rotation.x = Math.PI / 2;
+    ornament.position.set(x, 1.25, z);
+    ornament.castShadow = true;
+    boardGroup.add(ornament);
+}
+addCornerOrnament(-11, -4.9);
+addCornerOrnament(11, -4.9);
+addCornerOrnament(-11, 4.9);
+addCornerOrnament(11, 4.9);
+
+// ---------- KAZANS ----------
+const kazanMeshes = [];
+
+function createLuxuryKazan(x) {
+    const group = new THREE.Group();
+
+    const outer = new THREE.Mesh(
+        new THREE.CylinderGeometry(1.9, 1.9, 1.0, 40),
+        woodMaterial
+    );
+    outer.rotation.x = Math.PI / 2;
+    outer.position.set(x, 1.15, 0);
+    outer.castShadow = true;
+    outer.receiveShadow = true;
+    group.add(outer);
+
+    const goldRing = new THREE.Mesh(
+        new THREE.CylinderGeometry(1.95, 1.95, 0.12, 40),
+        goldMaterial
+    );
+    goldRing.rotation.x = Math.PI / 2;
+    goldRing.position.set(x, 1.52, 0);
+    goldRing.castShadow = true;
+    group.add(goldRing);
+
+    const bowl = new THREE.Mesh(
+        new THREE.CylinderGeometry(1.45, 1.2, 0.65, 40),
+        pitMaterial
+    );
+    bowl.rotation.x = Math.PI / 2;
+    bowl.position.set(x, 1.18, 0);
+    bowl.castShadow = true;
+    bowl.receiveShadow = true;
+    group.add(bowl);
+
+    return group;
+}
+
+const leftKazan = createLuxuryKazan(-11.2);
+const rightKazan = createLuxuryKazan(11.2);
+boardGroup.add(leftKazan);
+boardGroup.add(rightKazan);
+kazanMeshes.push(leftKazan, rightKazan);
+
+// ---------- PITS ----------
 const pitMeshes = [];
 const pitStoneGroups = [];
 const pitBasePositions = [];
 
-// TOP ROW = B side = indices 17..9 visually left -> right
-for (let i = 0; i < 9; i++) {
-    const pitTop = new THREE.Mesh(pitGeometry, pitMaterial.clone());
-    pitTop.rotation.x = Math.PI / 2;
-    pitTop.position.set(-7.2 + i * 1.8, 0.55, -1.8);
-    pitTop.userData.pitIndex = 17 - i;
-    scene.add(pitTop);
-    pitMeshes.push(pitTop);
+const pitSpacing = 2.2;
+const startX = -8.8;
+const topRowZ = -2.3;
+const bottomRowZ = 2.3;
+
+function createPit(x, z, pitIndex) {
+    const pitGroup = new THREE.Group();
+
+    const goldFrame = new THREE.Mesh(
+        new THREE.CylinderGeometry(1.02, 1.02, 0.14, 34),
+        goldMaterial
+    );
+    goldFrame.rotation.x = Math.PI / 2;
+    goldFrame.position.set(x, 1.24, z);
+    goldFrame.castShadow = true;
+    pitGroup.add(goldFrame);
+
+    const bowl = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.92, 0.75, 0.46, 34),
+        pitMaterial
+    );
+    bowl.rotation.x = Math.PI / 2;
+    bowl.position.set(x, 1.15, z);
+    bowl.castShadow = true;
+    bowl.receiveShadow = true;
+    bowl.userData.pitIndex = pitIndex;
+    pitGroup.add(bowl);
+
+    const innerHighlight = new THREE.Mesh(
+        new THREE.RingGeometry(0.3, 0.78, 28),
+        new THREE.MeshStandardMaterial({
+            color: 0x5d3218,
+            roughness: 0.7,
+            metalness: 0.05,
+            side: THREE.DoubleSide
+        })
+    );
+    innerHighlight.rotation.x = -Math.PI / 2;
+    innerHighlight.position.set(x, 1.01, z);
+    pitGroup.add(innerHighlight);
+
+    boardGroup.add(pitGroup);
+    pitMeshes.push(bowl);
 
     const stoneGroup = new THREE.Group();
-    scene.add(stoneGroup);
-    pitStoneGroups[17 - i] = stoneGroup;
-    pitBasePositions[17 - i] = { x: pitTop.position.x, y: 0.85, z: pitTop.position.z };
+    boardGroup.add(stoneGroup);
+    pitStoneGroups[pitIndex] = stoneGroup;
+    pitBasePositions[pitIndex] = { x, y: 1.33, z };
 }
 
-// BOTTOM ROW = A side = indices 0..8 left -> right
+// top row visually left->right = indices 17..9
 for (let i = 0; i < 9; i++) {
-    const pitBottom = new THREE.Mesh(pitGeometry, pitMaterial.clone());
-    pitBottom.rotation.x = Math.PI / 2;
-    pitBottom.position.set(-7.2 + i * 1.8, 0.55, 1.8);
-    pitBottom.userData.pitIndex = i;
-    scene.add(pitBottom);
-    pitMeshes.push(pitBottom);
-
-    const stoneGroup = new THREE.Group();
-    scene.add(stoneGroup);
-    pitStoneGroups[i] = stoneGroup;
-    pitBasePositions[i] = { x: pitBottom.position.x, y: 0.85, z: pitBottom.position.z };
+    createPit(startX + i * pitSpacing, topRowZ, 17 - i);
 }
 
-// STORES
-const leftStore = new THREE.Mesh(
-    new THREE.CylinderGeometry(1.2, 1.2, 0.5, 32),
-    storeMaterial
-);
-leftStore.rotation.x = Math.PI / 2;
-leftStore.position.set(-9.8, 0.55, 0);
-scene.add(leftStore);
+// bottom row visually left->right = indices 0..8
+for (let i = 0; i < 9; i++) {
+    createPit(startX + i * pitSpacing, bottomRowZ, i);
+}
 
-const rightStore = new THREE.Mesh(
-    new THREE.CylinderGeometry(1.2, 1.2, 0.5, 32),
-    storeMaterial.clone()
-);
-rightStore.rotation.x = Math.PI / 2;
-rightStore.position.set(9.8, 0.55, 0);
-scene.add(rightStore);
+// ---------- STONES ----------
+const stoneGeometry = new THREE.SphereGeometry(0.17, 18, 18);
 
-const storeAGroup = new THREE.Group();
-const storeBGroup = new THREE.Group();
-scene.add(storeAGroup);
-scene.add(storeBGroup);
-
-// STONE GEOMETRY
-const stoneGeometry = new THREE.SphereGeometry(0.16, 12, 12);
-const stoneMaterial = new THREE.MeshStandardMaterial({ color: 0xf0e0b0 });
-
-// HELPERS
 function clearGroup(group) {
     while (group.children.length > 0) {
-        const child = group.children.pop();
+        const child = group.children[0];
         group.remove(child);
-        if (child.geometry) child.geometry.dispose?.();
-        if (child.material) child.material.dispose?.();
     }
 }
 
-function addStoneToGroup(group, x, y, z) {
-    const stone = new THREE.Mesh(stoneGeometry, stoneMaterial);
+function addStone(group, x, y, z) {
+    const stone = new THREE.Mesh(stoneGeometry, ivoryMaterial);
     stone.position.set(x, y, z);
+    stone.castShadow = true;
     group.add(stone);
 }
 
@@ -127,58 +282,76 @@ function renderPitStones(index, count) {
     const base = pitBasePositions[index];
     clearGroup(group);
 
-    const maxVisual = Math.min(count, 12);
+    const maxVisual = Math.min(count, 18);
 
     for (let i = 0; i < maxVisual; i++) {
-        const col = i % 4;
-        const row = Math.floor(i / 4);
-        const x = base.x + (col - 1.5) * 0.22;
+        const col = i % 6;
+        const row = Math.floor(i / 6);
+
+        const x = base.x + (col - 2.5) * 0.23;
         const y = base.y;
         const z = base.z + (row - 1) * 0.22;
-        addStoneToGroup(group, x, y, z);
+
+        addStone(group, x, y, z);
     }
 }
 
-function renderStoreStones(group, count, side) {
-    clearGroup(group);
-    const maxVisual = Math.min(count, 20);
+function renderKazanStones(count, side) {
+    const targetGroup = side === 'A' ? rightKazan : leftKazan;
+
+    let stonesGroup = targetGroup.userData.stonesGroup;
+    if (!stonesGroup) {
+        stonesGroup = new THREE.Group();
+        targetGroup.userData.stonesGroup = stonesGroup;
+        boardGroup.add(stonesGroup);
+    }
+
+    clearGroup(stonesGroup);
+
+    const maxVisual = Math.min(count, 30);
+    const centerX = side === 'A' ? 11.2 : -11.2;
 
     for (let i = 0; i < maxVisual; i++) {
         const col = i % 4;
         const row = Math.floor(i / 4);
 
-        const x = side === 'A'
-            ? 9.8 + (col - 1.5) * 0.18
-            : -9.8 + (col - 1.5) * 0.18;
+        const x = centerX + (col - 1.5) * 0.24;
+        const y = 1.3;
+        const z = (row - 3) * 0.24;
 
-        const y = 0.85;
-        const z = (row - 2) * 0.22;
-
-        addStoneToGroup(group, x, y, z);
+        addStone(stonesGroup, x, y, z);
     }
 }
 
+// ---------- INITIAL VISUAL STATE ----------
+for (let i = 0; i < 18; i++) {
+    renderPitStones(i, 9);
+}
+renderKazanStones(0, 'A');
+renderKazanStones(0, 'B');
+
+// ---------- SYNC FUNCTION ----------
 function sync3DBoardFromGameState(state) {
     for (let i = 0; i < 18; i++) {
         renderPitStones(i, state.pits[i]);
 
-        const mesh = pitMeshes.find(p => p.userData.pitIndex === i);
+        const mesh = pitMeshes.find((p) => p.userData.pitIndex === i);
         if (!mesh) continue;
 
-        mesh.material.emissive.setHex(0x000000);
+        mesh.material.emissive = new THREE.Color(0x000000);
 
         if (i === state.tuzA || i === state.tuzB) {
-            mesh.material.emissive.setHex(0x665500);
+            mesh.material.emissive = new THREE.Color(0x7a5a12);
         }
     }
 
-    renderStoreStones(storeAGroup, state.storeA, 'A');
-    renderStoreStones(storeBGroup, state.storeB, 'B');
+    renderKazanStones(state.storeA, 'A');
+    renderKazanStones(state.storeB, 'B');
 }
 
 window.sync3DBoardFromGameState = sync3DBoardFromGameState;
 
-// CLICK
+// ---------- CLICK / RAYCAST ----------
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
 
@@ -189,15 +362,6 @@ window.addEventListener('click', (event) => {
     if (splash && splash.style.display !== 'none') return;
     if (settingsOverlay && !settingsOverlay.classList.contains('hidden')) return;
 
-    if (
-        event.target.closest('button') ||
-        event.target.closest('#splash') ||
-        event.target.closest('#settingsOverlay') ||
-        event.target.closest('.history-container')
-    ) {
-        return;
-    }
-
     mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
     mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 
@@ -206,22 +370,21 @@ window.addEventListener('click', (event) => {
 
     if (hits.length > 0) {
         const pitIndex = hits[0].object.userData.pitIndex;
-        console.log("Clicked pit:", pitIndex);
 
-        if (typeof window.handlePitClick === "function") {
+        if (typeof window.handlePitClick === 'function') {
             window.handlePitClick(pitIndex);
         }
     }
 });
 
-// RESIZE
+// ---------- RESIZE ----------
 window.addEventListener('resize', () => {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
 });
 
-// LOOP
+// ---------- LOOP ----------
 function animate() {
     requestAnimationFrame(animate);
     renderer.render(scene, camera);
