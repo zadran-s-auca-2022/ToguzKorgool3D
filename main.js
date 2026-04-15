@@ -98,7 +98,7 @@ scene.add(boardGroup);
 boardGroup.rotation.x = -0.08;
 
 const boardBase = new THREE.Mesh(
-    new THREE.BoxGeometry(24, 1.8, 11),
+    new THREE.BoxGeometry(30, 2.2, 14),
     woodMaterial
 );
 boardBase.castShadow = true;
@@ -107,7 +107,7 @@ boardGroup.add(boardBase);
 
 // top decorative panel
 const boardTop = new THREE.Mesh(
-    new THREE.BoxGeometry(22.8, 0.45, 9.8),
+    new THREE.BoxGeometry(28.2, 0.5, 12.6),
     new THREE.MeshStandardMaterial({
         color: 0x8b572c,
         roughness: 0.45,
@@ -201,16 +201,16 @@ const pitMeshes = [];
 const pitStoneGroups = [];
 const pitBasePositions = [];
 
-const pitSpacing = 2.2;
-const startX = -8.8;
-const topRowZ = -2.3;
-const bottomRowZ = 2.3;
+const pitSpacing = 2.6;
+const startX = -10.4;
+const topRowZ = -2.8;
+const bottomRowZ = 2.8;
 
 function createPit(x, z, pitIndex) {
     const pitGroup = new THREE.Group();
 
     const goldFrame = new THREE.Mesh(
-        new THREE.CylinderGeometry(1.02, 1.02, 0.14, 34),
+        new THREE.CylinderGeometry(1.35, 1.35, 0.18, 40),
         goldMaterial
     );
     goldFrame.rotation.x = Math.PI / 2;
@@ -219,7 +219,7 @@ function createPit(x, z, pitIndex) {
     pitGroup.add(goldFrame);
 
     const bowl = new THREE.Mesh(
-        new THREE.CylinderGeometry(0.92, 0.75, 0.46, 34),
+        new THREE.CylinderGeometry(1.15, 0.9, 0.6, 32),
         pitMaterial
     );
     bowl.rotation.x = Math.PI / 2;
@@ -230,7 +230,7 @@ function createPit(x, z, pitIndex) {
     pitGroup.add(bowl);
 
     const innerHighlight = new THREE.Mesh(
-        new THREE.RingGeometry(0.3, 0.78, 28),
+        new THREE.RingGeometry(0.38, 0.98, 32),
         new THREE.MeshStandardMaterial({
             color: 0x5d3218,
             roughness: 0.7,
@@ -248,7 +248,7 @@ function createPit(x, z, pitIndex) {
     const stoneGroup = new THREE.Group();
     boardGroup.add(stoneGroup);
     pitStoneGroups[pitIndex] = stoneGroup;
-    pitBasePositions[pitIndex] = { x, y: 1.33, z };
+    pitBasePositions[pitIndex] = { x, y: 1.52, z };
 }
 
 // top row visually left->right = indices 17..9

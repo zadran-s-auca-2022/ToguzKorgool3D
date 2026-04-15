@@ -617,8 +617,3 @@ button {
     position: relative;
     z-index: 2;
 }
-
-.pits-area,
-.store {
-    visibility: hidden;
-}
