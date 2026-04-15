@@ -10,14 +10,14 @@ const camera = new THREE.PerspectiveCamera(
     0.1,
     1000
 );
-camera.position.set(0, 18, 24);
-camera.lookAt(0, 0, 0);
+camera.position.set(0, 14, 20);
+camera.lookAt(0, 1.2, 0);
 
 // Renderer
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.shadowMap.enabled = true;
-renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.shadowMap.type = THREE.PCFShadowMap;
 renderer.domElement.style.position = 'fixed';
 renderer.domElement.style.top = '0';
 renderer.domElement.style.left = '0';
@@ -25,14 +25,14 @@ renderer.domElement.style.zIndex = '0';
 document.body.appendChild(renderer.domElement);
 
 // ---------- LIGHTING ----------
-const ambient = new THREE.AmbientLight(0xfff1d6, 0.7);
+const ambient = new THREE.AmbientLight(0xfff1d6, 0.45);
 scene.add(ambient);
 
 const mainLight = new THREE.DirectionalLight(0xffe2b8, 1.4);
 mainLight.position.set(12, 20, 10);
 mainLight.castShadow = true;
-mainLight.shadow.mapSize.width = 2048;
-mainLight.shadow.mapSize.height = 2048;
+mainLight.shadow.mapSize.width = 4096;
+mainLight.shadow.mapSize.height = 4096;
 mainLight.shadow.camera.left = -30;
 mainLight.shadow.camera.right = 30;
 mainLight.shadow.camera.top = 30;
@@ -43,7 +43,7 @@ const fillLight = new THREE.DirectionalLight(0xd9c2a3, 0.6);
 fillLight.position.set(-10, 10, -8);
 scene.add(fillLight);
 
-const pointGlow = new THREE.PointLight(0xffcc88, 0.9, 60);
+const pointGlow = new THREE.PointLight(0xffcc88, 1.4, 80);
 pointGlow.position.set(0, 10, 0);
 scene.add(pointGlow);
 
@@ -51,7 +51,7 @@ scene.add(pointGlow);
 const floor = new THREE.Mesh(
     new THREE.CircleGeometry(60, 80),
     new THREE.MeshStandardMaterial({
-        color: 0x120c09,
+        color: 0x0a0604,
         roughness: 0.95,
         metalness: 0.05
     })
@@ -63,9 +63,9 @@ scene.add(floor);
 
 // ---------- MATERIALS ----------
 const woodMaterial = new THREE.MeshStandardMaterial({
-    color: 0x6e3f1f,
-    roughness: 0.55,
-    metalness: 0.08
+    color: 0x7a4422,
+    roughness: 0.4,
+    metalness: 0.12
 });
 
 const darkWoodMaterial = new THREE.MeshStandardMaterial({
@@ -75,26 +75,27 @@ const darkWoodMaterial = new THREE.MeshStandardMaterial({
 });
 
 const goldMaterial = new THREE.MeshStandardMaterial({
-    color: 0xcaa35f,
-    roughness: 0.28,
-    metalness: 0.55
+    color: 0xd4af37,
+    roughness: 0.2,
+    metalness: 0.85
 });
 
 const pitMaterial = new THREE.MeshStandardMaterial({
-    color: 0x2c1409,
+    color: 0xf5e7c8,
     roughness: 0.88,
     metalness: 0.03
 });
 
 const ivoryMaterial = new THREE.MeshStandardMaterial({
     color: 0xf5e7c8,
-    roughness: 0.28,
-    metalness: 0.12
+    roughness: 0.15,
+    metalness: 0.4
 });
 
 // ---------- BOARD BASE ----------
 const boardGroup = new THREE.Group();
 scene.add(boardGroup);
+boardGroup.rotation.x = -0.08;
 
 const boardBase = new THREE.Mesh(
     new THREE.BoxGeometry(24, 1.8, 11),
@@ -261,7 +262,7 @@ for (let i = 0; i < 9; i++) {
 }
 
 // ---------- STONES ----------
-const stoneGeometry = new THREE.SphereGeometry(0.17, 18, 18);
+const stoneGeometry = new THREE.SphereGeometry(0.19, 28, 28);
 
 function clearGroup(group) {
     while (group.children.length > 0) {
@@ -288,9 +289,9 @@ function renderPitStones(index, count) {
         const col = i % 6;
         const row = Math.floor(i / 6);
 
-        const x = base.x + (col - 2.5) * 0.23;
+        const x = base.x + (col - 2.5) * 0.20;
         const y = base.y;
-        const z = base.z + (row - 1) * 0.22;
+        const z = base.z + (row - 1) * 0.18;    
 
         addStone(group, x, y, z);
     }

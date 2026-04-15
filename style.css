@@ -58,18 +58,14 @@ h1 {
     margin: 4px auto 0;
     padding: 18px 32px;
     border-radius: 50px;
-    background: linear-gradient(145deg, #c68b4d, #9c6a34);
-    box-shadow:
-        inset 0 4px 10px rgba(255,255,255,0.4),
-        inset 0 -6px 14px rgba(0,0,0,0.6),
-        0 14px 22px rgba(0,0,0,0.8);
+    background: transparent;
+    box-shadow: none;
 
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 24px;
 
-    /* take nice portion of screen height on desktop */
     flex: 0 0 58vh;
 }
 
@@ -611,4 +607,13 @@ h1 {
 
 button {
     cursor: pointer;
+}
+
+.container,
+.scores,
+.status,
+.buttons,
+.history-container {
+    position: relative;
+    z-index: 2;
 }
