@@ -289,9 +289,9 @@ function renderPitStones(index, count) {
         const col = i % 6;
         const row = Math.floor(i / 6);
 
-        const x = base.x + (col - 2.5) * 0.20;
-        const y = base.y;
-        const z = base.z + (row - 1) * 0.18;    
+        const x = base.x + (col - 2.5) * 0.18;
+        const y = base.y + 0.02;
+        const z = base.z + (row - 1) * 0.15;
 
         addStone(group, x, y, z);
     }
