@@ -10,7 +10,7 @@ const camera = new THREE.PerspectiveCamera(
     0.1,
     1000
 );
-camera.position.set(0, 14, 20);
+camera.position.set(0, 10, 16);
 camera.lookAt(0, 1.2, 0);
 
 // Renderer
@@ -201,7 +201,7 @@ const pitMeshes = [];
 const pitStoneGroups = [];
 const pitBasePositions = [];
 
-const pitSpacing = 2.6;
+const pitSpacing = 3.1;
 const startX = -10.4;
 const topRowZ = -2.8;
 const bottomRowZ = 2.8;
@@ -210,7 +210,7 @@ function createPit(x, z, pitIndex) {
     const pitGroup = new THREE.Group();
 
     const goldFrame = new THREE.Mesh(
-        new THREE.CylinderGeometry(1.35, 1.35, 0.18, 40),
+        new THREE.CylinderGeometry(1.25, 1.05, 0.6, 40),
         goldMaterial
     );
     goldFrame.rotation.x = Math.PI / 2;
