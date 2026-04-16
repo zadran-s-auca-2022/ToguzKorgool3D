@@ -33,7 +33,17 @@ controls.dampingFactor = 0.05;
 controls.minDistance = 10;
 controls.maxDistance = 40;
 
-controls.maxPolarAngle = Math.PI / 2.1; // prevents going under board
+controls.maxPolarAngle = Math.PI / 2.1;
+
+controls.enableRotate = true;
+controls.enableZoom = true;
+controls.enablePan = false;
+
+controls.mouseButtons = {
+    LEFT: THREE.MOUSE.ROTATE,
+    MIDDLE: THREE.MOUSE.DOLLY,
+    RIGHT: THREE.MOUSE.PAN
+};
 
 // ---------- LIGHTING ----------
 const ambient = new THREE.AmbientLight(0xfff1d6, 0.45);

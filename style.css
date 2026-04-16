@@ -626,3 +626,18 @@ button {
 .history-container {
     display: none !important;
 }
+
+.container {
+    pointer-events: none;
+}
+
+.buttons,
+.btn,
+.settings-overlay,
+.settings-panel,
+.settings-close,
+.splash,
+.splash-panel,
+.splash-btn {
+    pointer-events: auto;
+}
