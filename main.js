@@ -1,3 +1,5 @@
+import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/controls/OrbitControls.js';
+
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js';
 
 const scene = new THREE.Scene();
@@ -23,6 +25,15 @@ renderer.domElement.style.top = '0';
 renderer.domElement.style.left = '0';
 renderer.domElement.style.zIndex = '0';
 document.body.appendChild(renderer.domElement);
+
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+controls.dampingFactor = 0.05;
+
+controls.minDistance = 10;
+controls.maxDistance = 40;
+
+controls.maxPolarAngle = Math.PI / 2.1; // prevents going under board
 
 // ---------- LIGHTING ----------
 const ambient = new THREE.AmbientLight(0xfff1d6, 0.45);
@@ -388,6 +399,9 @@ window.addEventListener('resize', () => {
 // ---------- LOOP ----------
 function animate() {
     requestAnimationFrame(animate);
+
+    controls.update();
+
     renderer.render(scene, camera);
 }
 
