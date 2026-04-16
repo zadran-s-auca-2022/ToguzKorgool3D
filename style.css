@@ -635,3 +635,14 @@ button {
 .splash-btn {
     pointer-events: auto;
 }
+
+.container {
+    pointer-events: auto;
+}
+
+.pit,
+.store,
+.pits-area,
+.row {
+    pointer-events: auto;
+}
