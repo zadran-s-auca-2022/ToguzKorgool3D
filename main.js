@@ -26,6 +26,7 @@ renderer.domElement.style.zIndex = '0';
 document.body.appendChild(renderer.domElement);
 
 const controls = new OrbitControls(camera, renderer.domElement);
+controls.target.set(0, 1.6, 0);
 controls.enableDamping = true;
 controls.dampingFactor = 0.05;
 
@@ -398,9 +399,7 @@ window.addEventListener('resize', () => {
 // ---------- LOOP ----------
 function animate() {
     requestAnimationFrame(animate);
-
     controls.update();
-
     renderer.render(scene, camera);
 }
 
