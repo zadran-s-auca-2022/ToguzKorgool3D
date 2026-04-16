@@ -625,19 +625,6 @@ button {
     z-index: 2;
 }
 
-.pits-area,
-.store {
-    display: none !important;
-}
-
-.history-container {
-    display: none !important;
-}
-
-.container {
-    pointer-events: none;
-}
-
 .buttons,
 .btn,
 .settings-overlay,
@@ -647,35 +634,4 @@ button {
 .splash-panel,
 .splash-btn {
     pointer-events: auto;
-}
-
-body {
-    perspective: 1200px;
-    background: radial-gradient(circle at center, #1a0f08, #0b0604);
-}
-
-/* Main board container */
-.container {
-    transform: rotateX(25deg) rotateY(-5deg);
-    transform-style: preserve-3d;
-    transition: transform 0.4s ease;
-}
-
-/* Hover effect (optional but beautiful) */
-.container:hover {
-    transform: rotateX(18deg) rotateY(0deg) scale(1.02);
-}
-
-/* Add depth shadows */
-.container::after {
-    content: "";
-    position: absolute;
-    bottom: -30px;
-    left: 10%;
-    width: 80%;
-    height: 40px;
-    background: rgba(0,0,0,0.6);
-    filter: blur(20px);
-    border-radius: 50%;
-    z-index: -1;
 }
