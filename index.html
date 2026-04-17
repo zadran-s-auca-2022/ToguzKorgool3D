@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-    <!-- Three.js canvas goes here -->
     <div id="three-root"></div>
 
     <div class="container">
@@ -18,22 +17,18 @@
             <div class="score" id="scoreB">Player B : 0</div>
         </div>
 
-        <!-- Hidden DOM board only for existing game logic -->
         <div class="board-data-hidden" aria-hidden="true">
-            <!-- Left store: Player B -->
             <div class="store" id="storeB">
                 <div class="store-label">B<br>Kazan</div>
                 <div class="store-stones" id="storeBStones"></div>
                 <div class="store-count" id="storeBCount">0</div>
             </div>
 
-            <!-- Pits -->
             <div class="pits-area">
                 <div class="row row-top" id="row-top"></div>
                 <div class="row row-bottom" id="row-bottom"></div>
             </div>
 
-            <!-- Right store: Player A -->
             <div class="store" id="storeA">
                 <div class="store-label">A<br>Kazan</div>
                 <div class="store-stones" id="storeAStones"></div>
@@ -54,7 +49,6 @@
         </div>
     </div>
 
-    <!-- Splash screen -->
     <div id="splash" class="splash">
         <div class="splash-panel">
             <div class="splash-logo">
@@ -70,7 +64,6 @@
         </div>
     </div>
 
-    <!-- Settings overlay -->
     <div id="settingsOverlay" class="settings-overlay hidden">
         <div class="settings-panel">
             <div class="settings-header">
