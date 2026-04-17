@@ -7,6 +7,7 @@ body {
     background: #111;
     color: #eee;
     overflow-x: hidden;
+    perspective: 1200px;
 }
 
 .container {
@@ -67,6 +68,11 @@ h1 {
     gap: 24px;
 
     flex: 0 0 58vh;
+}
+
+.board {
+    transform-style: preserve-3d;
+    transition: transform 0.1s linear;
 }
 
 .pits-area {

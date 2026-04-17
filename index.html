@@ -139,5 +139,43 @@ window.addEventListener('load', () => {
 });
 </script>
 
+<script>
+const board = document.querySelector('.board');
+
+let isDragging = false;
+let lastX = 0;
+let lastY = 0;
+
+let rotateX = 20;  // initial tilt
+let rotateY = 0;
+
+board.style.transform = "rotateX(20deg) rotateY(0deg)";
+
+board.addEventListener('mousedown', (e) => {
+    isDragging = true;
+    lastX = e.clientX;
+    lastY = e.clientY;
+});
+
+window.addEventListener('mouseup', () => {
+    isDragging = false;
+});
+
+window.addEventListener('mousemove', (e) => {
+    if (!isDragging) return;
+
+    const dx = e.clientX - lastX;
+    const dy = e.clientY - lastY;
+
+    rotateY += dx * 0.3;
+    rotateX -= dy * 0.3;
+
+board.style.transform = "rotateX(" + rotateX + "deg) rotateY(" + rotateY + "deg)";
+
+    lastX = e.clientX;
+    lastY = e.clientY;
+});
+</script>
+
 </body>
 </html>
