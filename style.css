@@ -1,27 +1,59 @@
 /* ----------- GENERAL PAGE STYLING ----------- */
 
+html,
 body {
     margin: 0;
     padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
     font-family: Arial, sans-serif;
     background: #111;
     color: #eee;
-    overflow-x: hidden;
-    perspective: 1200px;
 }
 
+body {
+    user-select: none;
+}
+
+/* Three.js canvas layer */
+#three-root {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+}
+
+#three-root canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+/* Main UI overlay */
 .container {
-    height: 100vh;
+    position: relative;
+    z-index: 2;
+    min-height: 100vh;
     width: 100%;
     max-width: 1400px;
     margin: 0 auto;
-    padding: 8px 20px 8px;
+    padding: 10px 20px 16px;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
     align-items: center;
-    position: relative;
-    z-index: 2;
+}
+
+/* Hidden DOM board used only by JS logic */
+.board-data-hidden {
+    position: absolute;
+    left: -99999px;
+    top: 0;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    opacity: 0;
+    pointer-events: none;
 }
 
 /* utility for overlays */
@@ -33,269 +65,54 @@ body {
 /* ----------- TITLE + SCORES ----------- */
 
 h1 {
-    margin: 2px 0 6px;
+    margin: 4px 0 8px;
     font-size: 32px;
     letter-spacing: 1px;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
 }
 
 .scores {
     width: 100%;
-    max-width: 1300px;
+    max-width: 1200px;
     display: flex;
     justify-content: space-between;
-    margin-bottom: 4px;
+    margin-bottom: 8px;
     font-size: 18px;
-    position: relative;
-    z-index: 2;
+    gap: 12px;
 }
 
 .score {
     font-weight: bold;
+    background: rgba(0, 0, 0, 0.35);
+    padding: 8px 14px;
+    border-radius: 12px;
+    backdrop-filter: blur(3px);
 }
 
-/* ----------- BOARD LAYOUT ----------- */
-
-.board {
-    position: relative;
-    width: 100%;
-    max-width: 1300px;
-    margin: 4px auto 0;
-    padding: 40px 36px 70px;
-    border-radius: 50px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 24px;
-    flex: 0 0 58vh;
-
-    transform-style: preserve-3d;
-    transition: transform 0.1s linear;
-    pointer-events: auto;
-    cursor: grab;
-    user-select: none;
-    touch-action: none;
-}
-
-.board::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border-radius: 50px;
-    background:
-        linear-gradient(180deg, #8b572c 0%, #6f3f1d 45%, #4e2a12 100%);
-    box-shadow:
-        inset 0 4px 12px rgba(255,255,255,0.08),
-        inset 0 -18px 30px rgba(0,0,0,0.35),
-        0 18px 30px rgba(0,0,0,0.45);
-    transform: translateZ(-8px);
-    z-index: 0;
-}
-
-.board > * {
-    position: relative;
-    z-index: 1;
-}
-
-.pits-area {
-    display: flex;
-    flex-direction: column;
-    gap: 44px;
-    pointer-events: auto;
-}
-
-/* ----------- PIT ROWS ----------- */
-
-.row {
-    display: grid;
-    grid-template-columns: repeat(9, 105px);
-    gap: 10px;
-    pointer-events: auto;
-}
-
-/* ----------- PITS ----------- */
-
-.pit {
-    position: relative;
-    width: 105px;
-    height: 72px;
-    border-radius: 32px;
-    border: 2px solid rgba(60, 40, 20, 0.9);
-    background: radial-gradient(circle at 30% 20%, #f2c48a, #b4773f);
-    box-shadow:
-        inset 0 -8px 12px rgba(0, 0, 0, 0.5),
-        inset 0 6px 8px rgba(255, 255, 255, 0.2),
-        0 6px 10px rgba(0, 0, 0, 0.6);
-    transform: translateZ(6px);
-    color: #fff;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    cursor: pointer;
-    user-select: none;
-    transition: 0.15s ease-in-out;
-    padding: 8px 10px 4px;
-    box-sizing: border-box;
-    pointer-events: auto;
-}
-
-.pit:hover {
-    transform: translateY(-2px);
-    box-shadow:
-        inset 0 3px 5px rgba(255, 255, 255, 0.4),
-        inset 0 -4px 6px rgba(0, 0, 0, 0.45),
-        0 0 10px rgba(255, 255, 255, 0.4);
-}
-
-.active-player {
-    outline: 2px solid #ffeb99;
-    box-shadow:
-        inset 0 3px 5px rgba(255, 255, 255, 0.4),
-        inset 0 -4px 6px rgba(0, 0, 0, 0.45),
-        0 0 14px rgba(255, 235, 153, 0.9);
-}
-
-/* PIT NUMBERS */
-
-.pit-number {
-    position: absolute;
-    font-size: 10px;
-    font-weight: bold;
-    letter-spacing: 0.3px;
-    color: rgba(245, 220, 180, 0.85);
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
-    pointer-events: none;
-}
-
-.pit-bottom .pit-number {
-    bottom: -20px;
-    left: 50%;
-    transform: translateX(-50%);
-}
-
-.pit-top .pit-number {
-    top: -14px;
-    left: 50%;
-    transform: translateX(-50%);
-}
-
-/* stones inside pits */
-
-.stones-container {
-    display: grid;
-    grid-template-columns: repeat(5, minmax(0, 1fr));
-    gap: 2px;
-    width: 100%;
-    flex: 1;
-    align-content: center;
-    justify-items: center;
-}
-
-.stone {
-    width: 9px;
-    height: 9px;
-    border-radius: 50%;
-    background: radial-gradient(circle at 30% 30%, #f7f1d0, #3b2a19);
-    box-shadow:
-        inset -2px -2px 4px rgba(0, 0, 0, 0.4),
-        inset 2px 2px 4px rgba(255, 255, 255, 0.3),
-        0 2px 4px rgba(0, 0, 0, 0.5);
-}
-
-.stone-count {
-    font-size: 11px;
-    opacity: 0.9;
-    margin-top: 2px;
-}
-
-/* TUZ highlight */
-
-.pit.tuz {
-    border: 3px solid #ffeb3b;
-    box-shadow:
-        inset 0 3px 5px rgba(255, 255, 255, 0.6),
-        inset 0 -4px 6px rgba(0, 0, 0, 0.45),
-        0 0 15px rgba(255, 235, 59, 0.9);
-}
-
-/* ----------- STORES / KAZANS ----------- */
-
-.store {
-    width: 130px;
-    height: 290px;
-    border-radius: 44px;
-    border: 2px solid rgba(60, 40, 20, 0.9);
-    background: radial-gradient(circle at 30% 20%, #f2c48a, #b4773f);
-    box-shadow:
-        inset 0 -8px 14px rgba(0, 0, 0, 0.5),
-        inset 0 6px 8px rgba(255, 255, 255, 0.2),
-        0 6px 12px rgba(0, 0, 0, 0.6);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 8px 8px 6px;
-    box-sizing: border-box;
-    pointer-events: auto;
-}
-
-.store-label {
-    font-size: 14px;
-    font-weight: bold;
-    text-align: center;
-    margin-bottom: 4px;
-}
-
-/* stones inside kazans */
-
-.store-stones {
-    flex: 1;
-    display: grid;
-    grid-template-columns: repeat(7, minmax(0, 1fr));
-    gap: 2px;
-    width: 100%;
-    align-content: flex-start;
-    justify-items: center;
-}
-
-.store-stones .stone {
-    width: 7px;
-    height: 7px;
-}
-
-.store-count {
-    margin-top: 3px;
-    font-size: 12px;
-    font-weight: bold;
-}
-
-/* ----------- MOVE HISTORY ----------- */
+/* ----------- HISTORY ----------- */
 
 .history-container {
-    position: absolute;
-    left: 50%;
-    bottom: 10px;
-    transform: translateX(-50%);
-    width: 520px;
-    max-width: 90%;
-    background: rgba(0, 0, 0, 0.6);
+    width: min(760px, 92vw);
+    margin-top: auto;
+    margin-bottom: 8px;
+    background: rgba(0, 0, 0, 0.58);
     color: #f5f5f5;
-    border-radius: 12px;
-    padding: 6px 10px;
+    border-radius: 14px;
+    padding: 8px 12px;
     box-sizing: border-box;
     font-size: 12px;
-    box-shadow: 0 0 8px rgba(0, 0, 0, 0.7);
-    z-index: 2;
+    box-shadow: 0 0 14px rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(4px);
 }
 
 .history-title {
     font-weight: bold;
-    margin-bottom: 3px;
+    margin-bottom: 4px;
     text-align: left;
 }
 
 .history-list {
-    max-height: 70px;
+    max-height: 84px;
     overflow-y: auto;
     text-align: left;
     font-family: Consolas, "Courier New", monospace;
@@ -310,32 +127,32 @@ h1 {
 .status {
     margin-top: 6px;
     font-size: 17px;
-    min-height: 22px;
+    min-height: 24px;
     text-align: center;
-    position: relative;
-    z-index: 2;
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.7);
+    background: rgba(0, 0, 0, 0.28);
+    padding: 6px 14px;
+    border-radius: 12px;
 }
 
 .buttons {
-    margin-top: 6px;
+    margin-top: 10px;
     display: flex;
     gap: 10px;
     justify-content: center;
     flex-wrap: wrap;
-    position: relative;
-    z-index: 2;
     pointer-events: auto;
 }
 
 /* BUTTONS */
 
 .btn {
-    padding: 8px 20px;
+    padding: 9px 20px;
     font-size: 15px;
     background: #1976d2;
     color: white;
     border: none;
-    border-radius: 6px;
+    border-radius: 8px;
     cursor: pointer;
     transition: 0.2s;
     pointer-events: auto;
@@ -357,14 +174,121 @@ h1 {
     background: #666;
 }
 
-/* Pit currently receiving a stone */
+/* ----------- HIDDEN LOGIC BOARD ELEMENTS ----------- */
+/* Keep these styles because gameLogic.js creates them */
 
-.pit.sowing {
-    box-shadow:
-        inset 0 3px 5px rgba(255, 255, 255, 0.5),
-        inset 0 -4px 6px rgba(0, 0, 0, 0.45),
-        0 0 18px rgba(255, 255, 255, 0.9);
-    transform: scale(1.05);
+.pits-area {
+    display: flex;
+    flex-direction: column;
+    gap: 44px;
+}
+
+.row {
+    display: grid;
+    grid-template-columns: repeat(9, 105px);
+    gap: 10px;
+}
+
+.pit {
+    position: relative;
+    width: 105px;
+    height: 72px;
+    border-radius: 32px;
+    border: 2px solid rgba(60, 40, 20, 0.9);
+    background: radial-gradient(circle at 30% 20%, #f2c48a, #b4773f);
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 8px 10px 4px;
+    box-sizing: border-box;
+}
+
+.pit-number {
+    position: absolute;
+    font-size: 10px;
+    font-weight: bold;
+    letter-spacing: 0.3px;
+    color: rgba(245, 220, 180, 0.85);
+}
+
+.pit-bottom .pit-number {
+    bottom: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.pit-top .pit-number {
+    top: -14px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.stones-container {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 2px;
+    width: 100%;
+    flex: 1;
+    align-content: center;
+    justify-items: center;
+}
+
+.stone {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, #f7f1d0, #3b2a19);
+}
+
+.stone-count {
+    font-size: 11px;
+    opacity: 0.9;
+    margin-top: 2px;
+}
+
+.pit.tuz {
+    border: 3px solid #ffeb3b;
+}
+
+.store {
+    width: 130px;
+    height: 290px;
+    border-radius: 44px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 8px 8px 6px;
+    box-sizing: border-box;
+}
+
+.store-label {
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 4px;
+}
+
+.store-stones {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    gap: 2px;
+    width: 100%;
+    align-content: flex-start;
+    justify-items: center;
+}
+
+.store-stones .stone {
+    width: 7px;
+    height: 7px;
+}
+
+.store-count {
+    margin-top: 3px;
+    font-size: 12px;
+    font-weight: bold;
 }
 
 /* ----------- SPLASH SCREEN ----------- */
@@ -507,180 +431,43 @@ h1 {
     height: 18px;
 }
 
-/* ----------- SMALL / MEDIUM SCREEN TWEAKS ----------- */
-
-@media (max-width: 1100px) {
-    h1 {
-        font-size: 26px;
-    }
-
-    .scores {
-        font-size: 16px;
-    }
-
-    .board {
-        padding: 14px 20px;
-        gap: 16px;
-        flex: 0 0 55vh;
-    }
-
-    .pits-area {
-        gap: 36px;
-    }
-
-    .row {
-        grid-template-columns: repeat(9, 85px);
-        gap: 8px;
-    }
-
-    .pit {
-        width: 85px;
-        height: 58px;
-        border-radius: 26px;
-        padding: 6px 8px 3px;
-    }
-
-    .store {
-        width: 100px;
-        height: 240px;
-        border-radius: 36px;
-    }
-
-    .stone {
-        width: 7px;
-        height: 7px;
-    }
-
-    .store-stones .stone {
-        width: 5px;
-        height: 5px;
-    }
-
-    .pit-number {
-        font-size: 9px;
-    }
-
-    .pit-bottom .pit-number {
-        bottom: -15px;
-    }
-
-    .pit-top .pit-number {
-        top: -11px;
-    }
+button {
+    cursor: pointer;
 }
 
-@media (max-width: 800px) {
+/* ----------- SMALL / MEDIUM SCREEN TWEAKS ----------- */
+
+@media (max-width: 900px) {
     h1 {
-        font-size: 22px;
+        font-size: 24px;
     }
 
     .scores {
-        font-size: 14px;
+        font-size: 15px;
+        flex-direction: column;
+        align-items: center;
     }
 
-    .board {
-        padding: 10px 10px;
-        gap: 10px;
-        flex: 0 0 auto;
+    .score {
+        width: fit-content;
     }
 
-    .pits-area {
-        gap: 26px;
-    }
-
-    .row {
-        grid-template-columns: repeat(9, 65px);
-        gap: 6px;
-    }
-
-    .pit {
-        width: 65px;
-        height: 48px;
-        border-radius: 22px;
-        padding: 4px 6px 2px;
-    }
-
-    .store {
-        width: 80px;
-        height: 210px;
-        border-radius: 32px;
-    }
-
-    .stone {
-        width: 5px;
-        height: 5px;
-    }
-
-    .store-stones .stone {
-        width: 4px;
-        height: 4px;
+    .status {
+        font-size: 15px;
     }
 
     .history-container {
-        font-size: 10px;
+        font-size: 11px;
         width: 95%;
     }
 
     .btn {
         font-size: 13px;
-        padding: 6px 14px;
+        padding: 7px 14px;
     }
 
     .splash-panel {
         width: 90%;
-        padding: 20px 20px;
+        padding: 20px;
     }
-
-    .pit-number {
-        font-size: 8.5px;
-    }
-
-    .pit-bottom .pit-number {
-        bottom: -12px;
-    }
-
-    .pit-top .pit-number {
-        top: -9px;
-    }
-}
-
-button {
-    cursor: pointer;
-}
-
-/* ===== FIX BOARD ROTATION (FINAL) ===== */
-
-.board {
-    pointer-events: auto;
-    cursor: grab;
-    z-index: 10;
-}
-
-.board:active {
-    cursor: grabbing;
-}
-
-/* Allow dragging THROUGH pits */
-.pits-area,
-.row,
-.pit,
-.store {
-    pointer-events: none;
-}
-
-/* Keep buttons clickable */
-.buttons,
-.btn,
-.settings-overlay,
-.settings-panel,
-.settings-close,
-.splash,
-.splash-panel,
-.splash-btn {
-    pointer-events: auto;
-}
-
-/* Prevent text selection while dragging */
-body {
-    user-select: none;
 }

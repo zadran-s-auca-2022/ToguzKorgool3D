@@ -1,175 +1,120 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Toguz Korgool Online</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-<div class="container">
-    <h1>Toguz Korgool</h1>
+    <!-- Three.js canvas goes here -->
+    <div id="three-root"></div>
 
-    <div id="scores" class="scores">
-        <div class="score" id="scoreA">Player A : 0</div>
-        <div class="score" id="scoreB">Player B : 0</div>
-    </div>
+    <div class="container">
+        <h1>Toguz Korgool</h1>
 
-    <div class="board">
-        <!-- Left store: Player B -->
-        <div class="store" id="storeB">
-            <div class="store-label">B<br>Kazan</div>
-            <div class="store-stones" id="storeBStones"></div>
-            <div class="store-count" id="storeBCount">0</div>
+        <div id="scores" class="scores">
+            <div class="score" id="scoreA">Player A : 0</div>
+            <div class="score" id="scoreB">Player B : 0</div>
         </div>
 
-        <!-- Pits -->
-        <div class="pits-area">
-            <!-- Top row: Player B -->
-            <div class="row row-top" id="row-top"></div>
+        <!-- Hidden DOM board only for existing game logic -->
+        <div class="board-data-hidden" aria-hidden="true">
+            <!-- Left store: Player B -->
+            <div class="store" id="storeB">
+                <div class="store-label">B<br>Kazan</div>
+                <div class="store-stones" id="storeBStones"></div>
+                <div class="store-count" id="storeBCount">0</div>
+            </div>
 
-            <!-- Bottom row: Player A -->
-            <div class="row row-bottom" id="row-bottom"></div>
+            <!-- Pits -->
+            <div class="pits-area">
+                <div class="row row-top" id="row-top"></div>
+                <div class="row row-bottom" id="row-bottom"></div>
+            </div>
+
+            <!-- Right store: Player A -->
+            <div class="store" id="storeA">
+                <div class="store-label">A<br>Kazan</div>
+                <div class="store-stones" id="storeAStones"></div>
+                <div class="store-count" id="storeACount">0</div>
+            </div>
         </div>
 
-        <!-- Right store: Player A -->
-        <div class="store" id="storeA">
-            <div class="store-label">A<br>Kazan</div>
-            <div class="store-stones" id="storeAStones"></div>
-            <div class="store-count" id="storeACount">0</div>
-        </div>
-
-        <!-- Move history overlay -->
         <div class="history-container" id="historyContainer">
             <div class="history-title">Move History</div>
             <div class="history-list" id="historyList"></div>
         </div>
+
+        <div id="status" class="status"></div>
+
+        <div class="buttons">
+            <button id="aiBtn" class="btn">New Game vs Computer</button>
+            <button id="settingsBtn" class="btn btn-secondary">Settings ⚙</button>
+        </div>
     </div>
 
-    <!-- Status line -->
-    <div id="status" class="status"></div>
-
-    <!-- Buttons (AI only) -->
-    <div class="buttons">
-        <button id="aiBtn" class="btn">New Game vs Computer</button>
-        <button id="settingsBtn" class="btn btn-secondary">Settings ⚙</button>
-    </div>
-</div>
-
-<!-- Splash screen -->
-<div id="splash" class="splash">
-    <div class="splash-panel">
-        <div class="splash-logo">
-            <span>9×9</span>
-        </div>
-        <div class="splash-title">Toguz Korgool</div>
-        <div class="splash-subtitle">
-            Traditional Kyrgyz strategy game – play against the computer.
-        </div>
-        <button id="splashStartBtn" class="btn splash-btn" onclick="startGameFromSplash(event)">Start Game</button>
-    </div>
-</div>
-
-<!-- Settings overlay -->
-<div id="settingsOverlay" class="settings-overlay hidden">
-    <div class="settings-panel">
-        <div class="settings-header">
-            <h2>Settings</h2>
-            <button id="settingsCloseBtn" class="settings-close">&times;</button>
-        </div>
-        <div class="settings-body">
-            <div class="settings-section">
-                <h3>Sound</h3>
-                <label class="toggle">
-                    <input type="checkbox" id="soundToggle" checked>
-                    Enable sounds
-                </label>
+    <!-- Splash screen -->
+    <div id="splash" class="splash">
+        <div class="splash-panel">
+            <div class="splash-logo">
+                <span>9×9</span>
             </div>
-
-            <div class="settings-section">
-                <h3>Language</h3>
-                <p class="rules-text">
-                    Game interface is currently in English. Future versions may
-                    add Kyrgyz / Russian options.
-                </p>
+            <div class="splash-title">Toguz Korgool</div>
+            <div class="splash-subtitle">
+                Traditional Kyrgyz strategy game – play against the computer.
             </div>
+            <button id="splashStartBtn" class="btn splash-btn" onclick="startGameFromSplash(event)">
+                Start Game
+            </button>
+        </div>
+    </div>
 
-            <div class="settings-section">
-                <h3>Rules – Short Version</h3>
-                <p class="rules-text">
-                    Each player has 9 pits with 9 korgools (stones) in each, and
-                    a kazan (store). On your turn you choose one of your pits.
-                    If it has 1 stone, it moves to the next pit. If it has more
-                    than 1 stone, one stone stays and the rest are sown
-                    counter-clockwise into the next pits one by one.
-                    <br><br>
-                    If the last stone lands in an opponent’s pit and that pit
-                    now has an even number of stones, they are captured to your
-                    kazan. When a player reaches 82 or more stones, the game
-                    ends and the player with more stones wins. Basic
-                    <em>tuz/sool</em> rule is also supported.
-                </p>
+    <!-- Settings overlay -->
+    <div id="settingsOverlay" class="settings-overlay hidden">
+        <div class="settings-panel">
+            <div class="settings-header">
+                <h2>Settings</h2>
+                <button id="settingsCloseBtn" class="settings-close">&times;</button>
+            </div>
+            <div class="settings-body">
+                <div class="settings-section">
+                    <h3>Sound</h3>
+                    <label class="toggle">
+                        <input type="checkbox" id="soundToggle" checked />
+                        Enable sounds
+                    </label>
+                </div>
+
+                <div class="settings-section">
+                    <h3>Language</h3>
+                    <p class="rules-text">
+                        Game interface is currently in English. Future versions may
+                        add Kyrgyz / Russian options.
+                    </p>
+                </div>
+
+                <div class="settings-section">
+                    <h3>Rules – Short Version</h3>
+                    <p class="rules-text">
+                        Each player has 9 pits with 9 korgools (stones) in each, and
+                        a kazan (store). On your turn you choose one of your pits.
+                        If it has 1 stone, it moves to the next pit. If it has more
+                        than 1 stone, one stone stays and the rest are sown
+                        counter-clockwise into the next pits one by one.
+                        <br /><br />
+                        If the last stone lands in an opponent’s pit and that pit
+                        now has an even number of stones, they are captured to your
+                        kazan. When a player reaches 82 or more stones, the game
+                        ends and the player with more stones wins. Basic
+                        <em>tuz/sool</em> rule is also supported.
+                    </p>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<script defer src="gameLogic.js"></script>
-
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-    const board = document.querySelector('.board');
-    if (!board) return;
-
-    let isDragging = false;
-    let lastX = 0;
-    let lastY = 0;
-    let rotateX = 12;
-    let rotateY = 0;
-
-    function applyRotation() {
-        board.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-    }
-
-    applyRotation();
-
-    board.addEventListener('pointerdown', (e) => {
-        if (!e.target.closest('.board')) return;
-
-        isDragging = true;
-        lastX = e.clientX;
-        lastY = e.clientY;
-        board.style.cursor = 'grabbing';
-        board.setPointerCapture?.(e.pointerId);
-        e.preventDefault();
-    });
-
-    window.addEventListener('pointermove', (e) => {
-        if (!isDragging) return;
-
-        const dx = e.clientX - lastX;
-        const dy = e.clientY - lastY;
-
-        rotateY += dx * 0.35;
-        rotateX -= dy * 0.25;
-
-        if (rotateX > 60) rotateX = 60;
-        if (rotateX < -10) rotateX = -10;
-
-        applyRotation();
-
-        lastX = e.clientX;
-        lastY = e.clientY;
-    });
-
-    function stopDragging() {
-        isDragging = false;
-        board.style.cursor = 'grab';
-    }
-
-    window.addEventListener('pointerup', stopDragging);
-    window.addEventListener('pointercancel', stopDragging);
-});
-</script>
-
+    <script defer src="gameLogic.js"></script>
+    <script type="module" src="board3d.js"></script>
 </body>
 </html>

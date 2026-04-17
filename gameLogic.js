@@ -12,10 +12,8 @@ let pits = new Array(TOTAL_PITS).fill(INITIAL_STONES);
 let storeA = 0; // Player A (bottom)
 let storeB = 0; // Player B (top)
 
-// A's tuz is on B side (indices 9..17)
-// B's tuz is on A side (indices 0..8)
-let tuzA = -1; // A's tuz (index in pits)
-let tuzB = -1; // B's tuz (index in pits)
+let tuzA = -1; // A's tuz (index in pits on B side)
+let tuzB = -1; // B's tuz (index in pits on A side)
 
 let currentPlayer = 'A';
 let isAnimating = false;
@@ -45,7 +43,6 @@ const settingsBtn = document.getElementById('settingsBtn');
 const historyListEl = document.getElementById('historyList');
 
 const splashEl = document.getElementById('splash');
-const splashStartBtn = document.getElementById('splashStartBtn');
 
 const settingsOverlayEl = document.getElementById('settingsOverlay');
 const settingsCloseBtn = document.getElementById('settingsCloseBtn');
@@ -59,6 +56,7 @@ const pitNumberEls = new Array(TOTAL_PITS);
 
 // simple WebAudio beeps
 let audioCtx = null;
+
 function ensureAudioCtx() {
     if (!audioCtx) {
         const Ctx = window.AudioContext || window.webkitAudioContext;
@@ -98,15 +96,10 @@ function ownerOfPit(index) {
     return index < NUM_PITS_PER_PLAYER ? 'A' : 'B';
 }
 
-// Bottom row = 1..9 left to right.
-// Top row   = 9..1 left to right (real board style).
 function pitNumberForIndex(index) {
     if (index < NUM_PITS_PER_PLAYER) {
-        // Bottom row (Player A): 1..9 left → right
         return index + 1;
     } else {
-        // Top row (Player B): 1..9 right → left
-        // indices 9..17 -> pits 1..9
         return index - NUM_PITS_PER_PLAYER + 1;
     }
 }
@@ -119,39 +112,42 @@ function setStatus(text) {
     statusEl.textContent = text;
 }
 
+function getCurrentGameState() {
+    return {
+        pits: [...pits],
+        storeA,
+        storeB,
+        tuzA,
+        tuzB,
+        currentPlayer,
+        isGameOver
+    };
+}
+
 // ----------------- TUZ HELPERS -----------------
 
 function isOpponentsPit(player, index) {
     return ownerOfPit(index) !== player;
 }
 
-// Check if this pit is the opponent's tuz
 function isOpponentTuz(player, index) {
     if (player === 'A') return index === tuzB;
     return index === tuzA;
 }
 
-// Is this index the opponent's 9th pit?
 function isOpponentNinthPit(opponent, index) {
     if (opponent === 'A') {
-        return index === NUM_PITS_PER_PLAYER - 1; // A's 9th pit -> index 8
+        return index === NUM_PITS_PER_PLAYER - 1; // 8
     }
-    return index === TOTAL_PITS - 1; // B's 9th pit -> index 17
+    return index === TOTAL_PITS - 1; // 17
 }
 
-// Check if we are trying to make a tuz opposite to the opponent's tuz
 function isOppositeToOpponentTuz(player, index) {
-    // For player A, candidate tuz is on B side (9..17).
-    // Opponent B's tuz (tuzB) is on A side (0..8).
-    // Opposite pits: A:i <-> B:9+i
     if (player === 'A' && tuzB !== -1) {
         const opposite = tuzB + NUM_PITS_PER_PLAYER;
         return index === opposite;
     }
 
-    // For player B, candidate tuz is on A side (0..8).
-    // Opponent A's tuz (tuzA) is on B side (9..17).
-    // Opposite pits: A:i <-> B:9+i
     if (player === 'B' && tuzA !== -1) {
         const opposite = tuzA - NUM_PITS_PER_PLAYER;
         return index === opposite;
@@ -209,18 +205,16 @@ function createPitElement(index, owner) {
 }
 
 function buildBoard() {
-    // Top row: Player B pits (indices 9..17) – shown RIGHT → LEFT
     rowTop.innerHTML = '';
     for (let i = NUM_PITS_PER_PLAYER - 1; i >= 0; i--) {
-        const index = NUM_PITS_PER_PLAYER + i;  // 17,16,...,9
+        const index = NUM_PITS_PER_PLAYER + i; // 17..9
         const pit = createPitElement(index, 'B');
         rowTop.appendChild(pit);
     }
 
-    // Bottom row: Player A pits (indices 0..8) – shown LEFT → RIGHT
     rowBottom.innerHTML = '';
     for (let i = 0; i < NUM_PITS_PER_PLAYER; i++) {
-        const index = i;  // 0..8
+        const index = i; // 0..8
         const pit = createPitElement(index, 'A');
         rowBottom.appendChild(pit);
     }
@@ -235,9 +229,11 @@ function renderPits() {
         const countEl = pitCountEls[i];
         const pitEl = pitEls[i];
 
-        // Stones (cap visual at, say, 40)
+        if (!container || !countEl || !pitEl) continue;
+
         const maxVisual = Math.min(stones, 40);
         container.innerHTML = '';
+
         for (let s = 0; s < maxVisual; s++) {
             const stone = document.createElement('div');
             stone.classList.add('stone');
@@ -245,9 +241,7 @@ function renderPits() {
         }
 
         countEl.textContent = stones;
-
         pitEl.classList.toggle('tuz', i === tuzA || i === tuzB);
-        pitEl.classList.remove('sowing');
     }
 }
 
@@ -255,7 +249,6 @@ function renderStores() {
     storeAStonesEl.innerHTML = '';
     storeBStonesEl.innerHTML = '';
 
-    // small stones visually (also capped)
     const maxVisualA = Math.min(storeA, 80);
     const maxVisualB = Math.min(storeB, 80);
 
@@ -294,16 +287,8 @@ function renderHistory() {
 }
 
 function notify3D() {
-    if (typeof window.sync3DBoardFromGameState === "function") {
-        window.sync3DBoardFromGameState({
-            pits: [...pits],
-            storeA,
-            storeB,
-            tuzA,
-            tuzB,
-            currentPlayer,
-            isGameOver
-        });
+    if (typeof window.sync3DBoardFromGameState === 'function') {
+        window.sync3DBoardFromGameState(getCurrentGameState());
     }
 }
 
@@ -335,10 +320,7 @@ function resetGame() {
 function handlePitClick(index) {
     if (isGameOver || isAnimating) return;
 
-    // Human is always Player A (bottom row)
     if (currentPlayer !== 'A') return;
-
-    // Must be A's pit and non-empty
     if (ownerOfPit(index) !== 'A') return;
     if (pits[index] === 0) return;
 
@@ -356,11 +338,11 @@ async function performMove(startIndex, player, addToHistory) {
         return;
     }
 
-    let leavingOne = stones > 1;
+    const leavingOne = stones > 1;
     let stonesToSow = leavingOne ? stones - 1 : stones;
 
     pits[startIndex] = leavingOne ? 1 : 0;
-    renderPits();
+    renderAll();
 
     let pos = startIndex;
     let steps = 0;
@@ -369,7 +351,6 @@ async function performMove(startIndex, player, addToHistory) {
     while (stonesToSow > 0) {
         pos = (pos + 1) % TOTAL_PITS;
 
-        // If landing in any tuz, stone goes directly to that owner's kazan
         if (pos === tuzA) {
             storeA++;
             playSowSound();
@@ -381,12 +362,10 @@ async function performMove(startIndex, player, addToHistory) {
             playSowSound();
         }
 
-        // sowing visual highlight
-        pitEls[pos].classList.add('sowing');
-        renderPits();
-        renderStores();
+        if (pitEls[pos]) pitEls[pos].classList.add('sowing');
+        renderAll();
         await delay(SOW_DELAY);
-        pitEls[pos].classList.remove('sowing');
+        if (pitEls[pos]) pitEls[pos].classList.remove('sowing');
 
         stonesToSow--;
         steps++;
@@ -394,7 +373,6 @@ async function performMove(startIndex, player, addToHistory) {
 
     const lastPit = pos;
 
-    // capture / tuz rules only if lastPit belongs to opponent and is not opponent's tuz
     if (!isGameOver && isOpponentsPit(player, lastPit) && !isOpponentTuz(player, lastPit)) {
         const opponent = player === 'A' ? 'B' : 'A';
         const stonesInLast = pits[lastPit];
@@ -407,7 +385,6 @@ async function performMove(startIndex, player, addToHistory) {
                 !isOppositeToOpponentTuz(player, lastPit);
 
             if (canMakeTuz) {
-                // create tuz: move stones to player's kazan and clear pit
                 if (player === 'A') tuzA = lastPit;
                 else tuzB = lastPit;
 
@@ -416,7 +393,6 @@ async function performMove(startIndex, player, addToHistory) {
                 pits[lastPit] = 0;
                 playCaptureSound();
             } else if (stonesInLast % 2 === 0) {
-                // normal even capture (not a tuz)
                 giveToKazan(player, stonesInLast);
                 captured += stonesInLast;
                 pits[lastPit] = 0;
@@ -425,9 +401,6 @@ async function performMove(startIndex, player, addToHistory) {
         }
     }
 
-    renderAll();
-
-    // log move
     if (addToHistory) {
         moveCounter++;
         moveHistory.push({
@@ -441,42 +414,39 @@ async function performMove(startIndex, player, addToHistory) {
             storeA,
             storeB
         });
-        renderHistory();
     }
 
-    // check end of game
+    renderAll();
+
     if (storeA >= TARGET_SCORE || storeB >= TARGET_SCORE || boardEmpty()) {
         finalizeGame();
         isAnimating = false;
         return;
     }
 
-    // next player
     currentPlayer = player === 'A' ? 'B' : 'A';
-    setStatus(
-        currentPlayer === 'A'
-            ? "Player A's turn"
-            : "Computer's turn"
-    );
+    setStatus(currentPlayer === 'A' ? "Player A's turn" : "Computer's turn");
     isAnimating = false;
+    notify3D();
 
-    // trigger AI if needed
     if (!isGameOver && currentPlayer === 'B' && aiEnabled) {
         setTimeout(aiMove, 500);
     }
 }
 
 function boardEmpty() {
-    let sumA = 0, sumB = 0;
+    let sumA = 0;
+    let sumB = 0;
+
     for (let i = 0; i < TOTAL_PITS; i++) {
         if (ownerOfPit(i) === 'A') sumA += pits[i];
         else sumB += pits[i];
     }
+
     return sumA === 0 || sumB === 0;
 }
 
 function finalizeGame() {
-    // collect remaining stones
     for (let i = 0; i < TOTAL_PITS; i++) {
         const owner = ownerOfPit(i);
         if (pits[i] > 0) {
@@ -486,9 +456,9 @@ function finalizeGame() {
         }
     }
 
+    isGameOver = true;
     renderAll();
 
-    isGameOver = true;
     let message;
     if (storeA > storeB) {
         message = `Game over! Player A wins (${storeA} : ${storeB})`;
@@ -497,6 +467,7 @@ function finalizeGame() {
     } else {
         message = `Game over! Draw (${storeA} : ${storeB})`;
     }
+
     setStatus(message);
 }
 
@@ -505,7 +476,6 @@ function finalizeGame() {
 function aiMove() {
     if (isGameOver || isAnimating || currentPlayer !== 'B') return;
 
-    // choose pit that gives max immediate capture
     let bestIndex = -1;
     let bestCapture = -1;
 
@@ -520,7 +490,6 @@ function aiMove() {
         }
     }
 
-    // fallback: first non-empty pit
     if (bestIndex === -1) {
         for (let col = 0; col < NUM_PITS_PER_PLAYER; col++) {
             const index = NUM_PITS_PER_PLAYER + col;
@@ -536,16 +505,15 @@ function aiMove() {
     }
 }
 
-// simulate only capture from a move (no animation)
 function simulateCapture(startIndex, player) {
     const pitsCopy = pits.slice();
-    let tuzACopy = tuzA;
-    let tuzBCopy = tuzB;
+    const tuzACopy = tuzA;
+    const tuzBCopy = tuzB;
 
     let stones = pitsCopy[startIndex];
     if (stones === 0) return -1;
 
-    let leavingOne = stones > 1;
+    const leavingOne = stones > 1;
     let stonesToSow = leavingOne ? stones - 1 : stones;
     pitsCopy[startIndex] = leavingOne ? 1 : 0;
 
@@ -554,11 +522,7 @@ function simulateCapture(startIndex, player) {
     while (stonesToSow > 0) {
         pos = (pos + 1) % TOTAL_PITS;
 
-        // In a real game stones landing on either tuz go to its owner's kazan.
-        // For the AI we just don't put them into pitsCopy.
-        if (pos === tuzACopy || pos === tuzBCopy) {
-            // do nothing (stone goes to kazan in real game)
-        } else {
+        if (pos !== tuzACopy && pos !== tuzBCopy) {
             pitsCopy[pos]++;
         }
 
@@ -570,9 +534,7 @@ function simulateCapture(startIndex, player) {
 
     const opponent = player === 'A' ? 'B' : 'A';
     const isOppPit = ownerOfPit(lastPit) === opponent;
-
-    // we don't capture from any tuz
-    const isTuzPit = (lastPit === tuzACopy) || (lastPit === tuzBCopy);
+    const isTuzPit = lastPit === tuzACopy || lastPit === tuzBCopy;
 
     if (isOppPit && !isTuzPit) {
         const stonesInLast = pitsCopy[lastPit];
@@ -593,7 +555,6 @@ function simulateCapture(startIndex, player) {
                 !isOppositeToTuzCopy;
 
             if (canMakeTuzCopy) {
-                // Tuz creation is worth those 3 stones
                 captured = stonesInLast;
             } else if (stonesInLast % 2 === 0) {
                 captured = stonesInLast;
@@ -607,11 +568,11 @@ function simulateCapture(startIndex, player) {
 // ----------------- SETTINGS + SPLASH -----------------
 
 function initSettings() {
-    // load sound preference
     const saved = localStorage.getItem('toguz_sound');
     if (saved !== null) {
         soundEnabled = saved === '1';
     }
+
     soundToggleEl.checked = soundEnabled;
 
     soundToggleEl.addEventListener('change', () => {
@@ -630,10 +591,9 @@ function initSettings() {
 }
 
 function initSplash() {
-    // no listener needed now
+    // kept for future use
 }
 
-// new game button always AI
 aiBtn.addEventListener('click', () => {
     aiEnabled = true;
     resetGame();
@@ -646,10 +606,11 @@ document.addEventListener('DOMContentLoaded', () => {
     initSettings();
     initSplash();
 
-    // Do not start game until splash is closed
     setStatus('Click "Start Game" to begin');
     renderAll();
 });
+
+// ----------------- SPLASH START -----------------
 
 function startGameFromSplash(e) {
     if (e) e.stopPropagation();
@@ -663,6 +624,9 @@ function startGameFromSplash(e) {
     resetGame();
 }
 
+// ----------------- GLOBALS FOR 3D -----------------
+
 window.startGameFromSplash = startGameFromSplash;
 window.handlePitClick = handlePitClick;
 window.resetGame = resetGame;
+window.getCurrentGameState = getCurrentGameState;
