@@ -628,3 +628,40 @@ h1 {
 button {
     cursor: pointer;
 }
+
+/* ===== FIX BOARD ROTATION (FINAL) ===== */
+
+.board {
+    pointer-events: auto;
+    cursor: grab;
+    z-index: 10;
+}
+
+.board:active {
+    cursor: grabbing;
+}
+
+/* Allow dragging THROUGH pits */
+.pits-area,
+.row,
+.pit,
+.store {
+    pointer-events: none;
+}
+
+/* Keep buttons clickable */
+.buttons,
+.btn,
+.settings-overlay,
+.settings-panel,
+.settings-close,
+.splash,
+.splash-panel,
+.splash-btn {
+    pointer-events: auto;
+}
+
+/* Prevent text selection while dragging */
+body {
+    user-select: none;
+}
