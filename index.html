@@ -116,64 +116,65 @@
 <script defer src="gameLogic.js"></script>
 
 <script>
-window.addEventListener('load', () => {
+document.addEventListener('DOMContentLoaded', () => {
     const btn = document.getElementById('splashStartBtn');
     const splash = document.getElementById('splash');
+    const board = document.querySelector('.board');
 
-    if (!btn || !splash) return;
+    if (btn && splash) {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
 
-    btn.addEventListener('click', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
+            splash.style.opacity = '0';
 
-        splash.style.opacity = '0';
+            setTimeout(() => {
+                splash.style.display = 'none';
+            }, 400);
 
-        setTimeout(() => {
-            splash.style.display = 'none';
-        }, 400);
+            if (typeof window.resetGame === 'function') {
+                window.resetGame();
+            }
+        });
+    }
 
-        if (typeof window.resetGame === 'function') {
-            window.resetGame();
-        }
+    if (!board) return;
+
+    let isDragging = false;
+    let lastX = 0;
+    let lastY = 0;
+    let rotateX = 20;
+    let rotateY = 0;
+
+    board.style.transform = 'rotateX(20deg) rotateY(0deg)';
+
+    board.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        lastX = e.clientX;
+        lastY = e.clientY;
+        board.style.cursor = 'grabbing';
     });
-});
-</script>
 
-<script>
-const board = document.querySelector('.board');
+    window.addEventListener('mouseup', () => {
+        isDragging = false;
+        board.style.cursor = 'grab';
+    });
 
-let isDragging = false;
-let lastX = 0;
-let lastY = 0;
+    window.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
 
-let rotateX = 20;  // initial tilt
-let rotateY = 0;
+        const dx = e.clientX - lastX;
+        const dy = e.clientY - lastY;
 
-board.style.transform = "rotateX(20deg) rotateY(0deg)";
+        rotateY += dx * 0.3;
+        rotateX -= dy * 0.3;
 
-board.addEventListener('mousedown', (e) => {
-    isDragging = true;
-    lastX = e.clientX;
-    lastY = e.clientY;
-});
+        board.style.transform =
+            'rotateX(' + rotateX + 'deg) rotateY(' + rotateY + 'deg)';
 
-window.addEventListener('mouseup', () => {
-    isDragging = false;
-});
-
-window.addEventListener('mousemove', (e) => {
-    if (!isDragging) return;
-
-    const dx = e.clientX - lastX;
-    const dy = e.clientY - lastY;
-
-    rotateY += dx * 0.3;
-    rotateX -= dy * 0.3;
-
-board.style.transform = "rotateX(" + rotateX + "deg) rotateY(" + rotateY + "deg)";
-
-    lastX = e.clientX;
-    lastY = e.clientY;
+        lastX = e.clientX;
+        lastY = e.clientY;
+    });
 });
 </script>
 
