@@ -74,6 +74,7 @@ h1 {
     pointer-events: auto;
     cursor: grab;
     user-select: none;
+    touch-action: none;
 }
 
 .board::before {
