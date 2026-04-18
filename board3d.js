@@ -3,11 +3,11 @@ import { OrbitControls } from 'https://esm.sh/three@0.160.0/examples/jsm/control
 
 const root = document.getElementById('three-root');
 
-// SCENE
+// ---------------- SCENE ----------------
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x100704);
 
-// CAMERA
+// ---------------- CAMERA ----------------
 const camera = new THREE.PerspectiveCamera(
     42,
     window.innerWidth / window.innerHeight,
@@ -16,22 +16,22 @@ const camera = new THREE.PerspectiveCamera(
 );
 camera.position.set(0, 15.5, 23);
 
-// RENDERER
+// ---------------- RENDERER ----------------
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 root.appendChild(renderer.domElement);
 
-// CONTROLS
+// ---------------- CONTROLS ----------------
 const controls = new OrbitControls(camera, renderer.domElement);
-controls.target.set(0, 1.2, 0);
+controls.target.set(0, 1.25, 0);
 controls.enableDamping = true;
 controls.enablePan = false;
 controls.minDistance = 10;
 controls.maxDistance = 34;
 controls.maxPolarAngle = Math.PI / 2.08;
 
-// LIGHTS
+// ---------------- LIGHTS ----------------
 scene.add(new THREE.AmbientLight(0xffffff, 1.25));
 
 const keyLight = new THREE.DirectionalLight(0xfff1dc, 1.55);
@@ -42,7 +42,7 @@ const fillLight = new THREE.DirectionalLight(0xffd7a8, 0.45);
 fillLight.position.set(-12, 10, -8);
 scene.add(fillLight);
 
-// MATERIALS
+// ---------------- MATERIALS ----------------
 const boardMaterial = new THREE.MeshStandardMaterial({
     color: 0x8b582a,
     roughness: 0.62,
@@ -67,44 +67,44 @@ const trayInnerMaterial = new THREE.MeshStandardMaterial({
     metalness: 0.01
 });
 
-const pitOuterMaterial = new THREE.MeshStandardMaterial({
+const pitRimMaterial = new THREE.MeshStandardMaterial({
     color: 0xd4b184,
     roughness: 0.72,
     metalness: 0.01
 });
 
 const pitInnerMaterial = new THREE.MeshStandardMaterial({
-    color: 0xb8844f,
-    roughness: 0.82,
+    color: 0xa36b34,
+    roughness: 0.84,
     metalness: 0.01
 });
 
-// BLACK stones
+// previous light stone color
 const stoneMaterial = new THREE.MeshStandardMaterial({
-    color: 0x161616,
-    roughness: 0.38,
-    metalness: 0.08
+    color: 0xf3e7cf,
+    roughness: 0.35,
+    metalness: 0.02
 });
 
-// BOARD
+// ---------------- BOARD ----------------
 const boardGroup = new THREE.Group();
 scene.add(boardGroup);
 
 const boardBase = new THREE.Mesh(
-    new THREE.BoxGeometry(24.2, 2.6, 12.6),
+    new THREE.BoxGeometry(24.2, 2.7, 12.8),
     boardMaterial
 );
 boardBase.position.set(0, 0, 0);
 boardGroup.add(boardBase);
 
 const boardTop = new THREE.Mesh(
-    new THREE.BoxGeometry(22.0, 0.38, 10.8),
+    new THREE.BoxGeometry(22.0, 0.48, 10.9),
     boardTopMaterial
 );
-boardTop.position.set(0, 1.32, 0);
+boardTop.position.set(0, 1.36, 0);
 boardGroup.add(boardTop);
 
-// KAZANS
+// ---------------- KAZANS ----------------
 const storeStoneGroups = {
     A: new THREE.Group(),
     B: new THREE.Group()
@@ -116,17 +116,17 @@ function createTray(xCenter) {
     const trayGroup = new THREE.Group();
 
     const outer = new THREE.Mesh(
-        new THREE.BoxGeometry(5.0, 2.15, 8.5),
+        new THREE.BoxGeometry(5.0, 2.2, 8.5),
         trayMaterial
     );
     outer.position.set(xCenter, 0.1, 0);
     trayGroup.add(outer);
 
     const inner = new THREE.Mesh(
-        new THREE.BoxGeometry(4.1, 1.05, 7.0),
+        new THREE.BoxGeometry(4.12, 1.08, 7.0),
         trayInnerMaterial
     );
-    inner.position.set(xCenter, 0.8, 0);
+    inner.position.set(xCenter, 0.84, 0);
     trayGroup.add(inner);
 
     scene.add(trayGroup);
@@ -135,7 +135,7 @@ function createTray(xCenter) {
 createTray(-14.2);
 createTray(14.2);
 
-// PITS
+// ---------------- PITS ----------------
 const pitMeshes = [];
 const pitMeshByIndex = new Array(18);
 const pitStoneGroups = new Array(18);
@@ -149,22 +149,38 @@ const bottomRowZ = 2.55;
 function createPit(x, z, index) {
     const group = new THREE.Group();
 
+    // BIGGER / WIDER PIT RIM, NOT DEEPER
     const rim = new THREE.Mesh(
-        new THREE.CylinderGeometry(0.95, 1.02, 0.28, 36),
-        pitOuterMaterial
+        new THREE.CylinderGeometry(1.3, 1.35, 0.28, 40),
+        pitRimMaterial
     );
-    rim.position.set(x, 1.43, z);
-    rim.scale.set(1.22, 1, 0.92);
+    rim.position.set(x, 1.48, z);
+    rim.scale.set(1.45, 1, 1.05);
     group.add(rim);
 
+    // BIGGER INNER BOWL, BUT NOT DEEPER
     const inner = new THREE.Mesh(
-        new THREE.CylinderGeometry(0.76, 0.84, 0.22, 36),
+        new THREE.SphereGeometry(1.1, 36, 24),
         pitInnerMaterial.clone()
     );
-    inner.position.set(x, 1.5, z);
-    inner.scale.set(1.18, 1, 0.88);
+    inner.scale.set(1.35, 0.26, 0.95);
+    inner.position.set(x, 1.44, z);
     inner.userData.index = index;
     group.add(inner);
+
+    // LARGER LIP TO MATCH BIGGER PIT
+    const lip = new THREE.Mesh(
+        new THREE.TorusGeometry(1.05, 0.07, 14, 40),
+        new THREE.MeshStandardMaterial({
+            color: 0xc59761,
+            roughness: 0.78,
+            metalness: 0.01
+        })
+    );
+    lip.rotation.x = Math.PI / 2;
+    lip.scale.set(1.22, 1, 0.88);
+    lip.position.set(x, 1.54, z);
+    group.add(lip);
 
     scene.add(group);
 
@@ -175,7 +191,8 @@ function createPit(x, z, index) {
     scene.add(stonesGroup);
     pitStoneGroups[index] = stonesGroup;
 
-    pitStoneBase[index] = { x, y: 1.67, z };
+    // keep stone base at similar depth, not deeper
+    pitStoneBase[index] = { x, y: 1.60, z };
 }
 
 // top row 17..9
@@ -188,8 +205,8 @@ for (let i = 0; i < 9; i++) {
     createPit(startX + i * pitSpacing, bottomRowZ, i);
 }
 
-// STONES
-const stoneGeometry = new THREE.SphereGeometry(0.14, 18, 18);
+// ---------------- STONES ----------------
+const stoneGeometry = new THREE.SphereGeometry(0.12, 18, 18);
 
 function clearGroup(group) {
     while (group.children.length > 0) {
@@ -197,6 +214,7 @@ function clearGroup(group) {
     }
 }
 
+// up to 30 stones per pit
 function renderPitStones(index, count) {
     const group = pitStoneGroups[index];
     const base = pitStoneBase[index];
@@ -204,44 +222,44 @@ function renderPitStones(index, count) {
 
     clearGroup(group);
 
-    const maxVisual = Math.min(count, 12);
+    const maxVisual = Math.min(count, 30);
 
     for (let i = 0; i < maxVisual; i++) {
         const stone = new THREE.Mesh(stoneGeometry, stoneMaterial);
-        stone.scale.set(1.0, 0.82, 0.92);
+        stone.scale.set(1.0, 0.88, 0.95);
 
-        const col = i % 4;
-        const row = Math.floor(i / 4);
+        const col = i % 5;
+        const row = Math.floor(i / 5);
 
         stone.position.set(
-            base.x + (col - 1.5) * 0.33,
+            base.x + (col - 2) * 0.26,
             base.y + row * 0.018,
-            base.z + (row - 1) * 0.24
+            base.z + (row - 2.5) * 0.12
         );
 
         group.add(stone);
     }
 }
 
-// Make kazan stones clearly visible
+// up to 120 stones per kazan
 function renderStoreStones(side, count) {
     const group = storeStoneGroups[side];
     clearGroup(group);
 
-    const maxVisual = Math.min(count, 48);
+    const maxVisual = Math.min(count, 120);
     const baseX = side === 'A' ? 14.2 : -14.2;
 
     for (let i = 0; i < maxVisual; i++) {
         const stone = new THREE.Mesh(stoneGeometry, stoneMaterial);
-        stone.scale.set(1.18, 1.0, 1.08);
+        stone.scale.set(1.08, 0.95, 1.0);
 
-        const col = i % 4;
-        const row = Math.floor(i / 4);
+        const col = i % 6;
+        const row = Math.floor(i / 6);
 
         stone.position.set(
-            baseX + (col - 1.5) * 0.52,
-            1.28 + (row % 2) * 0.045,
-            (row - 5) * 0.38
+            baseX + (col - 2.5) * 0.33,
+            1.18 + (row % 2) * 0.02,
+            (row - 8) * 0.19
         );
 
         group.add(stone);
@@ -249,17 +267,15 @@ function renderStoreStones(side, count) {
 }
 
 // ---------------- LABELS ----------------
+const oldLayer = document.querySelector('.three-label-layer');
+if (oldLayer) oldLayer.remove();
+
 const labelLayer = document.createElement('div');
 labelLayer.className = 'three-label-layer';
 document.body.appendChild(labelLayer);
 
 const pitNumberLabels = new Array(18);
 const pitCountLabels = new Array(18);
-
-function pitNumberForIndex(index) {
-    if (index < 9) return index + 1;
-    return index - 8;
-}
 
 function createLabel(className, text = '') {
     const el = document.createElement('div');
@@ -269,13 +285,16 @@ function createLabel(className, text = '') {
     return el;
 }
 
-// Create pit labels
+function pitNumberForIndex(index) {
+    if (index < 9) return index + 1;
+    return index - 8;
+}
+
 for (let i = 0; i < 18; i++) {
     pitNumberLabels[i] = createLabel('pit-number-label', String(pitNumberForIndex(i)));
     pitCountLabels[i] = createLabel('pit-count-label', '9');
 }
 
-// Kazan count labels
 const storeCountLabelA = createLabel('store-count-label', '0');
 const storeCountLabelB = createLabel('store-count-label', '0');
 
@@ -297,8 +316,19 @@ function updateLabels(state) {
         const base = pitStoneBase[i];
         if (!base) continue;
 
-        const numberPos = worldToScreen(base.x, 2.15, base.z);
-        const countPos = worldToScreen(base.x, 1.18, base.z);
+        const isTopRow = i >= 9;
+
+        const numberPos = worldToScreen(
+            base.x,
+            2.02,
+            isTopRow ? base.z - 0.62 : base.z + 0.62
+        );
+
+        const countPos = worldToScreen(
+            base.x,
+            1.42,
+            isTopRow ? base.z - 0.12 : base.z + 0.12
+        );
 
         const numEl = pitNumberLabels[i];
         const countEl = pitCountLabels[i];
@@ -316,8 +346,8 @@ function updateLabels(state) {
         countEl.style.display = countPos.visible ? 'block' : 'none';
     }
 
-    const aPos = worldToScreen(14.2, 2.05, 0);
-    const bPos = worldToScreen(-14.2, 2.05, 0);
+    const aPos = worldToScreen(14.2, 2.08, 0);
+    const bPos = worldToScreen(-14.2, 2.08, 0);
 
     storeCountLabelA.textContent = String(state.storeA || 0);
     storeCountLabelB.textContent = String(state.storeB || 0);
@@ -332,7 +362,7 @@ function updateLabels(state) {
     storeCountLabelB.style.display = bPos.visible ? 'block' : 'none';
 }
 
-// SYNC
+// ---------------- SYNC ----------------
 let latestState = {
     pits: new Array(18).fill(9),
     storeA: 0,
@@ -383,7 +413,7 @@ function tryInitialSync() {
 setTimeout(tryInitialSync, 0);
 setTimeout(tryInitialSync, 200);
 
-// CLICK
+// ---------------- CLICK ----------------
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
 
@@ -417,7 +447,7 @@ renderer.domElement.addEventListener('pointerup', (e) => {
     }
 });
 
-// RESIZE
+// ---------------- RESIZE ----------------
 window.addEventListener('resize', () => {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
@@ -425,7 +455,7 @@ window.addEventListener('resize', () => {
     updateLabels(latestState);
 });
 
-// LOOP
+// ---------------- LOOP ----------------
 function animate() {
     requestAnimationFrame(animate);
     controls.update();

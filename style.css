@@ -483,19 +483,20 @@ h1 {
 }
 
 .pit-number-label {
-    font-size: 12px;
-    color: #f3dfb8;
+    font-size: 11px;
+    color: #d9b36c;
+    letter-spacing: 0.4px;
 }
 
 .pit-count-label {
-    font-size: 13px;
-    color: #fff7e8;
+    font-size: 16px;
+    color: #fff4dc;
 }
 
 .store-count-label {
-    font-size: 16px;
-    color: #fff7e8;
-    background: rgba(0, 0, 0, 0.28);
-    padding: 2px 8px;
+    font-size: 18px;
+    color: #fff4dc;
+    background: rgba(0, 0, 0, 0.35);
+    padding: 3px 9px;
     border-radius: 8px;
 }
