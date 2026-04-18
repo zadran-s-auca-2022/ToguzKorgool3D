@@ -79,10 +79,11 @@ const pitInnerMaterial = new THREE.MeshStandardMaterial({
     metalness: 0.01
 });
 
+// BLACK stones
 const stoneMaterial = new THREE.MeshStandardMaterial({
-    color: 0xf3e7cf,
-    roughness: 0.35,
-    metalness: 0.02
+    color: 0x161616,
+    roughness: 0.38,
+    metalness: 0.08
 });
 
 // BOARD
@@ -214,7 +215,7 @@ function renderPitStones(index, count) {
 
         stone.position.set(
             base.x + (col - 1.5) * 0.33,
-            base.y + row * 0.02,
+            base.y + row * 0.018,
             base.z + (row - 1) * 0.24
         );
 
@@ -222,6 +223,7 @@ function renderPitStones(index, count) {
     }
 }
 
+// Make kazan stones clearly visible
 function renderStoreStones(side, count) {
     const group = storeStoneGroups[side];
     clearGroup(group);
@@ -231,14 +233,14 @@ function renderStoreStones(side, count) {
 
     for (let i = 0; i < maxVisual; i++) {
         const stone = new THREE.Mesh(stoneGeometry, stoneMaterial);
-        stone.scale.set(1.15, 0.95, 1.05);
+        stone.scale.set(1.18, 1.0, 1.08);
 
         const col = i % 4;
         const row = Math.floor(i / 4);
 
         stone.position.set(
             baseX + (col - 1.5) * 0.52,
-            1.28 + (row % 2) * 0.04,
+            1.28 + (row % 2) * 0.045,
             (row - 5) * 0.38
         );
 
@@ -246,9 +248,103 @@ function renderStoreStones(side, count) {
     }
 }
 
+// ---------------- LABELS ----------------
+const labelLayer = document.createElement('div');
+labelLayer.className = 'three-label-layer';
+document.body.appendChild(labelLayer);
+
+const pitNumberLabels = new Array(18);
+const pitCountLabels = new Array(18);
+
+function pitNumberForIndex(index) {
+    if (index < 9) return index + 1;
+    return index - 8;
+}
+
+function createLabel(className, text = '') {
+    const el = document.createElement('div');
+    el.className = className;
+    el.textContent = text;
+    labelLayer.appendChild(el);
+    return el;
+}
+
+// Create pit labels
+for (let i = 0; i < 18; i++) {
+    pitNumberLabels[i] = createLabel('pit-number-label', String(pitNumberForIndex(i)));
+    pitCountLabels[i] = createLabel('pit-count-label', '9');
+}
+
+// Kazan count labels
+const storeCountLabelA = createLabel('store-count-label', '0');
+const storeCountLabelB = createLabel('store-count-label', '0');
+
+function worldToScreen(x, y, z) {
+    const v = new THREE.Vector3(x, y, z);
+    v.project(camera);
+
+    return {
+        x: (v.x * 0.5 + 0.5) * window.innerWidth,
+        y: (-v.y * 0.5 + 0.5) * window.innerHeight,
+        visible: v.z < 1
+    };
+}
+
+function updateLabels(state) {
+    if (!state || !state.pits) return;
+
+    for (let i = 0; i < 18; i++) {
+        const base = pitStoneBase[i];
+        if (!base) continue;
+
+        const numberPos = worldToScreen(base.x, 2.15, base.z);
+        const countPos = worldToScreen(base.x, 1.18, base.z);
+
+        const numEl = pitNumberLabels[i];
+        const countEl = pitCountLabels[i];
+
+        numEl.textContent = String(pitNumberForIndex(i));
+        countEl.textContent = String(state.pits[i]);
+
+        numEl.style.left = `${numberPos.x}px`;
+        numEl.style.top = `${numberPos.y}px`;
+
+        countEl.style.left = `${countPos.x}px`;
+        countEl.style.top = `${countPos.y}px`;
+
+        numEl.style.display = numberPos.visible ? 'block' : 'none';
+        countEl.style.display = countPos.visible ? 'block' : 'none';
+    }
+
+    const aPos = worldToScreen(14.2, 2.05, 0);
+    const bPos = worldToScreen(-14.2, 2.05, 0);
+
+    storeCountLabelA.textContent = String(state.storeA || 0);
+    storeCountLabelB.textContent = String(state.storeB || 0);
+
+    storeCountLabelA.style.left = `${aPos.x}px`;
+    storeCountLabelA.style.top = `${aPos.y}px`;
+
+    storeCountLabelB.style.left = `${bPos.x}px`;
+    storeCountLabelB.style.top = `${bPos.y}px`;
+
+    storeCountLabelA.style.display = aPos.visible ? 'block' : 'none';
+    storeCountLabelB.style.display = bPos.visible ? 'block' : 'none';
+}
+
 // SYNC
+let latestState = {
+    pits: new Array(18).fill(9),
+    storeA: 0,
+    storeB: 0,
+    tuzA: -1,
+    tuzB: -1
+};
+
 function sync3DBoardFromGameState(state) {
     if (!state || !state.pits) return;
+
+    latestState = state;
 
     for (let i = 0; i < 18; i++) {
         renderPitStones(i, state.pits[i]);
@@ -265,6 +361,7 @@ function sync3DBoardFromGameState(state) {
 
     renderStoreStones('A', state.storeA || 0);
     renderStoreStones('B', state.storeB || 0);
+    updateLabels(state);
 }
 
 window.sync3DBoardFromGameState = sync3DBoardFromGameState;
@@ -279,6 +376,8 @@ renderStoreStones('B', 0);
 function tryInitialSync() {
     if (typeof window.getCurrentGameState === 'function') {
         sync3DBoardFromGameState(window.getCurrentGameState());
+    } else {
+        updateLabels(latestState);
     }
 }
 setTimeout(tryInitialSync, 0);
@@ -323,6 +422,7 @@ window.addEventListener('resize', () => {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
+    updateLabels(latestState);
 });
 
 // LOOP
@@ -330,6 +430,7 @@ function animate() {
     requestAnimationFrame(animate);
     controls.update();
     renderer.render(scene, camera);
+    updateLabels(latestState);
 }
 
 animate();

@@ -463,3 +463,39 @@ h1 {
         max-width: none;
     }
 }
+
+.three-label-layer {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 4;
+}
+
+.pit-number-label,
+.pit-count-label,
+.store-count-label {
+    position: fixed;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    font-weight: bold;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.9);
+    white-space: nowrap;
+}
+
+.pit-number-label {
+    font-size: 12px;
+    color: #f3dfb8;
+}
+
+.pit-count-label {
+    font-size: 13px;
+    color: #fff7e8;
+}
+
+.store-count-label {
+    font-size: 16px;
+    color: #fff7e8;
+    background: rgba(0, 0, 0, 0.28);
+    padding: 2px 8px;
+    border-radius: 8px;
+}
