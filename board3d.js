@@ -236,7 +236,7 @@ function renderStoreStones(side, count) {
         stone.scale.set(1.8, 1.4, 1.6);
 
         const col = i % 5;              // fewer per row → bigger spacing
-        const row = Math.floor(i / 5);
+        const row = Math.floor(i / 7);
 
         stone.position.set(
             baseX + (col - 2) * 0.55,  // wider spacing
