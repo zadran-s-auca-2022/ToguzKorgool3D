@@ -203,19 +203,19 @@ function renderPitStones(index, count) {
 
     clearGroup(group);
 
-    const maxVisual = Math.min(count, 12);
+    const maxVisual = Math.min(count, 30);
 
     for (let i = 0; i < maxVisual; i++) {
         const stone = new THREE.Mesh(stoneGeometry, stoneMaterial);
-        stone.scale.set(1.0, 0.82, 0.92);
+        stone.scale.set(0.84, 0.72, 0.78);
 
-        const col = i % 4;
-        const row = Math.floor(i / 4);
+        const col = i % 5;
+        const row = Math.floor(i / 5);
 
         stone.position.set(
-            base.x + (col - 1.5) * 0.33,
-            base.y + row * 0.02,
-            base.z + (row - 1) * 0.24
+            base.x + (col - 2) * 0.18,
+            base.y + row * 0.016,
+            base.z + (row - 2.5) * 0.14
         );
 
         group.add(stone);
@@ -226,20 +226,20 @@ function renderStoreStones(side, count) {
     const group = storeStoneGroups[side];
     clearGroup(group);
 
-    const maxVisual = Math.min(count, 48);
+    const maxVisual = Math.min(count, 100);
     const baseX = side === 'A' ? 14.2 : -14.2;
 
     for (let i = 0; i < maxVisual; i++) {
         const stone = new THREE.Mesh(stoneGeometry, stoneMaterial);
-        stone.scale.set(1.15, 0.95, 1.05);
+        stone.scale.set(0.82, 0.72, 0.78);
 
-        const col = i % 4;
-        const row = Math.floor(i / 4);
+        const col = i % 8;
+        const row = Math.floor(i / 8);
 
         stone.position.set(
-            baseX + (col - 1.5) * 0.52,
-            1.28 + (row % 2) * 0.04,
-            (row - 5) * 0.38
+            baseX + (col - 3.5) * 0.22,
+            1.14 + (row % 2) * 0.015,
+            (row - 6) * 0.16
         );
 
         group.add(stone);
