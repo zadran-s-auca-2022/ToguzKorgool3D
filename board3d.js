@@ -3,46 +3,46 @@ import { OrbitControls } from 'https://esm.sh/three@0.160.0/examples/jsm/control
 
 const root = document.getElementById('three-root');
 
-// ---------------- SCENE ----------------
+// SCENE
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x100704);
 
-// ---------------- CAMERA ----------------
+// CAMERA
 const camera = new THREE.PerspectiveCamera(
-    40,
+    42,
     window.innerWidth / window.innerHeight,
     0.1,
     1000
 );
-camera.position.set(0, 13.5, 24);
+camera.position.set(0, 15.5, 23);
 
-// ---------------- RENDERER ----------------
+// RENDERER
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 root.appendChild(renderer.domElement);
 
-// ---------------- CONTROLS ----------------
+// CONTROLS
 const controls = new OrbitControls(camera, renderer.domElement);
-controls.target.set(0, 1.8, 0);
+controls.target.set(0, 1.2, 0);
 controls.enableDamping = true;
 controls.enablePan = false;
-controls.minDistance = 12;
+controls.minDistance = 10;
 controls.maxDistance = 34;
-controls.maxPolarAngle = Math.PI / 2.12;
+controls.maxPolarAngle = Math.PI / 2.08;
 
-// ---------------- LIGHTS ----------------
-scene.add(new THREE.AmbientLight(0xffffff, 1.15));
+// LIGHTS
+scene.add(new THREE.AmbientLight(0xffffff, 1.25));
 
-const keyLight = new THREE.DirectionalLight(0xfff1dc, 1.45);
+const keyLight = new THREE.DirectionalLight(0xfff1dc, 1.55);
 keyLight.position.set(14, 22, 10);
 scene.add(keyLight);
 
-const fillLight = new THREE.DirectionalLight(0xffd7a8, 0.5);
+const fillLight = new THREE.DirectionalLight(0xffd7a8, 0.45);
 fillLight.position.set(-12, 10, -8);
 scene.add(fillLight);
 
-// ---------------- MATERIALS ----------------
+// MATERIALS
 const boardMaterial = new THREE.MeshStandardMaterial({
     color: 0x8b582a,
     roughness: 0.62,
@@ -67,15 +67,15 @@ const trayInnerMaterial = new THREE.MeshStandardMaterial({
     metalness: 0.01
 });
 
-const pitRimMaterial = new THREE.MeshStandardMaterial({
-    color: 0x8c5a2d,
-    roughness: 0.55,
-    metalness: 0.02
+const pitOuterMaterial = new THREE.MeshStandardMaterial({
+    color: 0xd4b184,
+    roughness: 0.72,
+    metalness: 0.01
 });
 
 const pitInnerMaterial = new THREE.MeshStandardMaterial({
-    color: 0x4f2e17,
-    roughness: 0.88,
+    color: 0xb8844f,
+    roughness: 0.82,
     metalness: 0.01
 });
 
@@ -85,25 +85,25 @@ const stoneMaterial = new THREE.MeshStandardMaterial({
     metalness: 0.02
 });
 
-// ---------------- BOARD ----------------
+// BOARD
 const boardGroup = new THREE.Group();
 scene.add(boardGroup);
 
 const boardBase = new THREE.Mesh(
-    new THREE.BoxGeometry(23.6, 2.6, 11.8),
+    new THREE.BoxGeometry(24.2, 2.6, 12.6),
     boardMaterial
 );
 boardBase.position.set(0, 0, 0);
 boardGroup.add(boardBase);
 
 const boardTop = new THREE.Mesh(
-    new THREE.BoxGeometry(21.8, 0.45, 10.2),
+    new THREE.BoxGeometry(22.0, 0.38, 10.8),
     boardTopMaterial
 );
 boardTop.position.set(0, 1.32, 0);
 boardGroup.add(boardTop);
 
-// ---------------- SIDE KAZANS ----------------
+// KAZANS
 const storeStoneGroups = {
     A: new THREE.Group(),
     B: new THREE.Group()
@@ -115,55 +115,53 @@ function createTray(xCenter) {
     const trayGroup = new THREE.Group();
 
     const outer = new THREE.Mesh(
-        new THREE.BoxGeometry(4.9, 2.2, 8.4),
+        new THREE.BoxGeometry(5.0, 2.15, 8.5),
         trayMaterial
     );
-    outer.position.set(xCenter, 0.12, 0);
+    outer.position.set(xCenter, 0.1, 0);
     trayGroup.add(outer);
 
     const inner = new THREE.Mesh(
-        new THREE.BoxGeometry(4.05, 1.15, 7.1),
+        new THREE.BoxGeometry(4.1, 1.05, 7.0),
         trayInnerMaterial
     );
-    inner.position.set(xCenter, 0.82, 0);
+    inner.position.set(xCenter, 0.8, 0);
     trayGroup.add(inner);
 
     scene.add(trayGroup);
 }
 
-createTray(-14.0);
-createTray(14.0);
+createTray(-14.2);
+createTray(14.2);
 
-// ---------------- PITS ----------------
+// PITS
 const pitMeshes = [];
 const pitMeshByIndex = new Array(18);
 const pitStoneGroups = new Array(18);
 const pitStoneBase = new Array(18);
 
-const pitSpacing = 2.3;
-const startX = -9.2;
-const topRowZ = -2.45;
-const bottomRowZ = 2.45;
+const pitSpacing = 2.34;
+const startX = -9.36;
+const topRowZ = -2.55;
+const bottomRowZ = 2.55;
 
-function createOvalPit(x, z, index) {
+function createPit(x, z, index) {
     const group = new THREE.Group();
 
-    // oval wooden rim
     const rim = new THREE.Mesh(
-        new THREE.SphereGeometry(0.95, 36, 22),
-        pitRimMaterial
+        new THREE.CylinderGeometry(0.95, 1.02, 0.28, 36),
+        pitOuterMaterial
     );
-    rim.scale.set(1.28, 0.42, 1.0);
-    rim.position.set(x, 1.48, z);
+    rim.position.set(x, 1.43, z);
+    rim.scale.set(1.22, 1, 0.92);
     group.add(rim);
 
-    // dark inner cavity
     const inner = new THREE.Mesh(
-        new THREE.SphereGeometry(0.72, 36, 22),
+        new THREE.CylinderGeometry(0.76, 0.84, 0.22, 36),
         pitInnerMaterial.clone()
     );
-    inner.scale.set(1.18, 0.28, 0.92);
-    inner.position.set(x, 1.52, z);
+    inner.position.set(x, 1.5, z);
+    inner.scale.set(1.18, 1, 0.88);
     inner.userData.index = index;
     group.add(inner);
 
@@ -176,21 +174,21 @@ function createOvalPit(x, z, index) {
     scene.add(stonesGroup);
     pitStoneGroups[index] = stonesGroup;
 
-    pitStoneBase[index] = { x, y: 1.70, z };
+    pitStoneBase[index] = { x, y: 1.67, z };
 }
 
-// top row visually left -> right = 17..9
+// top row 17..9
 for (let i = 0; i < 9; i++) {
-    createOvalPit(startX + i * pitSpacing, topRowZ, 17 - i);
+    createPit(startX + i * pitSpacing, topRowZ, 17 - i);
 }
 
-// bottom row visually left -> right = 0..8
+// bottom row 0..8
 for (let i = 0; i < 9; i++) {
-    createOvalPit(startX + i * pitSpacing, bottomRowZ, i);
+    createPit(startX + i * pitSpacing, bottomRowZ, i);
 }
 
-// ---------------- STONES ----------------
-const stoneGeometry = new THREE.SphereGeometry(0.23, 18, 18);
+// STONES
+const stoneGeometry = new THREE.SphereGeometry(0.14, 18, 18);
 
 function clearGroup(group) {
     while (group.children.length > 0) {
@@ -209,15 +207,15 @@ function renderPitStones(index, count) {
 
     for (let i = 0; i < maxVisual; i++) {
         const stone = new THREE.Mesh(stoneGeometry, stoneMaterial);
+        stone.scale.set(1.0, 0.82, 0.92);
 
         const col = i % 4;
         const row = Math.floor(i / 4);
 
-        stone.scale.set(1.0, 0.82, 0.92);
         stone.position.set(
-            base.x + (col - 1.5) * 0.42,
-            base.y + row * 0.03,
-            base.z + (row - 1) * 0.34
+            base.x + (col - 1.5) * 0.33,
+            base.y + row * 0.02,
+            base.z + (row - 1) * 0.24
         );
 
         group.add(stone);
@@ -228,27 +226,27 @@ function renderStoreStones(side, count) {
     const group = storeStoneGroups[side];
     clearGroup(group);
 
-    const maxVisual = Math.min(count, 42);
-    const baseX = side === 'A' ? 14.0 : -14.0;
+    const maxVisual = Math.min(count, 48);
+    const baseX = side === 'A' ? 14.2 : -14.2;
 
     for (let i = 0; i < maxVisual; i++) {
         const stone = new THREE.Mesh(stoneGeometry, stoneMaterial);
+        stone.scale.set(1.0, 0.82, 0.92);
 
         const col = i % 4;
         const row = Math.floor(i / 4);
 
-        stone.scale.set(1.0, 0.82, 0.92);
         stone.position.set(
-            baseX + (col - 1.5) * 0.52,
-            1.2 + (row % 2) * 0.03,
-            (row - 4) * 0.45
+            baseX + (col - 1.5) * 0.5,
+            1.14 + (row % 2) * 0.03,
+            (row - 5) * 0.36
         );
 
         group.add(stone);
     }
 }
 
-// ---------------- SYNC ----------------
+// SYNC
 function sync3DBoardFromGameState(state) {
     if (!state || !state.pits) return;
 
@@ -286,7 +284,7 @@ function tryInitialSync() {
 setTimeout(tryInitialSync, 0);
 setTimeout(tryInitialSync, 200);
 
-// ---------------- CLICK ----------------
+// CLICK
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
 
@@ -320,14 +318,14 @@ renderer.domElement.addEventListener('pointerup', (e) => {
     }
 });
 
-// ---------------- RESIZE ----------------
+// RESIZE
 window.addEventListener('resize', () => {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
 });
 
-// ---------------- LOOP ----------------
+// LOOP
 function animate() {
     requestAnimationFrame(animate);
     controls.update();
