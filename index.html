@@ -17,6 +17,7 @@
             <div class="score" id="scoreB">Player B : 0</div>
         </div>
 
+        <!-- Hidden DOM board only for existing logic -->
         <div class="board-data-hidden" aria-hidden="true">
             <div class="store" id="storeB">
                 <div class="store-label">B<br>Kazan</div>
@@ -82,25 +83,20 @@
                 <div class="settings-section">
                     <h3>Language</h3>
                     <p class="rules-text">
-                        Game interface is currently in English. Future versions may
-                        add Kyrgyz / Russian options.
+                        Game interface is currently in English. Future versions may add Kyrgyz / Russian options.
                     </p>
                 </div>
 
                 <div class="settings-section">
                     <h3>Rules – Short Version</h3>
                     <p class="rules-text">
-                        Each player has 9 pits with 9 korgools (stones) in each, and
-                        a kazan (store). On your turn you choose one of your pits.
-                        If it has 1 stone, it moves to the next pit. If it has more
-                        than 1 stone, one stone stays and the rest are sown
-                        counter-clockwise into the next pits one by one.
-                        <br /><br />
-                        If the last stone lands in an opponent’s pit and that pit
-                        now has an even number of stones, they are captured to your
-                        kazan. When a player reaches 82 or more stones, the game
-                        ends and the player with more stones wins. Basic
-                        <em>tuz/sool</em> rule is also supported.
+                        Each player has 9 pits with 9 korgools in each, and a kazan.
+                        If a pit has 1 stone, it moves to the next pit. If it has more than 1 stone,
+                        one stays and the rest are sown counter-clockwise.
+                        <br><br>
+                        If the last stone lands in an opponent’s pit and that pit now has an even number,
+                        they are captured to your kazan. When a player reaches 82 or more stones, the game ends.
+                        Basic <em>tuz/sool</em> rule is also supported.
                     </p>
                 </div>
             </div>

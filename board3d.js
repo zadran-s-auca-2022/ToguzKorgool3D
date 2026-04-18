@@ -97,11 +97,7 @@ function createPit(x, z, index) {
     scene.add(group);
     pitStoneGroups[index] = group;
 
-    pitBasePositions[index] = {
-        x,
-        y: 1.45,
-        z
-    };
+    pitBasePositions[index] = { x, y: 1.45, z };
 }
 
 // top row visually left -> right = 17..9
@@ -203,17 +199,21 @@ function sync3DBoardFromGameState(state) {
 
 window.sync3DBoardFromGameState = sync3DBoardFromGameState;
 
-// draw initial full setup in case game state is not sent immediately
+// draw initial setup
 for (let i = 0; i < 18; i++) {
     renderPitStones(i, 9);
 }
 renderStoreStones('A', 0);
 renderStoreStones('B', 0);
 
-// sync from game state if already available
-if (typeof window.getCurrentGameState === 'function') {
-    sync3DBoardFromGameState(window.getCurrentGameState());
+// sync immediately if available
+function tryInitialSync() {
+    if (typeof window.getCurrentGameState === 'function') {
+        sync3DBoardFromGameState(window.getCurrentGameState());
+    }
 }
+setTimeout(tryInitialSync, 0);
+setTimeout(tryInitialSync, 200);
 
 // ---------- CLICK ----------
 const raycaster = new THREE.Raycaster();
@@ -232,6 +232,12 @@ renderer.domElement.addEventListener('pointerup', (e) => {
     const dy = e.clientY - pointerDownY;
     const moved = Math.hypot(dx, dy) > 6;
     if (moved) return;
+
+    const splash = document.getElementById('splash');
+    const settingsOverlay = document.getElementById('settingsOverlay');
+
+    if (splash && splash.style.display !== 'none') return;
+    if (settingsOverlay && !settingsOverlay.classList.contains('hidden')) return;
 
     mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
     mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;

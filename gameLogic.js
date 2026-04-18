@@ -1,30 +1,24 @@
-// ----------------- CONSTANTS -----------------
-
 const NUM_PITS_PER_PLAYER = 9;
-const TOTAL_PITS = NUM_PITS_PER_PLAYER * 2; // 18
+const TOTAL_PITS = NUM_PITS_PER_PLAYER * 2;
 const INITIAL_STONES = 9;
 const TARGET_SCORE = 82;
-const SOW_DELAY = 200; // ms per stone for animation
-
-// ----------------- STATE -----------------
+const SOW_DELAY = 200;
 
 let pits = new Array(TOTAL_PITS).fill(INITIAL_STONES);
-let storeA = 0; // Player A (bottom)
-let storeB = 0; // Player B (top)
-
-let tuzA = -1; // A's tuz (index in pits on B side)
-let tuzB = -1; // B's tuz (index in pits on A side)
+let storeA = 0;
+let storeB = 0;
+let tuzA = -1;
+let tuzB = -1;
 
 let currentPlayer = 'A';
 let isAnimating = false;
 let isGameOver = false;
 let soundEnabled = true;
-let aiEnabled = true; // ALWAYS vs computer now
+let aiEnabled = true;
 
 let moveHistory = [];
 let moveCounter = 0;
 
-// DOM references
 const rowTop = document.getElementById('row-top');
 const rowBottom = document.getElementById('row-bottom');
 
@@ -48,13 +42,11 @@ const settingsOverlayEl = document.getElementById('settingsOverlay');
 const settingsCloseBtn = document.getElementById('settingsCloseBtn');
 const soundToggleEl = document.getElementById('soundToggle');
 
-// pit DOM caches
 const pitEls = new Array(TOTAL_PITS);
 const pitStoneContainers = new Array(TOTAL_PITS);
 const pitCountEls = new Array(TOTAL_PITS);
 const pitNumberEls = new Array(TOTAL_PITS);
 
-// simple WebAudio beeps
 let audioCtx = null;
 
 function ensureAudioCtx() {
@@ -90,18 +82,13 @@ function playCaptureSound() {
     playBeep(400, 0.09, 0.05);
 }
 
-// ----------------- UTILS -----------------
-
 function ownerOfPit(index) {
     return index < NUM_PITS_PER_PLAYER ? 'A' : 'B';
 }
 
 function pitNumberForIndex(index) {
-    if (index < NUM_PITS_PER_PLAYER) {
-        return index + 1;
-    } else {
-        return index - NUM_PITS_PER_PLAYER + 1;
-    }
+    if (index < NUM_PITS_PER_PLAYER) return index + 1;
+    return index - NUM_PITS_PER_PLAYER + 1;
 }
 
 function delay(ms) {
@@ -124,35 +111,26 @@ function getCurrentGameState() {
     };
 }
 
-// ----------------- TUZ HELPERS -----------------
-
 function isOpponentsPit(player, index) {
     return ownerOfPit(index) !== player;
 }
 
 function isOpponentTuz(player, index) {
-    if (player === 'A') return index === tuzB;
-    return index === tuzA;
+    return player === 'A' ? index === tuzB : index === tuzA;
 }
 
 function isOpponentNinthPit(opponent, index) {
-    if (opponent === 'A') {
-        return index === NUM_PITS_PER_PLAYER - 1; // 8
-    }
-    return index === TOTAL_PITS - 1; // 17
+    if (opponent === 'A') return index === 8;
+    return index === 17;
 }
 
 function isOppositeToOpponentTuz(player, index) {
     if (player === 'A' && tuzB !== -1) {
-        const opposite = tuzB + NUM_PITS_PER_PLAYER;
-        return index === opposite;
+        return index === tuzB + NUM_PITS_PER_PLAYER;
     }
-
     if (player === 'B' && tuzA !== -1) {
-        const opposite = tuzA - NUM_PITS_PER_PLAYER;
-        return index === opposite;
+        return index === tuzA - NUM_PITS_PER_PLAYER;
     }
-
     return false;
 }
 
@@ -165,18 +143,11 @@ function giveToKazan(player, stones) {
     else storeB += stones;
 }
 
-// ----------------- BOARD CREATION -----------------
-
 function createPitElement(index, owner) {
     const pit = document.createElement('div');
     pit.classList.add('pit');
     pit.dataset.index = index;
-
-    if (owner === 'A') {
-        pit.classList.add('pit-bottom');
-    } else {
-        pit.classList.add('pit-top');
-    }
+    pit.classList.add(owner === 'A' ? 'pit-bottom' : 'pit-top');
 
     const stonesContainer = document.createElement('div');
     stonesContainer.classList.add('stones-container');
@@ -207,20 +178,15 @@ function createPitElement(index, owner) {
 function buildBoard() {
     rowTop.innerHTML = '';
     for (let i = NUM_PITS_PER_PLAYER - 1; i >= 0; i--) {
-        const index = NUM_PITS_PER_PLAYER + i; // 17..9
-        const pit = createPitElement(index, 'B');
-        rowTop.appendChild(pit);
+        const index = NUM_PITS_PER_PLAYER + i;
+        rowTop.appendChild(createPitElement(index, 'B'));
     }
 
     rowBottom.innerHTML = '';
     for (let i = 0; i < NUM_PITS_PER_PLAYER; i++) {
-        const index = i; // 0..8
-        const pit = createPitElement(index, 'A');
-        rowBottom.appendChild(pit);
+        rowBottom.appendChild(createPitElement(i, 'A'));
     }
 }
-
-// ----------------- RENDERING -----------------
 
 function renderPits() {
     for (let i = 0; i < TOTAL_PITS; i++) {
@@ -228,11 +194,10 @@ function renderPits() {
         const container = pitStoneContainers[i];
         const countEl = pitCountEls[i];
         const pitEl = pitEls[i];
-
         if (!container || !countEl || !pitEl) continue;
 
-        const maxVisual = Math.min(stones, 40);
         container.innerHTML = '';
+        const maxVisual = Math.min(stones, 40);
 
         for (let s = 0; s < maxVisual; s++) {
             const stone = document.createElement('div');
@@ -288,7 +253,15 @@ function renderHistory() {
 
 function notify3D() {
     if (typeof window.sync3DBoardFromGameState === 'function') {
-        window.sync3DBoardFromGameState(getCurrentGameState());
+        window.sync3DBoardFromGameState({
+            pits: [...pits],
+            storeA,
+            storeB,
+            tuzA,
+            tuzB,
+            currentPlayer,
+            isGameOver
+        });
     }
 }
 
@@ -298,8 +271,6 @@ function renderAll() {
     renderHistory();
     notify3D();
 }
-
-// ----------------- GAME LOGIC -----------------
 
 function resetGame() {
     pits = new Array(TOTAL_PITS).fill(INITIAL_STONES);
@@ -319,7 +290,6 @@ function resetGame() {
 
 function handlePitClick(index) {
     if (isGameOver || isAnimating) return;
-
     if (currentPlayer !== 'A') return;
     if (ownerOfPit(index) !== 'A') return;
     if (pits[index] === 0) return;
@@ -332,7 +302,7 @@ async function performMove(startIndex, player, addToHistory) {
 
     isAnimating = true;
 
-    let stones = pits[startIndex];
+    const stones = pits[startIndex];
     if (stones === 0) {
         isAnimating = false;
         return;
@@ -362,10 +332,8 @@ async function performMove(startIndex, player, addToHistory) {
             playSowSound();
         }
 
-        if (pitEls[pos]) pitEls[pos].classList.add('sowing');
         renderAll();
         await delay(SOW_DELAY);
-        if (pitEls[pos]) pitEls[pos].classList.remove('sowing');
 
         stonesToSow--;
         steps++;
@@ -471,8 +439,6 @@ function finalizeGame() {
     setStatus(message);
 }
 
-// ----------------- AI -----------------
-
 function aiMove() {
     if (isGameOver || isAnimating || currentPlayer !== 'B') return;
 
@@ -480,7 +446,7 @@ function aiMove() {
     let bestCapture = -1;
 
     for (let col = 0; col < NUM_PITS_PER_PLAYER; col++) {
-        const index = NUM_PITS_PER_PLAYER + col; // B pits 9..17
+        const index = NUM_PITS_PER_PLAYER + col;
         if (pits[index] === 0) continue;
 
         const captured = simulateCapture(index, 'B');
@@ -521,11 +487,9 @@ function simulateCapture(startIndex, player) {
 
     while (stonesToSow > 0) {
         pos = (pos + 1) % TOTAL_PITS;
-
         if (pos !== tuzACopy && pos !== tuzBCopy) {
             pitsCopy[pos]++;
         }
-
         stonesToSow--;
     }
 
@@ -541,7 +505,6 @@ function simulateCapture(startIndex, player) {
 
         if (stonesInLast > 0) {
             const playerHasTuzCopy = player === 'A' ? tuzACopy !== -1 : tuzBCopy !== -1;
-
             const isNinthPitCopy = isOpponentNinthPit(opponent, lastPit);
 
             const isOppositeToTuzCopy =
@@ -564,8 +527,6 @@ function simulateCapture(startIndex, player) {
 
     return captured;
 }
-
-// ----------------- SETTINGS + SPLASH -----------------
 
 function initSettings() {
     const saved = localStorage.getItem('toguz_sound');
@@ -590,27 +551,18 @@ function initSettings() {
     });
 }
 
-function initSplash() {
-    // kept for future use
-}
-
 aiBtn.addEventListener('click', () => {
     aiEnabled = true;
     resetGame();
 });
 
-// ----------------- INIT -----------------
-
 document.addEventListener('DOMContentLoaded', () => {
     buildBoard();
     initSettings();
-    initSplash();
 
     setStatus('Click "Start Game" to begin');
     renderAll();
 });
-
-// ----------------- SPLASH START -----------------
 
 function startGameFromSplash(e) {
     if (e) e.stopPropagation();
@@ -623,8 +575,6 @@ function startGameFromSplash(e) {
 
     resetGame();
 }
-
-// ----------------- GLOBALS FOR 3D -----------------
 
 window.startGameFromSplash = startGameFromSplash;
 window.handlePitClick = handlePitClick;
