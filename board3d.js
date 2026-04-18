@@ -229,10 +229,13 @@ function renderStoreStones(side, count) {
     const maxVisual = Math.min(count, 98);
     const baseX = side === 'A' ? 14.2 : -14.2;
 
+    const topZ = -1.45;     // start near the TOP of the kazan
+    const rowGap = 0.27;    // distance between rows
+
     for (let i = 0; i < maxVisual; i++) {
         const stone = new THREE.Mesh(stoneGeometry, stoneMaterial);
 
-        // keep same visible size
+        // same size as before
         stone.scale.set(1.8, 1.4, 1.6);
 
         const col = i % 7;
@@ -241,13 +244,12 @@ function renderStoreStones(side, count) {
         stone.position.set(
             baseX + (col - 3) * 0.24,
             1.24 + (row % 2) * 0.035,
-            (row - 6.5) * 0.27
+            topZ + row * rowGap
         );
 
         group.add(stone);
     }
 }
-
 // SYNC
 function sync3DBoardFromGameState(state) {
     if (!state || !state.pits) return;
