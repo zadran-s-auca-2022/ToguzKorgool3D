@@ -226,22 +226,22 @@ function renderStoreStones(side, count) {
     const group = storeStoneGroups[side];
     clearGroup(group);
 
-    const maxVisual = Math.min(count, 100);
+    const maxVisual = Math.min(count, 96);
     const baseX = side === 'A' ? 14.2 : -14.2;
 
     for (let i = 0; i < maxVisual; i++) {
         const stone = new THREE.Mesh(stoneGeometry, stoneMaterial);
 
-        // make stones more visible again
-        stone.scale.set(0.95, 0.82, 0.88);
+        // bigger and more visible
+        stone.scale.set(1.15, 1.0, 1.05);
 
-        const col = i % 5;
-        const row = Math.floor(i / 5);
+        const col = i % 6;
+        const row = Math.floor(i / 6);
 
         stone.position.set(
-            baseX + (col - 2) * 0.36,
-            1.22 + (row % 2) * 0.02,
-            (row - 9) * 0.18
+            baseX + (col - 2.5) * 0.30,
+            1.20 + (row % 2) * 0.02,
+            (row - 7.5) * 0.21
         );
 
         group.add(stone);
