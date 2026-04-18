@@ -40,33 +40,53 @@ scene.add(light);
 
 // ---------- MATERIALS ----------
 const boardMaterial = new THREE.MeshStandardMaterial({ color: 0x8b5a2b });
+const sideMaterial = new THREE.MeshStandardMaterial({ color: 0x9a6a38 });
 const pitMaterial = new THREE.MeshStandardMaterial({ color: 0xe2bf8f });
-const storeMaterial = new THREE.MeshStandardMaterial({ color: 0xc89b63 });
+const storeInnerMaterial = new THREE.MeshStandardMaterial({ color: 0xc89b63 });
 const stoneMaterial = new THREE.MeshStandardMaterial({ color: 0xf2f2f2 });
 
-// ---------- BOARD ----------
+// ---------- MAIN BOARD ----------
 const board = new THREE.Mesh(
-    new THREE.BoxGeometry(30, 2, 14),
+    new THREE.BoxGeometry(24, 2, 14),
     boardMaterial
 );
+board.position.set(0, 0, 0);
 scene.add(board);
 
-// ---------- KAZANS ----------
-const leftStore = new THREE.Mesh(
-    new THREE.CylinderGeometry(2.1, 2.1, 6.5, 32),
-    storeMaterial
-);
-leftStore.rotation.z = Math.PI / 2;
-leftStore.position.set(-18, 0.5, 0);
-scene.add(leftStore);
+// ---------- RECTANGULAR KAZANS ----------
+const leftStoreGroup = new THREE.Group();
+const rightStoreGroup = new THREE.Group();
+scene.add(leftStoreGroup);
+scene.add(rightStoreGroup);
 
-const rightStore = new THREE.Mesh(
-    new THREE.CylinderGeometry(2.1, 2.1, 6.5, 32),
-    storeMaterial
-);
-rightStore.rotation.z = Math.PI / 2;
-rightStore.position.set(18, 0.5, 0);
-scene.add(rightStore);
+function createRectangularStore(group, xCenter) {
+    // outer block
+    const outer = new THREE.Mesh(
+        new THREE.BoxGeometry(5.2, 2, 8.6),
+        sideMaterial
+    );
+    outer.position.set(xCenter, 0, 0);
+    group.add(outer);
+
+    // carved inner bowl
+    const inner = new THREE.Mesh(
+        new THREE.BoxGeometry(4.0, 0.9, 6.9),
+        storeInnerMaterial
+    );
+    inner.position.set(xCenter, 0.56, 0);
+    group.add(inner);
+
+    // rim lines using thin raised borders
+    const rimTop = new THREE.Mesh(
+        new THREE.BoxGeometry(4.3, 0.12, 7.2),
+        new THREE.MeshStandardMaterial({ color: 0xe2bf8f })
+    );
+    rimTop.position.set(xCenter, 1.02, 0);
+    group.add(rimTop);
+}
+
+createRectangularStore(leftStoreGroup, -14.6);
+createRectangularStore(rightStoreGroup, 14.6);
 
 // ---------- PITS ----------
 const pitMeshes = [];
@@ -74,19 +94,19 @@ const pitMeshByIndex = new Array(18);
 const pitStoneGroups = new Array(18);
 const pitBasePositions = new Array(18);
 
-const pitSpacing = 3.2;
-const startX = -12.8;
-const topZ = -3.2;
-const bottomZ = 3.2;
+const pitSpacing = 2.55;
+const startX = -10.2;
+const topZ = -3.15;
+const bottomZ = 3.15;
 
 function createPit(x, z, index) {
     const pit = new THREE.Mesh(
-        new THREE.CylinderGeometry(1.1, 1.1, 0.6, 32),
+        new THREE.CylinderGeometry(0.95, 0.95, 0.55, 32),
         pitMaterial.clone()
     );
 
     pit.rotation.x = Math.PI / 2;
-    pit.position.set(x, 1.1, z);
+    pit.position.set(x, 1.05, z);
     pit.userData.index = index;
 
     scene.add(pit);
@@ -97,7 +117,7 @@ function createPit(x, z, index) {
     scene.add(group);
     pitStoneGroups[index] = group;
 
-    pitBasePositions[index] = { x, y: 1.45, z };
+    pitBasePositions[index] = { x, y: 1.32, z };
 }
 
 // top row visually left -> right = 17..9
@@ -111,7 +131,7 @@ for (let i = 0; i < 9; i++) {
 }
 
 // ---------- STONES ----------
-const stoneGeometry = new THREE.SphereGeometry(0.18, 16, 16);
+const stoneGeometry = new THREE.SphereGeometry(0.12, 14, 14);
 
 function clearGroup(group) {
     if (!group) return;
@@ -136,9 +156,9 @@ function renderPitStones(index, count) {
         const row = Math.floor(i / 6);
 
         stone.position.set(
-            base.x + (col - 2.5) * 0.2,
+            base.x + (col - 2.5) * 0.12,
             base.y,
-            base.z + (row - 1) * 0.2
+            base.z + (row - 1) * 0.12
         );
 
         group.add(stone);
@@ -157,8 +177,8 @@ function renderStoreStones(side, count) {
     const group = storeStoneGroups[side];
     clearGroup(group);
 
-    const maxVisual = Math.min(count, 30);
-    const baseX = side === 'A' ? 18 : -18;
+    const maxVisual = Math.min(count, 40);
+    const baseX = side === 'A' ? 14.6 : -14.6;
 
     for (let i = 0; i < maxVisual; i++) {
         const stone = new THREE.Mesh(stoneGeometry, stoneMaterial);
@@ -167,9 +187,9 @@ function renderStoreStones(side, count) {
         const row = Math.floor(i / 4);
 
         stone.position.set(
-            baseX,
-            -0.6 + col * 0.35,
-            (row - 3) * 0.35
+            baseX + (col - 1.5) * 0.22,
+            0.72,
+            (row - 4) * 0.22
         );
 
         group.add(stone);
@@ -199,14 +219,13 @@ function sync3DBoardFromGameState(state) {
 
 window.sync3DBoardFromGameState = sync3DBoardFromGameState;
 
-// draw initial setup
+// initial setup
 for (let i = 0; i < 18; i++) {
     renderPitStones(i, 9);
 }
 renderStoreStones('A', 0);
 renderStoreStones('B', 0);
 
-// sync immediately if available
 function tryInitialSync() {
     if (typeof window.getCurrentGameState === 'function') {
         sync3DBoardFromGameState(window.getCurrentGameState());
