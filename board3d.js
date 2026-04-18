@@ -231,15 +231,15 @@ function renderStoreStones(side, count) {
 
     for (let i = 0; i < maxVisual; i++) {
         const stone = new THREE.Mesh(stoneGeometry, stoneMaterial);
-        stone.scale.set(1.0, 0.82, 0.92);
+        stone.scale.set(1.15, 0.95, 1.05);
 
         const col = i % 4;
         const row = Math.floor(i / 4);
 
         stone.position.set(
-            baseX + (col - 1.5) * 0.5,
-            1.14 + (row % 2) * 0.03,
-            (row - 5) * 0.36
+            baseX + (col - 1.5) * 0.52,
+            1.28 + (row % 2) * 0.04,
+            (row - 5) * 0.38
         );
 
         group.add(stone);
