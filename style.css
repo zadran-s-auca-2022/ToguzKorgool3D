@@ -87,27 +87,30 @@ h1 {
 }
 
 .history-container {
-    width: min(820px, 92vw);
-    margin-top: auto;
-    margin-bottom: 8px;
-    background: rgba(0, 0, 0, 0.58);
+    position: fixed;
+    left: 50%;
+    bottom: 150px;
+    transform: translateX(-50%);
+    width: min(780px, 84vw);
+    background: rgba(0, 0, 0, 0.62);
     color: #f5f5f5;
-    border-radius: 14px;
-    padding: 8px 12px;
+    border-radius: 16px;
+    padding: 10px 16px;
     box-sizing: border-box;
     font-size: 12px;
-    box-shadow: 0 0 14px rgba(0, 0, 0, 0.45);
-    backdrop-filter: blur(4px);
+    box-shadow: 0 0 18px rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(5px);
+    z-index: 5;
 }
 
 .history-title {
     font-weight: bold;
-    margin-bottom: 4px;
+    margin-bottom: 6px;
     text-align: left;
 }
 
 .history-list {
-    max-height: 84px;
+    max-height: 120px;
     overflow-y: auto;
     text-align: left;
     font-family: Consolas, "Courier New", monospace;
@@ -118,22 +121,32 @@ h1 {
 }
 
 .status {
-    margin-top: 6px;
+    position: fixed;
+    left: 50%;
+    bottom: 86px;
+    transform: translateX(-50%);
+    margin-top: 0;
     font-size: 17px;
     min-height: 24px;
     text-align: center;
     text-shadow: 0 2px 6px rgba(0, 0, 0, 0.7);
-    background: rgba(0, 0, 0, 0.28);
-    padding: 6px 14px;
+    background: rgba(0, 0, 0, 0.32);
+    padding: 8px 18px;
     border-radius: 12px;
+    z-index: 5;
 }
 
 .buttons {
-    margin-top: 10px;
+    position: fixed;
+    left: 50%;
+    bottom: 24px;
+    transform: translateX(-50%);
+    margin-top: 0;
     display: flex;
     gap: 10px;
     justify-content: center;
     flex-wrap: wrap;
+    z-index: 5;
 }
 
 .btn {
