@@ -24,7 +24,7 @@ root.appendChild(renderer.domElement);
 
 // ---------- CONTROLS ----------
 const controls = new OrbitControls(camera, renderer.domElement);
-controls.target.set(0, 1.5, 0);
+controls.target.set(0, 1.6, 0);
 controls.enableDamping = true;
 controls.enablePan = false;
 controls.minDistance = 10;
@@ -32,9 +32,9 @@ controls.maxDistance = 40;
 controls.maxPolarAngle = Math.PI / 2.05;
 
 // ---------- LIGHT ----------
-scene.add(new THREE.AmbientLight(0xffffff, 1.2));
+scene.add(new THREE.AmbientLight(0xffffff, 1.25));
 
-const light = new THREE.DirectionalLight(0xffffff, 1.5);
+const light = new THREE.DirectionalLight(0xffffff, 1.6);
 light.position.set(10, 20, 10);
 scene.add(light);
 
@@ -47,7 +47,7 @@ const stoneMaterial = new THREE.MeshStandardMaterial({ color: 0xf2f2f2 });
 
 // ---------- MAIN BOARD ----------
 const board = new THREE.Mesh(
-    new THREE.BoxGeometry(24, 2, 14),
+    new THREE.BoxGeometry(24, 2.2, 14),
     boardMaterial
 );
 board.position.set(0, 0, 0);
@@ -60,28 +60,25 @@ scene.add(leftStoreGroup);
 scene.add(rightStoreGroup);
 
 function createRectangularStore(group, xCenter) {
-    // outer block
     const outer = new THREE.Mesh(
-        new THREE.BoxGeometry(5.2, 2, 8.6),
+        new THREE.BoxGeometry(5.2, 2.2, 8.8),
         sideMaterial
     );
     outer.position.set(xCenter, 0, 0);
     group.add(outer);
 
-    // carved inner bowl
     const inner = new THREE.Mesh(
-        new THREE.BoxGeometry(4.0, 0.9, 6.9),
+        new THREE.BoxGeometry(4.2, 1.0, 7.0),
         storeInnerMaterial
     );
-    inner.position.set(xCenter, 0.56, 0);
+    inner.position.set(xCenter, 0.62, 0);
     group.add(inner);
 
-    // rim lines using thin raised borders
     const rimTop = new THREE.Mesh(
-        new THREE.BoxGeometry(4.3, 0.12, 7.2),
+        new THREE.BoxGeometry(4.45, 0.14, 7.25),
         new THREE.MeshStandardMaterial({ color: 0xe2bf8f })
     );
-    rimTop.position.set(xCenter, 1.02, 0);
+    rimTop.position.set(xCenter, 1.08, 0);
     group.add(rimTop);
 }
 
@@ -100,13 +97,14 @@ const topZ = -3.15;
 const bottomZ = 3.15;
 
 function createPit(x, z, index) {
+    // Taller/deeper pit
     const pit = new THREE.Mesh(
-        new THREE.CylinderGeometry(0.95, 0.95, 0.55, 32),
+        new THREE.CylinderGeometry(1.02, 1.02, 0.9, 36),
         pitMaterial.clone()
     );
 
     pit.rotation.x = Math.PI / 2;
-    pit.position.set(x, 1.05, z);
+    pit.position.set(x, 1.1, z);
     pit.userData.index = index;
 
     scene.add(pit);
@@ -117,7 +115,8 @@ function createPit(x, z, index) {
     scene.add(group);
     pitStoneGroups[index] = group;
 
-    pitBasePositions[index] = { x, y: 1.32, z };
+    // Raise stones clearly above inner floor so they remain visible
+    pitBasePositions[index] = { x, y: 1.44, z };
 }
 
 // top row visually left -> right = 17..9
@@ -131,7 +130,7 @@ for (let i = 0; i < 9; i++) {
 }
 
 // ---------- STONES ----------
-const stoneGeometry = new THREE.SphereGeometry(0.12, 14, 14);
+const stoneGeometry = new THREE.SphereGeometry(0.16, 16, 16);
 
 function clearGroup(group) {
     if (!group) return;
@@ -156,9 +155,9 @@ function renderPitStones(index, count) {
         const row = Math.floor(i / 6);
 
         stone.position.set(
-            base.x + (col - 2.5) * 0.12,
+            base.x + (col - 2.5) * 0.15,
             base.y,
-            base.z + (row - 1) * 0.12
+            base.z + (row - 1) * 0.15
         );
 
         group.add(stone);
@@ -187,9 +186,9 @@ function renderStoreStones(side, count) {
         const row = Math.floor(i / 4);
 
         stone.position.set(
-            baseX + (col - 1.5) * 0.22,
-            0.72,
-            (row - 4) * 0.22
+            baseX + (col - 1.5) * 0.24,
+            0.8,
+            (row - 4) * 0.24
         );
 
         group.add(stone);
