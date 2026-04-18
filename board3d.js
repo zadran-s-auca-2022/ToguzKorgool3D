@@ -229,13 +229,12 @@ function renderStoreStones(side, count) {
     const maxVisual = Math.min(count, 98);
     const baseX = side === 'A' ? 14.2 : -14.2;
 
-    const topZ = -1.45;     // start near the TOP of the kazan
-    const rowGap = 0.27;    // distance between rows
+    const topZ = -2.55;   // much closer to the top edge
+    const rowGap = 0.30;  // row spacing
 
     for (let i = 0; i < maxVisual; i++) {
         const stone = new THREE.Mesh(stoneGeometry, stoneMaterial);
 
-        // same size as before
         stone.scale.set(1.8, 1.4, 1.6);
 
         const col = i % 7;
