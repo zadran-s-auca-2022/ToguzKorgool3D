@@ -67,15 +67,15 @@ const trayInnerMaterial = new THREE.MeshStandardMaterial({
     metalness: 0.01
 });
 
-const pitOuterMaterial = new THREE.MeshStandardMaterial({
+const pitRimMaterial = new THREE.MeshStandardMaterial({
     color: 0xd4b184,
     roughness: 0.72,
     metalness: 0.01
 });
 
 const pitInnerMaterial = new THREE.MeshStandardMaterial({
-    color: 0xb8844f,
-    roughness: 0.82,
+    color: 0x7b4c24,
+    roughness: 0.9,
     metalness: 0.01
 });
 
@@ -148,33 +148,49 @@ const bottomRowZ = 2.55;
 function createPit(x, z, index) {
     const group = new THREE.Group();
 
+    // oval outer rim
     const rim = new THREE.Mesh(
-        new THREE.CylinderGeometry(0.95, 1.02, 0.28, 36),
-        pitOuterMaterial
+        new THREE.SphereGeometry(0.98, 36, 24),
+        pitRimMaterial
     );
-    rim.position.set(x, 1.43, z);
-    rim.scale.set(1.22, 1, 0.92);
+    rim.scale.set(1.34, 0.28, 0.96);
+    rim.position.set(x, 1.47, z);
     group.add(rim);
 
-    const inner = new THREE.Mesh(
-        new THREE.CylinderGeometry(0.76, 0.84, 0.22, 36),
+    // inner cavity - deeper and darker
+    const bowl = new THREE.Mesh(
+        new THREE.SphereGeometry(0.78, 36, 24),
         pitInnerMaterial.clone()
     );
-    inner.position.set(x, 1.5, z);
-    inner.scale.set(1.18, 1, 0.88);
-    inner.userData.index = index;
-    group.add(inner);
+    bowl.scale.set(1.22, 0.19, 0.86);
+    bowl.position.set(x, 1.49, z);
+    bowl.userData.index = index;
+    group.add(bowl);
+
+    // extra inner lip for depth
+    const lip = new THREE.Mesh(
+        new THREE.TorusGeometry(0.72, 0.07, 14, 40),
+        new THREE.MeshStandardMaterial({
+            color: 0xb8844f,
+            roughness: 0.8,
+            metalness: 0.01
+        })
+    );
+    lip.rotation.x = Math.PI / 2;
+    lip.scale.set(1.32, 1, 0.92);
+    lip.position.set(x, 1.53, z);
+    group.add(lip);
 
     scene.add(group);
 
-    pitMeshes.push(inner);
-    pitMeshByIndex[index] = inner;
+    pitMeshes.push(bowl);
+    pitMeshByIndex[index] = bowl;
 
     const stonesGroup = new THREE.Group();
     scene.add(stonesGroup);
     pitStoneGroups[index] = stonesGroup;
 
-    pitStoneBase[index] = { x, y: 1.67, z };
+    pitStoneBase[index] = { x, y: 1.63, z };
 }
 
 // top row 17..9
@@ -214,7 +230,7 @@ function renderPitStones(index, count) {
 
         stone.position.set(
             base.x + (col - 1.5) * 0.33,
-            base.y + row * 0.02,
+            base.y + row * 0.018,
             base.z + (row - 1) * 0.24
         );
 
@@ -224,7 +240,9 @@ function renderPitStones(index, count) {
 
 function renderStoreStones(side, count) {
     const group = storeStoneGroups[side];
-    clearGroup(group);
+    while (group.children.length > 0) {
+        group.remove(group.children[0]);
+    }
 
     const maxVisual = Math.min(count, 48);
     const baseX = side === 'A' ? 14.2 : -14.2;
