@@ -67,15 +67,15 @@ const trayInnerMaterial = new THREE.MeshStandardMaterial({
     metalness: 0.01
 });
 
-const pitRimMaterial = new THREE.MeshStandardMaterial({
+const pitOuterMaterial = new THREE.MeshStandardMaterial({
     color: 0xd4b184,
     roughness: 0.72,
     metalness: 0.01
 });
 
 const pitInnerMaterial = new THREE.MeshStandardMaterial({
-    color: 0xa36b34,
-    roughness: 0.84,
+    color: 0xb8844f,
+    roughness: 0.82,
     metalness: 0.01
 });
 
@@ -90,17 +90,17 @@ const boardGroup = new THREE.Group();
 scene.add(boardGroup);
 
 const boardBase = new THREE.Mesh(
-    new THREE.BoxGeometry(24.2, 2.7, 12.8),
+    new THREE.BoxGeometry(24.2, 2.6, 12.6),
     boardMaterial
 );
 boardBase.position.set(0, 0, 0);
 boardGroup.add(boardBase);
 
 const boardTop = new THREE.Mesh(
-    new THREE.BoxGeometry(22.0, 0.48, 10.9),
+    new THREE.BoxGeometry(22.0, 0.38, 10.8),
     boardTopMaterial
 );
-boardTop.position.set(0, 1.36, 0);
+boardTop.position.set(0, 1.32, 0);
 boardGroup.add(boardTop);
 
 // KAZANS
@@ -115,17 +115,17 @@ function createTray(xCenter) {
     const trayGroup = new THREE.Group();
 
     const outer = new THREE.Mesh(
-        new THREE.BoxGeometry(5.0, 2.2, 8.5),
+        new THREE.BoxGeometry(5.0, 2.15, 8.5),
         trayMaterial
     );
     outer.position.set(xCenter, 0.1, 0);
     trayGroup.add(outer);
 
     const inner = new THREE.Mesh(
-        new THREE.BoxGeometry(4.12, 1.08, 7.0),
+        new THREE.BoxGeometry(4.1, 1.05, 7.0),
         trayInnerMaterial
     );
-    inner.position.set(xCenter, 0.84, 0);
+    inner.position.set(xCenter, 0.8, 0);
     trayGroup.add(inner);
 
     scene.add(trayGroup);
@@ -148,38 +148,22 @@ const bottomRowZ = 2.55;
 function createPit(x, z, index) {
     const group = new THREE.Group();
 
-    // wider pit rim
     const rim = new THREE.Mesh(
-        new THREE.CylinderGeometry(1.28, 1.34, 0.28, 40),
-        pitRimMaterial
+        new THREE.CylinderGeometry(0.95, 1.02, 0.28, 36),
+        pitOuterMaterial
     );
-    rim.position.set(x, 1.48, z);
-    rim.scale.set(1.34, 1, 1.04);
+    rim.position.set(x, 1.43, z);
+    rim.scale.set(1.22, 1, 0.92);
     group.add(rim);
 
-    // wider bowl, not deeper
     const inner = new THREE.Mesh(
-        new THREE.SphereGeometry(1.05, 36, 24),
+        new THREE.CylinderGeometry(0.76, 0.84, 0.22, 36),
         pitInnerMaterial.clone()
     );
-    inner.scale.set(1.34, 0.22, 0.96);
-    inner.position.set(x, 1.45, z);
+    inner.position.set(x, 1.5, z);
+    inner.scale.set(1.18, 1, 0.88);
     inner.userData.index = index;
     group.add(inner);
-
-    // larger lip
-    const lip = new THREE.Mesh(
-        new THREE.TorusGeometry(1.00, 0.07, 14, 40),
-        new THREE.MeshStandardMaterial({
-            color: 0xc59761,
-            roughness: 0.78,
-            metalness: 0.01
-        })
-    );
-    lip.rotation.x = Math.PI / 2;
-    lip.scale.set(1.24, 1, 0.94);
-    lip.position.set(x, 1.54, z);
-    group.add(lip);
 
     scene.add(group);
 
@@ -190,7 +174,7 @@ function createPit(x, z, index) {
     scene.add(stonesGroup);
     pitStoneGroups[index] = stonesGroup;
 
-    pitStoneBase[index] = { x, y: 1.61, z };
+    pitStoneBase[index] = { x, y: 1.67, z };
 }
 
 // top row 17..9
@@ -212,7 +196,6 @@ function clearGroup(group) {
     }
 }
 
-// up to 30 stones in pits
 function renderPitStones(index, count) {
     const group = pitStoneGroups[index];
     const base = pitStoneBase[index];
@@ -220,44 +203,43 @@ function renderPitStones(index, count) {
 
     clearGroup(group);
 
-    const maxVisual = Math.min(count, 30);
+    const maxVisual = Math.min(count, 12);
 
     for (let i = 0; i < maxVisual; i++) {
         const stone = new THREE.Mesh(stoneGeometry, stoneMaterial);
-        stone.scale.set(1.0, 0.88, 0.95);
+        stone.scale.set(1.0, 0.82, 0.92);
 
-        const col = i % 5;
-        const row = Math.floor(i / 5);
+        const col = i % 4;
+        const row = Math.floor(i / 4);
 
         stone.position.set(
-            base.x + (col - 2) * 0.24,
+            base.x + (col - 1.5) * 0.33,
             base.y + row * 0.02,
-            base.z + (row - 2.5) * 0.12
+            base.z + (row - 1) * 0.24
         );
 
         group.add(stone);
     }
 }
 
-// up to 120 stones in kazans
 function renderStoreStones(side, count) {
     const group = storeStoneGroups[side];
     clearGroup(group);
 
-    const maxVisual = Math.min(count, 120);
+    const maxVisual = Math.min(count, 48);
     const baseX = side === 'A' ? 14.2 : -14.2;
 
     for (let i = 0; i < maxVisual; i++) {
         const stone = new THREE.Mesh(stoneGeometry, stoneMaterial);
-        stone.scale.set(1.08, 0.95, 1.0);
+        stone.scale.set(1.0, 0.82, 0.92);
 
-        const col = i % 6;
-        const row = Math.floor(i / 6);
+        const col = i % 4;
+        const row = Math.floor(i / 4);
 
         stone.position.set(
-            baseX + (col - 2.5) * 0.33,
-            1.18 + (row % 2) * 0.02,
-            (row - 8) * 0.19
+            baseX + (col - 1.5) * 0.5,
+            1.14 + (row % 2) * 0.03,
+            (row - 5) * 0.36
         );
 
         group.add(stone);
