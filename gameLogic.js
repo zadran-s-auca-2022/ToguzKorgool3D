@@ -232,8 +232,8 @@ function renderStores() {
     storeACountEl.textContent = storeA;
     storeBCountEl.textContent = storeB;
 
-    scoreAEl.textContent = `Player A : ${storeA}`;
-    scoreBEl.textContent = `Player B : ${storeB}`;
+    scoreAEl.textContent = `You : ${storeA}`;
+    scoreBEl.textContent = `Computer : ${storeB}`;
 }
 
 function renderHistory() {
@@ -284,7 +284,7 @@ function resetGame() {
     moveHistory = [];
     moveCounter = 0;
 
-    setStatus('Player A vs Computer – Player A starts');
+    setStatus('You vs Computer – You start');
     renderAll();
 }
 
@@ -393,7 +393,7 @@ async function performMove(startIndex, player, addToHistory) {
     }
 
     currentPlayer = player === 'A' ? 'B' : 'A';
-    setStatus(currentPlayer === 'A' ? "Player A's turn" : "Computer's turn");
+    setStatus(currentPlayer === 'A' ? "Your turn" : "Computer's turn");
     isAnimating = false;
     notify3D();
 
@@ -429,7 +429,7 @@ function finalizeGame() {
 
     let message;
     if (storeA > storeB) {
-        message = `Game over! Player A wins (${storeA} : ${storeB})`;
+        message = `Game over! You win (${storeA} : ${storeB})`;
     } else if (storeB > storeA) {
         message = `Game over! Computer wins (${storeB} : ${storeA})`;
     } else {
