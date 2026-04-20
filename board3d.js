@@ -352,7 +352,7 @@ for (let i = 0; i < 18; i++) {
     countSprite.position.set(
         base.x,
         1.34,
-        isTopRow ? base.z + 1.00 : base.z - 1.20
+        isTopRow ? base.z + 1.00 : base.z - 1.50
     );
     scene.add(countSprite);
     pitCountSprites[i] = countSprite;
