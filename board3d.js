@@ -337,7 +337,7 @@ for (let i = 0; i < 18; i++) {
     numSprite.position.set(
         base.x,
         1.34,
-        isTopRow ? base.z - 1.42 : base.z + 1.42
+        isTopRow ? base.z - 1.62 : base.z + 1.42
     );
     scene.add(numSprite);
     pitNumberSprites[i] = numSprite;
@@ -352,7 +352,7 @@ for (let i = 0; i < 18; i++) {
     countSprite.position.set(
         base.x,
         1.34,
-        isTopRow ? base.z + 1.00 : base.z - 1.00
+        isTopRow ? base.z + 1.00 : base.z - 0.78
     );
     scene.add(countSprite);
     pitCountSprites[i] = countSprite;
@@ -363,8 +363,8 @@ const storeCountSpriteA = createTextSprite('0', {
     textColor: '#fff4dc',
     scaleFactor: 0.0055
 });
-// below right kazan
-storeCountSpriteA.position.set(14.2, 1.30, 4.95);
+// above right kazan
+storeCountSpriteA.position.set(14.2, 1.32, -4.95);
 scene.add(storeCountSpriteA);
 
 const storeCountSpriteB = createTextSprite('0', {
@@ -372,8 +372,8 @@ const storeCountSpriteB = createTextSprite('0', {
     textColor: '#fff4dc',
     scaleFactor: 0.0055
 });
-// below left kazan
-storeCountSpriteB.position.set(-14.2, 1.30, 4.95);
+// above left kazan
+storeCountSpriteB.position.set(-14.2, 1.32, -4.95);
 scene.add(storeCountSpriteB);
 
 // SYNC
