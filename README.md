@@ -1,64 +1,70 @@
-# ToguzKorgoolProject
+# Toguz Korgool 3D Web Game
 
-A web-based implementation of the traditional Kyrgyz board game Toguz Korgool, created as my Senior Project.
+A web-based 3D implementation of the traditional Kyrgyz board game **Toguz Korgool**, developed as a Senior Project.
 
 Live game:  
-https://zadran-s-auca-2022.github.io/ToguzKorgoolProject/
+https://zadran-s-auca-2022.github.io/ToguzKorgool3D/
 
 ---
 
 ## Project Overview
 
-The game is played by Player A (human, bottom row) against the Computer (top row).  
-Each side has 9 pits with stones (korgools) and one kazan (store) for captured stones.  
-The goal is to collect more than half of all stones (at least 82).
+This project implements Toguz Korgool as an interactive browser-based application using modern web technologies and 3D visualization.
 
-This project is the Fall-semester implementation for COM-431.1 (Senior Project) at AUCA.
+The game is played by **You (bottom row)** against the **Computer (top row)**.  
+Each player has 9 pits and one kazan (store) for captured stones.
 
----
+The goal is to collect **at least 82 stones**.
 
-## Basic Rules
-
-- 18 pits in total:
-  - Pits 1–9 for Player A (bottom).
-  - Pits 1–9 for Player B (top).
-- Each pit starts with 9 stones.
-
-On a turn:
-
-1. The player chooses one of their non-empty pits.  
-2. If the pit has 1 stone, it moves to the next pit.  
-3. If the pit has more than 1 stone:
-   - 1 stone stays in the chosen pit.
-   - The rest are sown one by one into the following pits.
-
-Capturing:
-
-- If the last stone lands in an opponent pit and that pit now has an even number of stones,  
-  all its stones are moved to the player’s kazan.
-
-Tuz (sool):
-
-- If the last stone makes an opponent pit contain exactly 3 stones, that pit can become a tuz.  
-- Any later stones landing there go directly to the owner’s kazan.  
-- Each player can have only one tuz, and the opponent’s 9th pit cannot become a tuz.
-
-The game ends when one player reaches 82 or more stones, or when one side has no stones left in their pits.  
-Remaining stones are added to the corresponding kazans and the higher score wins.
+This project was developed as part of **COM-433 (Senior Project / Thesis)** at the American University of Central Asia.
 
 ---
 
 ## Main Features
 
-- Human vs Computer (no two-player mode).  
-- Complete sowing, capturing, and tuz logic.  
-- Simple AI that tries to choose moves with the best capture.  
-- Visual board with pits, stones, pit numbers, and kazans.  
-- Move history panel with detailed log of each move.  
-- Optional sound effects for sowing and capturing.  
-- Splash screen with Start Game button.  
-- Settings panel (sound on/off, rules summary).  
-- Responsive layout for different screen sizes.
+- Human vs Computer gameplay  
+- Complete implementation of official Toguz Korgool rules  
+- Tuz (special pit) rule with correct constraints  
+- Heuristic AI opponent (capture-based decision making)  
+- 3D board visualization using Three.js  
+- Real-time synchronization between game logic and rendering  
+- Interactive 3D board (clickable pits using raycasting)  
+- Move history panel with detailed logs  
+- Score display and game status updates  
+- Splash screen and settings menu  
+- Optional sound effects (sowing and capture)  
+- Clean and responsive interface  
+
+---
+
+## Game Rules (Simplified)
+
+- 18 pits total (9 per player)
+- Each pit starts with 9 stones
+
+### Turn Mechanics
+1. Select one of your pits
+2. If it has 1 stone → move it to the next pit  
+3. If it has more:
+   - Leave 1 stone
+   - Distribute the rest counterclockwise
+
+### Capturing
+- If the last stone lands in an opponent’s pit and makes it even  
+  → all stones are captured to your kazan
+
+### Tuz Rule
+- If the last stone makes an opponent pit contain exactly 3 stones  
+  → it becomes a **tuz**
+- Stones landing in a tuz go directly to the owner’s kazan  
+- Only one tuz per player  
+- Opponent’s 9th pit cannot become a tuz  
+
+### Game End
+- A player reaches **82 stones**, or  
+- One side becomes empty  
+
+Remaining stones are collected and the higher score wins.
 
 ---
 
@@ -66,22 +72,36 @@ Remaining stones are added to the corresponding kazans and the higher score wins
 
 - HTML5  
 - CSS3  
-- Vanilla JavaScript (ES6)  
-- Git and GitHub  
-- GitHub Pages
+- JavaScript (ES6)  
+- Three.js (WebGL-based 3D rendering)  
+- Git & GitHub  
+- GitHub Pages  
+
+---
+
+## System Architecture
+
+The project follows a modular design:
+
+- **gameLogic.js** → core rules, AI, game state  
+- **board3d.js** → 3D rendering (Three.js)  
+- **index.html / style.css** → interface and layout  
+
+Game logic and rendering are separated to improve maintainability and scalability.
 
 ---
 
 ## How to Play Online
 
-1. Open: https://zadran-s-auca-2022.github.io/ToguzKorgoolProject/  
-2. Click “Start Game”.  
-3. Click a bottom pit (1–9) to make a move.  
-4. Use “New Game vs Computer” to restart.
+1. Open:  
+   https://zadran-s-auca-2022.github.io/ToguzKorgool3D/
+2. Click **Start Game**
+3. Click any bottom pit (1–9) to make a move
+4. Use **New Game** to restart
 
 ---
 
-## How to Run the Project Locally
+## How to Run Locally
 
 1. Clone the repository:
 
@@ -105,22 +125,29 @@ No extra tools or servers are required.
 ## Project Structure
 
     ToguzKorgoolProject/
-    ├── index.html   # Main webpage and layout
-    ├── style.css    # Styling and board design
-    ├── game.js      # Game logic, AI, move history, tuz rule, settings, sounds
-    └── README.md    # Project documentation
+    ├── index.html   # UI layout
+    ├── style.css    # Styling
+    ├── gameLogic.js # Game rules, AI, state
+    ├── board3d.js   # 3D rendering (Three.js)
+    └── README.md    # Documentation
+
 
 ---
 
-## Possible Future Work
+## Future Work
 
-- 3D environment
-- Multi-language interface (Kyrgyz, Russian, English).
+- Stronger AI (Minimax, Alpha-Beta pruning)  
+- Multiplayer (online or local)  
+- Mobile optimization  
+- Additional languages (Kyrgyz, Russian)  
+- Improved animations and visual effects  
 
 ---
 
 ## Author
 
 Saima Zadran  
-Senior Project – Software Engineering Program  
-American University of Central Asia
+Software Engineering Program  
+American University of Central Asia  
+
+Senior Project (COM-433), 2026
