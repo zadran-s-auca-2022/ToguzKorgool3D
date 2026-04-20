@@ -294,13 +294,14 @@ function createTextSprite(text, options = {}) {
         map: texture,
         transparent: true,
         depthWrite: false,
-        depthTest: true
+        depthTest: false
     });
 
     const sprite = new THREE.Sprite(material);
     const scaleFactor = options.scaleFactor || 0.006;
     sprite.scale.set(width * scaleFactor, height * scaleFactor, 1);
     sprite.userData.options = options;
+    sprite.renderOrder = 10;
     return sprite;
 }
 
@@ -332,24 +333,26 @@ for (let i = 0; i < 18; i++) {
         scaleFactor: 0.0045
     });
 
+    // pit numbers on the board, outside the pits
     numSprite.position.set(
         base.x,
-        1.88,
-        isTopRow ? base.z - 0.56 : base.z + 0.56
+        1.36,
+        isTopRow ? base.z - 1.02 : base.z + 1.02
     );
     scene.add(numSprite);
     pitNumberSprites[i] = numSprite;
 
     const countSprite = createTextSprite('9', {
-        fontSize: 68,
+        fontSize: 66,
         textColor: '#fff4dc',
-        scaleFactor: 0.0048
+        scaleFactor: 0.0047
     });
 
+    // pit counts on the board, between the two rows
     countSprite.position.set(
         base.x,
-        1.40,
-        isTopRow ? base.z - 0.12 : base.z + 0.12
+        1.36,
+        isTopRow ? base.z + 0.88 : base.z - 0.88
     );
     scene.add(countSprite);
     pitCountSprites[i] = countSprite;
@@ -360,7 +363,8 @@ const storeCountSpriteA = createTextSprite('0', {
     textColor: '#fff4dc',
     scaleFactor: 0.0055
 });
-storeCountSpriteA.position.set(14.2, 1.95, 0);
+// put count below the right kazan
+storeCountSpriteA.position.set(14.2, 1.34, 4.15);
 scene.add(storeCountSpriteA);
 
 const storeCountSpriteB = createTextSprite('0', {
@@ -368,7 +372,8 @@ const storeCountSpriteB = createTextSprite('0', {
     textColor: '#fff4dc',
     scaleFactor: 0.0055
 });
-storeCountSpriteB.position.set(-14.2, 1.95, 0);
+// put count above the left kazan
+storeCountSpriteB.position.set(-14.2, 1.34, -4.15);
 scene.add(storeCountSpriteB);
 
 // SYNC
