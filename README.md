@@ -39,23 +39,23 @@ This project was developed as part of **COM-433 (Senior Project / Thesis)** at t
 
 ## Game Rules (Simplified)
 
-- 18 pits total (9 per player)
-- Each pit starts with 9 stones
+- 18 pits total (9 per player)  
+- Each pit starts with 9 stones  
 
 ### Turn Mechanics
-1. Select one of your pits
+1. Select one of your pits  
 2. If it has 1 stone → move it to the next pit  
-3. If it has more:
-   - Leave 1 stone
-   - Distribute the rest counterclockwise
+3. If it has more:  
+   - Leave 1 stone  
+   - Distribute the rest counterclockwise  
 
 ### Capturing
 - If the last stone lands in an opponent’s pit and makes it even  
-  → all stones are captured to your kazan
+  → all stones are captured to your kazan  
 
 ### Tuz Rule
 - If the last stone makes an opponent pit contain exactly 3 stones  
-  → it becomes a **tuz**
+  → it becomes a **tuz**  
 - Stones landing in a tuz go directly to the owner’s kazan  
 - Only one tuz per player  
 - Opponent’s 9th pit cannot become a tuz  
@@ -94,10 +94,10 @@ Game logic and rendering are separated to improve maintainability and scalabilit
 ## How to Play Online
 
 1. Open:  
-   https://zadran-s-auca-2022.github.io/ToguzKorgool3D/
-2. Click **Start Game**
-3. Click any bottom pit (1–9) to make a move
-4. Use **New Game** to restart
+   https://zadran-s-auca-2022.github.io/ToguzKorgool3D/  
+2. Click **Start Game**  
+3. Click any bottom pit (1–9) to make a move  
+4. Use **New Game** to restart  
 
 ---
 
@@ -105,32 +105,39 @@ Game logic and rendering are separated to improve maintainability and scalabilit
 
 1. Clone the repository:
 
-       git clone https://github.com/zadran-s-auca-2022/ToguzKorgoolProject.git
+```bash
+git clone https://github.com/zadran-s-auca-2022/ToguzKorgool3D.git
+```
 
-2. Go into the folder:
+2. Open the folder:
 
-       cd ToguzKorgoolProject
+```bash
+cd ToguzKorgool3D
+```
 
-3. Open `index.html` in a browser:
+3. Run:
 
-   - Double-click `index.html` in your file manager, or  
-   - From the terminal:
+- Open `index.html` in your browser  
+OR  
 
-         start index.html
+```bash
+start index.html
+```
 
-No extra tools or servers are required.
+No installation or server required.
 
 ---
 
 ## Project Structure
 
-    ToguzKorgoolProject/
-    ├── index.html   # UI layout
-    ├── style.css    # Styling
-    ├── gameLogic.js # Game rules, AI, state
-    ├── board3d.js   # 3D rendering (Three.js)
-    └── README.md    # Documentation
-
+```
+ToguzKorgool3D/
+├── index.html   # UI layout
+├── style.css    # Styling
+├── gameLogic.js # Game rules, AI, state
+├── board3d.js   # 3D rendering (Three.js)
+└── README.md    # Documentation
+```
 
 ---
 
