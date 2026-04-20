@@ -203,19 +203,19 @@ function renderPitStones(index, count) {
 
     clearGroup(group);
 
-    const maxVisual = Math.min(count, 30);
+    const maxVisual = Math.min(count, 12);
 
     for (let i = 0; i < maxVisual; i++) {
         const stone = new THREE.Mesh(stoneGeometry, stoneMaterial);
-        stone.scale.set(0.84, 0.72, 0.78);
+        stone.scale.set(1.0, 0.82, 0.92);
 
-        const col = i % 5;
-        const row = Math.floor(i / 5);
+        const col = i % 4;
+        const row = Math.floor(i / 4);
 
         stone.position.set(
-            base.x + (col - 2) * 0.18,
-            base.y + row * 0.016,
-            base.z + (row - 2.5) * 0.14
+            base.x + (col - 1.5) * 0.33,
+            base.y + row * 0.02,
+            base.z + (row - 1) * 0.24
         );
 
         group.add(stone);
@@ -228,13 +228,11 @@ function renderStoreStones(side, count) {
 
     const maxVisual = Math.min(count, 98);
     const baseX = side === 'A' ? 14.2 : -14.2;
-
-    const topZ = -2.55;   // much closer to the top edge
-    const rowGap = 0.30;  // row spacing
+    const topZ = -2.55;
+    const rowGap = 0.30;
 
     for (let i = 0; i < maxVisual; i++) {
         const stone = new THREE.Mesh(stoneGeometry, stoneMaterial);
-
         stone.scale.set(1.8, 1.4, 1.6);
 
         const col = i % 7;
@@ -249,9 +247,116 @@ function renderStoreStones(side, count) {
         group.add(stone);
     }
 }
+
+// ---------------- LABELS ----------------
+const oldLayer = document.querySelector('.three-label-layer');
+if (oldLayer) oldLayer.remove();
+
+const labelLayer = document.createElement('div');
+labelLayer.className = 'three-label-layer';
+document.body.appendChild(labelLayer);
+
+function createLabel(className, text = '') {
+    const el = document.createElement('div');
+    el.className = className;
+    el.textContent = text;
+    labelLayer.appendChild(el);
+    return el;
+}
+
+function pitNumberForIndex(index) {
+    if (index < 9) return index + 1;
+    return index - 8;
+}
+
+const pitNumberLabels = new Array(18);
+const pitCountLabels = new Array(18);
+
+for (let i = 0; i < 18; i++) {
+    pitNumberLabels[i] = createLabel('pit-number-label', String(pitNumberForIndex(i)));
+    pitCountLabels[i] = createLabel('pit-count-label', '9');
+}
+
+const storeCountLabelA = createLabel('store-count-label', '0');
+const storeCountLabelB = createLabel('store-count-label', '0');
+
+function worldToScreen(x, y, z) {
+    const v = new THREE.Vector3(x, y, z);
+    v.project(camera);
+
+    return {
+        x: (v.x * 0.5 + 0.5) * window.innerWidth,
+        y: (-v.y * 0.5 + 0.5) * window.innerHeight,
+        visible: v.z < 1
+    };
+}
+
+function updateLabels(state) {
+    if (!state || !state.pits) return;
+
+    for (let i = 0; i < 18; i++) {
+        const base = pitStoneBase[i];
+        if (!base) continue;
+
+        const isTopRow = i >= 9;
+
+        const numberPos = worldToScreen(
+            base.x,
+            1.97,
+            isTopRow ? base.z - 0.52 : base.z + 0.52
+        );
+
+        const countPos = worldToScreen(
+            base.x,
+            1.36,
+            isTopRow ? base.z - 0.08 : base.z + 0.08
+        );
+
+        const numEl = pitNumberLabels[i];
+        const countEl = pitCountLabels[i];
+
+        numEl.textContent = String(pitNumberForIndex(i));
+        countEl.textContent = String(state.pits[i]);
+
+        numEl.style.left = `${numberPos.x}px`;
+        numEl.style.top = `${numberPos.y}px`;
+
+        countEl.style.left = `${countPos.x}px`;
+        countEl.style.top = `${countPos.y}px`;
+
+        numEl.style.display = numberPos.visible ? 'block' : 'none';
+        countEl.style.display = countPos.visible ? 'block' : 'none';
+    }
+
+    const aPos = worldToScreen(14.2, 2.0, 0);
+    const bPos = worldToScreen(-14.2, 2.0, 0);
+
+    storeCountLabelA.textContent = String(state.storeA || 0);
+    storeCountLabelB.textContent = String(state.storeB || 0);
+
+    storeCountLabelA.style.left = `${aPos.x}px`;
+    storeCountLabelA.style.top = `${aPos.y}px`;
+
+    storeCountLabelB.style.left = `${bPos.x}px`;
+    storeCountLabelB.style.top = `${bPos.y}px`;
+
+    storeCountLabelA.style.display = aPos.visible ? 'block' : 'none';
+    storeCountLabelB.style.display = bPos.visible ? 'block' : 'none';
+}
+
 // SYNC
+let latestState = {
+    pits: new Array(18).fill(9),
+    storeA: 0,
+    storeB: 0,
+    tuzA: -1,
+    tuzB: -1
+};
+
 function sync3DBoardFromGameState(state) {
     if (!state || !state.pits) return;
+
+    latestState = state;
 
     for (let i = 0; i < 18; i++) {
         renderPitStones(i, state.pits[i]);
@@ -268,6 +373,7 @@ function sync3DBoardFromGameState(state) {
 
     renderStoreStones('A', state.storeA || 0);
     renderStoreStones('B', state.storeB || 0);
+    updateLabels(state);
 }
 
 window.sync3DBoardFromGameState = sync3DBoardFromGameState;
@@ -282,6 +388,8 @@ renderStoreStones('B', 0);
 function tryInitialSync() {
     if (typeof window.getCurrentGameState === 'function') {
         sync3DBoardFromGameState(window.getCurrentGameState());
+    } else {
+        updateLabels(latestState);
     }
 }
 setTimeout(tryInitialSync, 0);
@@ -326,6 +434,7 @@ window.addEventListener('resize', () => {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
+    updateLabels(latestState);
 });
 
 // LOOP
@@ -333,6 +442,7 @@ function animate() {
     requestAnimationFrame(animate);
     controls.update();
     renderer.render(scene, camera);
+    updateLabels(latestState);
 }
 
 animate();
