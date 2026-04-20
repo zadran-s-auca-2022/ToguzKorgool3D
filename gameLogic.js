@@ -284,7 +284,7 @@ function resetGame() {
     moveHistory = [];
     moveCounter = 0;
 
-    setStatus('You vs Computer – You start');
+    setStatus('New game started – You begin');
     renderAll();
 }
 
