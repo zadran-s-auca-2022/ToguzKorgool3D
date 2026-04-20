@@ -464,24 +464,6 @@ h1 {
     }
 }
 
-.three-label-layer {
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: 4;
-}
-
-.pit-number-label,
-.pit-count-label,
-.store-count-label {
-    position: fixed;
-    transform: translate(-50%, -50%);
-    pointer-events: none;
-    font-weight: bold;
-    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.9);
-    white-space: nowrap;
-}
-
 .pit-number-label {
     font-size: 11px;
     color: #d9b36c;

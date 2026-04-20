@@ -203,19 +203,19 @@ function renderPitStones(index, count) {
 
     clearGroup(group);
 
-    const maxVisual = Math.min(count, 12);
+    const maxVisual = Math.min(count, 30);
 
     for (let i = 0; i < maxVisual; i++) {
         const stone = new THREE.Mesh(stoneGeometry, stoneMaterial);
-        stone.scale.set(1.0, 0.82, 0.92);
+        stone.scale.set(0.84, 0.72, 0.78);
 
-        const col = i % 4;
-        const row = Math.floor(i / 4);
+        const col = i % 5;
+        const row = Math.floor(i / 5);
 
         stone.position.set(
-            base.x + (col - 1.5) * 0.33,
-            base.y + row * 0.02,
-            base.z + (row - 1) * 0.24
+            base.x + (col - 2) * 0.18,
+            base.y + row * 0.016,
+            base.z + (row - 2.5) * 0.14
         );
 
         group.add(stone);
@@ -248,115 +248,132 @@ function renderStoreStones(side, count) {
     }
 }
 
-// ---------------- LABELS ----------------
-const oldLayer = document.querySelector('.three-label-layer');
-if (oldLayer) oldLayer.remove();
+// ---------------- 3D TEXT SPRITES ----------------
+function makeTextTexture(text, options = {}) {
+    const fontSize = options.fontSize || 64;
+    const textColor = options.textColor || '#fff4dc';
+    const bgColor = options.bgColor || 'transparent';
+    const padding = options.padding || 18;
+    const fontFamily = options.fontFamily || 'Arial';
 
-const labelLayer = document.createElement('div');
-labelLayer.className = 'three-label-layer';
-document.body.appendChild(labelLayer);
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
 
-function createLabel(className, text = '') {
-    const el = document.createElement('div');
-    el.className = className;
-    el.textContent = text;
-    labelLayer.appendChild(el);
-    return el;
+    ctx.font = `bold ${fontSize}px ${fontFamily}`;
+    const metrics = ctx.measureText(text);
+    const textWidth = Math.ceil(metrics.width);
+
+    canvas.width = textWidth + padding * 2;
+    canvas.height = fontSize + padding * 2;
+
+    const ctx2 = canvas.getContext('2d');
+    ctx2.clearRect(0, 0, canvas.width, canvas.height);
+
+    if (bgColor !== 'transparent') {
+        ctx2.fillStyle = bgColor;
+        ctx2.fillRect(0, 0, canvas.width, canvas.height);
+    }
+
+    ctx2.font = `bold ${fontSize}px ${fontFamily}`;
+    ctx2.textAlign = 'center';
+    ctx2.textBaseline = 'middle';
+    ctx2.lineWidth = 8;
+    ctx2.strokeStyle = 'rgba(0,0,0,0.75)';
+    ctx2.strokeText(text, canvas.width / 2, canvas.height / 2 + 2);
+    ctx2.fillStyle = textColor;
+    ctx2.fillText(text, canvas.width / 2, canvas.height / 2 + 2);
+
+    const texture = new THREE.CanvasTexture(canvas);
+    texture.needsUpdate = true;
+    return { texture, width: canvas.width, height: canvas.height };
 }
+
+function createTextSprite(text, options = {}) {
+    const { texture, width, height } = makeTextTexture(text, options);
+    const material = new THREE.SpriteMaterial({
+        map: texture,
+        transparent: true,
+        depthWrite: false,
+        depthTest: true
+    });
+
+    const sprite = new THREE.Sprite(material);
+    const scaleFactor = options.scaleFactor || 0.006;
+    sprite.scale.set(width * scaleFactor, height * scaleFactor, 1);
+    sprite.userData.options = options;
+    return sprite;
+}
+
+function updateTextSprite(sprite, text) {
+    const { texture, width, height } = makeTextTexture(text, sprite.userData.options || {});
+    sprite.material.map.dispose();
+    sprite.material.map = texture;
+    sprite.material.needsUpdate = true;
+
+    const scaleFactor = sprite.userData.options?.scaleFactor || 0.006;
+    sprite.scale.set(width * scaleFactor, height * scaleFactor, 1);
+}
+
+const pitNumberSprites = new Array(18);
+const pitCountSprites = new Array(18);
 
 function pitNumberForIndex(index) {
     if (index < 9) return index + 1;
     return index - 8;
 }
 
-const pitNumberLabels = new Array(18);
-const pitCountLabels = new Array(18);
-
 for (let i = 0; i < 18; i++) {
-    pitNumberLabels[i] = createLabel('pit-number-label', String(pitNumberForIndex(i)));
-    pitCountLabels[i] = createLabel('pit-count-label', '9');
+    const base = pitStoneBase[i];
+    const isTopRow = i >= 9;
+
+    const numSprite = createTextSprite(String(pitNumberForIndex(i)), {
+        fontSize: 58,
+        textColor: '#d9b36c',
+        scaleFactor: 0.0045
+    });
+
+    numSprite.position.set(
+        base.x,
+        1.88,
+        isTopRow ? base.z - 0.56 : base.z + 0.56
+    );
+    scene.add(numSprite);
+    pitNumberSprites[i] = numSprite;
+
+    const countSprite = createTextSprite('9', {
+        fontSize: 68,
+        textColor: '#fff4dc',
+        scaleFactor: 0.0048
+    });
+
+    countSprite.position.set(
+        base.x,
+        1.40,
+        isTopRow ? base.z - 0.12 : base.z + 0.12
+    );
+    scene.add(countSprite);
+    pitCountSprites[i] = countSprite;
 }
 
-const storeCountLabelA = createLabel('store-count-label', '0');
-const storeCountLabelB = createLabel('store-count-label', '0');
+const storeCountSpriteA = createTextSprite('0', {
+    fontSize: 82,
+    textColor: '#fff4dc',
+    scaleFactor: 0.0055
+});
+storeCountSpriteA.position.set(14.2, 1.95, 0);
+scene.add(storeCountSpriteA);
 
-function worldToScreen(x, y, z) {
-    const v = new THREE.Vector3(x, y, z);
-    v.project(camera);
-
-    return {
-        x: (v.x * 0.5 + 0.5) * window.innerWidth,
-        y: (-v.y * 0.5 + 0.5) * window.innerHeight,
-        visible: v.z < 1
-    };
-}
-
-function updateLabels(state) {
-    if (!state || !state.pits) return;
-
-    for (let i = 0; i < 18; i++) {
-        const base = pitStoneBase[i];
-        if (!base) continue;
-
-        const isTopRow = i >= 9;
-
-        const numberPos = worldToScreen(
-            base.x,
-            1.97,
-            isTopRow ? base.z - 0.52 : base.z + 0.52
-        );
-
-        const countPos = worldToScreen(
-            base.x,
-            1.36,
-            isTopRow ? base.z - 0.08 : base.z + 0.08
-        );
-
-        const numEl = pitNumberLabels[i];
-        const countEl = pitCountLabels[i];
-
-        numEl.textContent = String(pitNumberForIndex(i));
-        countEl.textContent = String(state.pits[i]);
-
-        numEl.style.left = `${numberPos.x}px`;
-        numEl.style.top = `${numberPos.y}px`;
-
-        countEl.style.left = `${countPos.x}px`;
-        countEl.style.top = `${countPos.y}px`;
-
-        numEl.style.display = numberPos.visible ? 'block' : 'none';
-        countEl.style.display = countPos.visible ? 'block' : 'none';
-    }
-
-    const aPos = worldToScreen(14.2, 2.0, 0);
-    const bPos = worldToScreen(-14.2, 2.0, 0);
-
-    storeCountLabelA.textContent = String(state.storeA || 0);
-    storeCountLabelB.textContent = String(state.storeB || 0);
-
-    storeCountLabelA.style.left = `${aPos.x}px`;
-    storeCountLabelA.style.top = `${aPos.y}px`;
-
-    storeCountLabelB.style.left = `${bPos.x}px`;
-    storeCountLabelB.style.top = `${bPos.y}px`;
-
-    storeCountLabelA.style.display = aPos.visible ? 'block' : 'none';
-    storeCountLabelB.style.display = bPos.visible ? 'block' : 'none';
-}
+const storeCountSpriteB = createTextSprite('0', {
+    fontSize: 82,
+    textColor: '#fff4dc',
+    scaleFactor: 0.0055
+});
+storeCountSpriteB.position.set(-14.2, 1.95, 0);
+scene.add(storeCountSpriteB);
 
 // SYNC
-let latestState = {
-    pits: new Array(18).fill(9),
-    storeA: 0,
-    storeB: 0,
-    tuzA: -1,
-    tuzB: -1
-};
-
 function sync3DBoardFromGameState(state) {
     if (!state || !state.pits) return;
-
-    latestState = state;
 
     for (let i = 0; i < 18; i++) {
         renderPitStones(i, state.pits[i]);
@@ -369,11 +386,15 @@ function sync3DBoardFromGameState(state) {
         if (i === state.tuzA || i === state.tuzB) {
             pit.material.emissive.setHex(0x7a6408);
         }
+
+        updateTextSprite(pitCountSprites[i], String(state.pits[i]));
     }
 
     renderStoreStones('A', state.storeA || 0);
     renderStoreStones('B', state.storeB || 0);
-    updateLabels(state);
+
+    updateTextSprite(storeCountSpriteA, String(state.storeA || 0));
+    updateTextSprite(storeCountSpriteB, String(state.storeB || 0));
 }
 
 window.sync3DBoardFromGameState = sync3DBoardFromGameState;
@@ -388,8 +409,6 @@ renderStoreStones('B', 0);
 function tryInitialSync() {
     if (typeof window.getCurrentGameState === 'function') {
         sync3DBoardFromGameState(window.getCurrentGameState());
-    } else {
-        updateLabels(latestState);
     }
 }
 setTimeout(tryInitialSync, 0);
@@ -434,7 +453,6 @@ window.addEventListener('resize', () => {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
-    updateLabels(latestState);
 });
 
 // LOOP
@@ -442,7 +460,6 @@ function animate() {
     requestAnimationFrame(animate);
     controls.update();
     renderer.render(scene, camera);
-    updateLabels(latestState);
 }
 
 animate();
