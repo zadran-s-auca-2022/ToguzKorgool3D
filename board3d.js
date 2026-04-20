@@ -333,11 +333,11 @@ for (let i = 0; i < 18; i++) {
         scaleFactor: 0.0045
     });
 
-    // pit numbers on the board, outside the pits
+    // pit numbers farther out on the board
     numSprite.position.set(
         base.x,
-        1.36,
-        isTopRow ? base.z - 1.02 : base.z + 1.02
+        1.34,
+        isTopRow ? base.z - 1.42 : base.z + 1.42
     );
     scene.add(numSprite);
     pitNumberSprites[i] = numSprite;
@@ -348,11 +348,11 @@ for (let i = 0; i < 18; i++) {
         scaleFactor: 0.0047
     });
 
-    // pit counts on the board, between the two rows
+    // pit counts clearly between the two rows, not on pits
     countSprite.position.set(
         base.x,
-        1.36,
-        isTopRow ? base.z + 0.88 : base.z - 0.88
+        1.34,
+        isTopRow ? base.z + 1.00 : base.z - 1.00
     );
     scene.add(countSprite);
     pitCountSprites[i] = countSprite;
@@ -363,8 +363,8 @@ const storeCountSpriteA = createTextSprite('0', {
     textColor: '#fff4dc',
     scaleFactor: 0.0055
 });
-// put count below the right kazan
-storeCountSpriteA.position.set(14.2, 1.34, 4.15);
+// below right kazan
+storeCountSpriteA.position.set(14.2, 1.30, 4.95);
 scene.add(storeCountSpriteA);
 
 const storeCountSpriteB = createTextSprite('0', {
@@ -372,8 +372,8 @@ const storeCountSpriteB = createTextSprite('0', {
     textColor: '#fff4dc',
     scaleFactor: 0.0055
 });
-// put count above the left kazan
-storeCountSpriteB.position.set(-14.2, 1.34, -4.15);
+// below left kazan
+storeCountSpriteB.position.set(-14.2, 1.30, 4.95);
 scene.add(storeCountSpriteB);
 
 // SYNC
