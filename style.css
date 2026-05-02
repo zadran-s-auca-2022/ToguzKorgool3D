@@ -629,32 +629,40 @@ h1 {
     }
 }
 
-.splash {
-    background:
-        linear-gradient(rgba(18, 8, 3, 0.75), rgba(5, 2, 1, 0.85)),
-        url("images/toguz-board.webp");
-    background-size: cover;
-    background-position: center;
-}
-
-.splash-panel {
-    background: rgba(12, 6, 2, 0.88);
-}
+/* ===== FINAL BACKGROUND FIX ===== */
 
 .splash {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+
     background:
-        linear-gradient(rgba(10, 4, 1, 0.55), rgba(10, 4, 1, 0.75)),
-        url("images/toguz-board.webp");
+        linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.85)),
+        url("images/toguz-board.jpg");
+
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
 }
 
+/* remove old pattern */
 .splash::before {
     display: none;
 }
 
+/* add soft focus effect */
+.splash::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at center, transparent 35%, rgba(0,0,0,0.7));
+}
+
+/* panel styling */
 .splash-panel {
-    background: rgba(8, 4, 2, 0.78);
+    position: relative;
+    background: rgba(10, 5, 2, 0.88);
+    border: 1px solid rgba(255, 200, 120, 0.25);
+    border-radius: 28px;
     backdrop-filter: none;
 }
