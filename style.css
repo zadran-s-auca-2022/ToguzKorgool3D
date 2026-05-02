@@ -628,3 +628,16 @@ h1 {
         height: 15px;
     }
 }
+
+.splash {
+    background:
+        linear-gradient(rgba(18, 8, 3, 0.82), rgba(5, 2, 1, 0.88)),
+        url("images/toguz-board.webp");
+    background-size: cover;
+    background-position: center;
+}
+
+.splash-panel {
+    background: rgba(12, 6, 2, 0.86);
+    backdrop-filter: blur(5px);
+}
