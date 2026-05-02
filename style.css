@@ -571,3 +571,19 @@ h1 {
         max-width: 360px;
     }
 }
+
+.intro-tag,
+.intro-text {
+    display: none;
+}
+
+.intro-title {
+    margin-bottom: 12px;
+}
+
+.intro-tagline {
+    margin: 0 0 34px;
+    font-size: 20px;
+    color: #d9c4a2;
+    letter-spacing: 0.5px;
+}
