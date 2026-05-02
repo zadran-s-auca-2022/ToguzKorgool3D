@@ -640,3 +640,21 @@ h1 {
 .splash-panel {
     background: rgba(12, 6, 2, 0.88);
 }
+
+.splash {
+    background:
+        linear-gradient(rgba(10, 4, 1, 0.55), rgba(10, 4, 1, 0.75)),
+        url("images/toguz-board.webp");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.splash::before {
+    display: none;
+}
+
+.splash-panel {
+    background: rgba(8, 4, 2, 0.78);
+    backdrop-filter: none;
+}
