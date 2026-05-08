@@ -663,3 +663,119 @@ h1 {
         background-position: center;
     }
 }
+
+/* ===== FINAL ANIMATED AAA INTRO EFFECTS ===== */
+
+/* slow animated glow */
+.splash::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(circle at 72% 45%, rgba(255, 145, 40, 0.16), transparent 32%),
+        radial-gradient(circle at 30% 25%, rgba(255, 205, 110, 0.08), transparent 28%);
+    filter: blur(45px);
+    pointer-events: none;
+    animation: ambientGlow 6s ease-in-out infinite;
+}
+
+/* soft particles */
+.splash::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+        radial-gradient(circle, rgba(255, 190, 90, 0.18) 1px, transparent 1px),
+        linear-gradient(rgba(255,255,255,0.018) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.018) 1px, transparent 1px);
+    background-size: 120px 120px, 46px 46px, 46px 46px;
+    opacity: 0.45;
+    animation: particlesMove 18s linear infinite;
+}
+
+/* cinematic board background motion */
+.board-hero-bg {
+    animation: boardCinematicMove 14s ease-in-out infinite;
+}
+
+/* text entrance */
+.intro-left {
+    animation: introTextIn 0.9s ease-out both;
+}
+
+/* button stronger hover */
+.intro-start-btn {
+    position: relative;
+    overflow: hidden;
+}
+
+.intro-start-btn::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -80%;
+    width: 60%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255,255,255,0.45),
+        transparent
+    );
+    transform: skewX(-20deg);
+    transition: 0.45s ease;
+}
+
+.intro-start-btn:hover::after {
+    left: 130%;
+}
+
+.intro-start-btn:hover {
+    transform: translateY(-4px) scale(1.04);
+    box-shadow:
+        0 24px 55px rgba(196, 122, 36, 0.68),
+        inset 0 1px 0 rgba(255,255,255,0.65);
+}
+
+/* animations */
+@keyframes ambientGlow {
+    0%, 100% {
+        opacity: 0.75;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.08);
+    }
+}
+
+@keyframes particlesMove {
+    from {
+        background-position: 0 0, 0 0, 0 0;
+    }
+    to {
+        background-position: 160px -120px, 46px 46px, 46px 46px;
+    }
+}
+
+@keyframes boardCinematicMove {
+    0%, 100% {
+        background-position: 82% center;
+        filter: brightness(0.92) contrast(1.05);
+    }
+    50% {
+        background-position: 78% center;
+        filter: brightness(1) contrast(1.08);
+    }
+}
+
+@keyframes introTextIn {
+    from {
+        opacity: 0;
+        transform: translateX(-22px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
