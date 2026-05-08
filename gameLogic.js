@@ -580,3 +580,8 @@ window.startGameFromSplash = startGameFromSplash;
 window.handlePitClick = handlePitClick;
 window.resetGame = resetGame;
 window.getCurrentGameState = getCurrentGameState;
+
+window.openRules = function () {
+    document.getElementById("settingsOverlay")
+        .classList.remove("hidden");
+};

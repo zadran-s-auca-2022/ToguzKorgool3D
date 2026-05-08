@@ -53,8 +53,12 @@
         <div class="intro-card">
             <div class="intro-left">
                 <div class="intro-symbol">
-                    <span></span><span></span>
-                    <span></span><span></span>
+                    <div class="diamond-grid">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
                 </div>
 
                 <div class="intro-topline">A legendary game of wisdom</div>
@@ -79,8 +83,9 @@
                         ▶ Start Game
                     </button>
 
-                    <button class="intro-rules-btn" onclick="document.getElementById('settingsOverlay').classList.remove('hidden')">
-                        📖 Learn the Rules
+                    <button class="intro-rules-btn" onclick="openRules()">
+                        <span class="rules-icon">◈</span>
+                        <span>Learn The Rules</span>
                     </button>
                 </div>
 
