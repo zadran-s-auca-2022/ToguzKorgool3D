@@ -854,3 +854,43 @@ h1 {
         margin-right: auto;
     }
 }
+
+.intro-features {
+    display: none;
+}
+
+.intro-symbol {
+    width: 32px;
+    height: 32px;
+    display: grid;
+    grid-template-columns: repeat(2, 10px);
+    grid-template-rows: repeat(2, 10px);
+    gap: 3px;
+    margin: 0 0 16px 16px;
+    transform: rotate(45deg);
+}
+
+.intro-symbol span {
+    background: linear-gradient(135deg, #ffd47e, #b97022);
+    box-shadow: 0 0 10px rgba(255, 190, 90, 0.35);
+}
+
+.intro-rules-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: transparent;
+    border: none;
+    color: #d8c4a2;
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    opacity: 0.9;
+}
+
+.intro-rules-btn:hover {
+    color: #ffd47e;
+    opacity: 1;
+}
