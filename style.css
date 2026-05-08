@@ -314,10 +314,10 @@ h1 {
     position: absolute;
     inset: 0;
     background-image:
-        linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+        linear-gradient(rgba(255,255,255,0.022) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.022) 1px, transparent 1px);
     background-size: 46px 46px;
-    opacity: 0.45;
+    opacity: 0.35;
 }
 
 .splash::after {
@@ -325,8 +325,8 @@ h1 {
     position: absolute;
     inset: 0;
     background:
-        radial-gradient(circle at 70% 48%, rgba(255, 140, 40, 0.13), transparent 30%),
-        radial-gradient(circle at 58% 40%, rgba(255, 190, 95, 0.08), transparent 26%);
+        radial-gradient(circle at 72% 48%, rgba(255, 140, 40, 0.11), transparent 30%),
+        radial-gradient(circle at 60% 40%, rgba(255, 190, 95, 0.07), transparent 26%);
     filter: blur(40px);
     pointer-events: none;
 }
@@ -334,12 +334,12 @@ h1 {
 .intro-card {
     position: relative;
     z-index: 2;
-    width: min(1250px, 92vw);
-    min-height: 620px;
-    padding: 70px;
-    border-radius: 38px;
+    width: min(1180px, 86vw);
+    min-height: 520px;
+    padding: 54px;
+    border-radius: 34px;
     overflow: hidden;
-    background: rgba(10, 5, 2, 0.85);
+    background: rgba(10, 5, 2, 0.84);
     border: 1px solid rgba(255, 196, 110, 0.14);
     box-shadow:
         0 40px 120px rgba(0,0,0,0.9),
@@ -347,13 +347,16 @@ h1 {
 }
 
 .intro-left {
+    position: relative;
+    z-index: 2;
+    max-width: 500px;
     text-align: left;
 }
 
 .intro-topline {
-    margin-bottom: 18px;
+    margin-bottom: 16px;
     color: #d8a85c;
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 700;
     letter-spacing: 4px;
     text-transform: uppercase;
@@ -361,22 +364,22 @@ h1 {
 
 .intro-title {
     margin: 0;
-    font-size: clamp(74px, 9vw, 132px);
-    line-height: 0.88;
+    font-size: clamp(58px, 7vw, 105px);
+    line-height: 0.9;
     font-weight: 800;
-    letter-spacing: -5px;
+    letter-spacing: -4px;
     color: #f7d48a;
     text-transform: uppercase;
     text-shadow:
-        0 0 25px rgba(255, 215, 120, 0.22),
-        0 0 60px rgba(255, 180, 70, 0.08);
+        0 0 24px rgba(255, 215, 120, 0.22),
+        0 0 58px rgba(255, 180, 70, 0.08);
 }
 
 .intro-divider {
     display: flex;
     align-items: center;
     gap: 14px;
-    margin: 24px 0 28px;
+    margin: 20px 0 24px;
     color: #d8a85c;
 }
 
@@ -392,32 +395,32 @@ h1 {
 
 .intro-divider p {
     margin: 0;
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 700;
     letter-spacing: 4px;
     text-transform: uppercase;
 }
 
 .intro-tagline {
-    max-width: 520px;
-    margin: 0 0 34px;
-    font-size: 20px;
-    line-height: 1.6;
+    max-width: 480px;
+    margin: 0 0 30px;
+    font-size: 18px;
+    line-height: 1.55;
     color: #d8c4a2;
     font-weight: 400;
 }
 
 .intro-start-btn {
-    padding: 16px 42px;
+    padding: 15px 38px;
     border: none;
     border-radius: 999px;
     cursor: pointer;
     color: #241204;
-    font-size: 17px;
+    font-size: 16px;
     font-weight: 900;
     background: linear-gradient(135deg, #ffd47e, #c47a24);
     box-shadow:
-        0 18px 40px rgba(196, 122, 36, 0.45),
+        0 18px 40px rgba(196, 122, 36, 0.42),
         inset 0 1px 0 rgba(255,255,255,0.45);
     transition: 0.25s ease;
 }
@@ -425,7 +428,7 @@ h1 {
 .intro-start-btn:hover {
     transform: translateY(-4px) scale(1.02);
     box-shadow:
-        0 22px 48px rgba(196, 122, 36, 0.58),
+        0 22px 48px rgba(196, 122, 36, 0.55),
         inset 0 1px 0 rgba(255,255,255,0.55);
 }
 
@@ -433,7 +436,7 @@ h1 {
     position: absolute;
     inset: 0;
     z-index: 0;
-    border-radius: 38px;
+    border-radius: 34px;
     overflow: hidden;
     pointer-events: none;
 }
@@ -443,30 +446,14 @@ h1 {
         linear-gradient(
             90deg,
             rgba(8, 4, 2, 0.98) 0%,
-            rgba(8, 4, 2, 0.88) 34%,
-            rgba(8, 4, 2, 0.35) 58%,
-            rgba(8, 4, 2, 0.82) 100%
+            rgba(8, 4, 2, 0.88) 31%,
+            rgba(8, 4, 2, 0.38) 58%,
+            rgba(8, 4, 2, 0.78) 100%
         ),
         url("images/cinematic-board.png");
     background-size: cover;
-    background-position: center right;
+    background-position: 70% center;
     background-repeat: no-repeat;
-}
-
-.intro-left {
-    position: relative;
-    z-index: 2;
-    max-width: 560px;
-}
-
-@keyframes realBoardFloat {
-    0%, 100% {
-        transform: rotateY(-7deg) rotateX(4deg) translateY(0);
-    }
-
-    50% {
-        transform: rotateY(-7deg) rotateX(4deg) translateY(-10px);
-    }
 }
 
 /* SETTINGS */
@@ -591,12 +578,13 @@ h1 {
     }
 
     .intro-card {
-        padding: 46px;
-        gap: 32px;
+        width: min(1050px, 88vw);
+        min-height: 500px;
+        padding: 44px;
     }
 
     .intro-title {
-        font-size: clamp(58px, 8vw, 92px);
+        font-size: clamp(54px, 8vw, 88px);
     }
 }
 
@@ -630,15 +618,15 @@ h1 {
     }
 
     .intro-card {
-        grid-template-columns: 1fr;
-        gap: 28px;
-        padding: 34px 24px;
+        width: min(720px, 90vw);
         min-height: auto;
+        padding: 34px 24px;
         text-align: center;
     }
 
     .intro-left {
         text-align: center;
+        max-width: none;
     }
 
     .intro-divider {
@@ -650,7 +638,14 @@ h1 {
         margin-right: auto;
     }
 
-    .real-board-img {
-        max-width: 420px;
+    .board-hero-bg {
+        background:
+            linear-gradient(
+                rgba(8, 4, 2, 0.90),
+                rgba(8, 4, 2, 0.92)
+            ),
+            url("images/cinematic-board.png");
+        background-size: cover;
+        background-position: center;
     }
 }
