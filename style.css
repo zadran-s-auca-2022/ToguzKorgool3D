@@ -340,6 +340,9 @@ h1 {
     border-radius: 34px;
     overflow: hidden;
     background: rgba(10, 5, 2, 0.84);
+
+    backdrop-filter: blur(10px);
+
     border: 1px solid rgba(255, 196, 110, 0.14);
     box-shadow:
         0 40px 120px rgba(0,0,0,0.9),
@@ -364,7 +367,10 @@ h1 {
 
 .intro-title {
     margin: 0;
-    font-size: clamp(58px, 7vw, 105px);
+    font-size: clamp(54px, 6.5vw, 96px);
+
+    filter: drop-shadow(0 0 18px rgba(255, 210, 120, 0.18));
+
     line-height: 0.9;
     font-weight: 800;
     letter-spacing: -4px;
@@ -402,11 +408,11 @@ h1 {
 }
 
 .intro-tagline {
-    max-width: 480px;
+    max-width: 430px;
     margin: 0 0 30px;
     font-size: 18px;
     line-height: 1.55;
-    color: #d8c4a2;
+    color: #ccb089;
     font-weight: 400;
 }
 
@@ -417,6 +423,7 @@ h1 {
     cursor: pointer;
     color: #241204;
     font-size: 16px;
+    letter-spacing: 0.5px;
     font-weight: 900;
     background: linear-gradient(135deg, #ffd47e, #c47a24);
     box-shadow:
@@ -584,7 +591,7 @@ h1 {
     }
 
     .intro-title {
-        font-size: clamp(54px, 8vw, 88px);
+        font-size: clamp(48px, 6vw, 88px);
     }
 }
 
