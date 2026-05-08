@@ -340,10 +340,8 @@ h1 {
     border-radius: 34px;
     overflow: hidden;
     background: rgba(10, 5, 2, 0.84);
-
     backdrop-filter: blur(10px);
-
-    border: 1px solid rgba(255, 196, 110, 0.14);
+    border: 1px solid rgba(255, 196, 110, 0.10);
     box-shadow:
         0 40px 120px rgba(0,0,0,0.9),
         inset 0 0 50px rgba(255,190,90,0.04);
@@ -361,7 +359,7 @@ h1 {
     color: #d8a85c;
     font-size: 12px;
     font-weight: 700;
-    letter-spacing: 4px;
+    letter-spacing: 5px;
     text-transform: uppercase;
 }
 
@@ -461,6 +459,7 @@ h1 {
     background-size: cover;
     background-position: 82% center;
     background-repeat: no-repeat;
+    filter: brightness(0.92) contrast(1.05);
 }
 
 /* SETTINGS */
