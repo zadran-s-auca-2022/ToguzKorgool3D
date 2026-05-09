@@ -23,6 +23,9 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 root.appendChild(renderer.domElement);
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.15;
 
 /* CONTROLS */
 const controls = new OrbitControls(camera, renderer.domElement);
@@ -54,102 +57,90 @@ function createWoodTexture() {
     const canvas = document.createElement('canvas');
     canvas.width = 2048;
     canvas.height = 1024;
-
     const ctx = canvas.getContext('2d');
 
-    // base warm wood color
-    const baseGradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-    baseGradient.addColorStop(0.00, '#5a260b');
-    baseGradient.addColorStop(0.18, '#7a3612');
-    baseGradient.addColorStop(0.38, '#a85b24');
-    baseGradient.addColorStop(0.62, '#7d3712');
-    baseGradient.addColorStop(0.82, '#4b1d07');
-    baseGradient.addColorStop(1.00, '#2b0f03');
-
-    ctx.fillStyle = baseGradient;
+    ctx.fillStyle = '#8b4a1d';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    // long horizontal wood grain
-    for (let i = 0; i < 180; i++) {
+    // rich wood base
+    const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+    gradient.addColorStop(0.00, 'rgba(45, 17, 5, 0.95)');
+    gradient.addColorStop(0.18, 'rgba(120, 57, 20, 0.85)');
+    gradient.addColorStop(0.38, 'rgba(190, 112, 48, 0.78)');
+    gradient.addColorStop(0.58, 'rgba(145, 70, 25, 0.88)');
+    gradient.addColorStop(0.78, 'rgba(85, 35, 10, 0.92)');
+    gradient.addColorStop(1.00, 'rgba(35, 12, 3, 0.98)');
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    // strong black/brown grain
+    for (let i = 0; i < 260; i++) {
         const y = Math.random() * canvas.height;
-        const alpha = 0.035 + Math.random() * 0.07;
-
         ctx.beginPath();
-        ctx.strokeStyle = `rgba(255, 200, 130, ${alpha})`;
-        ctx.lineWidth = 1 + Math.random() * 3;
-
+        ctx.strokeStyle = `rgba(25, 8, 2, ${0.16 + Math.random() * 0.22})`;
+        ctx.lineWidth = 1 + Math.random() * 4;
         ctx.moveTo(-100, y);
 
-        for (let x = -100; x <= canvas.width + 100; x += 60) {
-            const wave =
-                Math.sin(x * 0.012 + i * 0.8) * 18 +
-                Math.sin(x * 0.035 + i) * 6;
-
-            ctx.lineTo(x, y + wave);
+        for (let x = -100; x <= canvas.width + 100; x += 55) {
+            ctx.lineTo(
+                x,
+                y +
+                Math.sin(x * 0.013 + i) * 20 +
+                Math.sin(x * 0.04 + i * 0.5) * 7
+            );
         }
 
         ctx.stroke();
     }
 
-    // darker grain lines
-    for (let i = 0; i < 120; i++) {
+    // golden grain highlights
+    for (let i = 0; i < 180; i++) {
         const y = Math.random() * canvas.height;
-
         ctx.beginPath();
-        ctx.strokeStyle = `rgba(35, 12, 2, ${0.08 + Math.random() * 0.12})`;
+        ctx.strokeStyle = `rgba(255, 190, 95, ${0.08 + Math.random() * 0.12})`;
         ctx.lineWidth = 1 + Math.random() * 2;
-
         ctx.moveTo(-100, y);
 
         for (let x = -100; x <= canvas.width + 100; x += 70) {
-            const wave =
-                Math.sin(x * 0.014 + i) * 14 +
-                Math.sin(x * 0.04 + i * 0.5) * 5;
-
-            ctx.lineTo(x, y + wave);
+            ctx.lineTo(
+                x,
+                y + Math.sin(x * 0.018 + i) * 14
+            );
         }
 
         ctx.stroke();
     }
 
-    // knot rings
-    for (let i = 0; i < 26; i++) {
+    // realistic knots
+    for (let i = 0; i < 34; i++) {
         const x = Math.random() * canvas.width;
         const y = Math.random() * canvas.height;
-        const rx = 55 + Math.random() * 115;
+        const rx = 45 + Math.random() * 110;
         const ry = 12 + Math.random() * 34;
 
         ctx.save();
         ctx.translate(x, y);
-        ctx.rotate((Math.random() - 0.5) * 0.45);
+        ctx.rotate((Math.random() - 0.5) * 0.5);
 
-        for (let r = 0; r < 4; r++) {
+        for (let r = 0; r < 6; r++) {
             ctx.beginPath();
-            ctx.strokeStyle = `rgba(30, 10, 2, ${0.08 + r * 0.035})`;
+            ctx.strokeStyle = `rgba(20, 6, 1, ${0.18 - r * 0.018})`;
             ctx.lineWidth = 2;
-            ctx.ellipse(0, 0, rx - r * 12, ry - r * 4, 0, 0, Math.PI * 2);
+            ctx.ellipse(0, 0, rx - r * 10, ry - r * 3, 0, 0, Math.PI * 2);
             ctx.stroke();
         }
 
         ctx.restore();
     }
 
-    // subtle golden highlights
-    for (let i = 0; i < 35; i++) {
-        const y = Math.random() * canvas.height;
-
-        ctx.beginPath();
-        ctx.strokeStyle = 'rgba(255, 185, 85, 0.05)';
-        ctx.lineWidth = 5 + Math.random() * 9;
-        ctx.moveTo(0, y);
-        ctx.lineTo(canvas.width, y + Math.sin(i) * 30);
-        ctx.stroke();
-    }
+    // dark aged overlay
+    ctx.fillStyle = 'rgba(30, 8, 1, 0.18)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     const texture = new THREE.CanvasTexture(canvas);
     texture.wrapS = THREE.RepeatWrapping;
     texture.wrapT = THREE.RepeatWrapping;
-    texture.repeat.set(1.35, 1.0);
+    texture.repeat.set(1.05, 0.75);
     texture.anisotropy = renderer.capabilities.getMaxAnisotropy();
     texture.needsUpdate = true;
 
@@ -160,23 +151,24 @@ const woodTexture = createWoodTexture();
 
 /* MATERIALS */
 const boardMaterial = new THREE.MeshStandardMaterial({
-    color: 0xb46a2b,
+    color: 0xd58a3a,
     map: woodTexture,
-    roughness: 0.68,
-    metalness: 0.025
+    roughness: 0.48,
+    metalness: 0.015
 });
 
 const boardSideMaterial = new THREE.MeshStandardMaterial({
-    color: 0x522408,
-    roughness: 0.84,
-    metalness: 0.02
+    color: 0x5a2308,
+    map: woodTexture,
+    roughness: 0.7,
+    metalness: 0.01
 });
 
 const pitRimMaterial = new THREE.MeshStandardMaterial({
-    color: 0xc27632,
+    color: 0xd08a3f,
     map: woodTexture,
-    roughness: 0.7,
-    metalness: 0.02
+    roughness: 0.5,
+    metalness: 0.015
 });
 
 const pitInnerMaterial = new THREE.MeshStandardMaterial({
