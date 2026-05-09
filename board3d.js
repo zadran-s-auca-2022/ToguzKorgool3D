@@ -228,11 +228,11 @@ function createKazan(x, z) {
     boardGroup.add(rim);
 
     const inner = new THREE.Mesh(
-        new THREE.CylinderGeometry(1.12, 1.24, 0.24, 48),
+        new THREE.CylinderGeometry(0.98, 1.32, 0.72, 48),
         kazanInnerMaterial
     );
-    inner.scale.set(1.95, 1, 0.78);
-    inner.position.set(x, 1.62, z);
+    inner.scale.set(2.05, 1, 0.82);
+    inner.position.set(x, 1.34, z);
     inner.receiveShadow = true;
     boardGroup.add(inner);
 }
