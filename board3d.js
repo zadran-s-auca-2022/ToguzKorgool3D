@@ -3,107 +3,190 @@ import { OrbitControls } from 'https://esm.sh/three@0.160.0/examples/jsm/control
 
 const root = document.getElementById('three-root');
 
-// SCENE
+/* SCENE */
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(0x100704);
+scene.background = new THREE.Color(0x090403);
 
-// CAMERA
+/* CAMERA */
 const camera = new THREE.PerspectiveCamera(
     42,
     window.innerWidth / window.innerHeight,
     0.1,
     1000
 );
-camera.position.set(0, 15.5, 23);
+camera.position.set(0, 13.5, 22);
 
-// RENDERER
+/* RENDERER */
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 root.appendChild(renderer.domElement);
 
-// CONTROLS
+/* CONTROLS */
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.target.set(0, 1.2, 0);
 controls.enableDamping = true;
 controls.enablePan = false;
-controls.minDistance = 10;
+controls.minDistance = 9;
 controls.maxDistance = 34;
-controls.maxPolarAngle = Math.PI / 2.08;
+controls.maxPolarAngle = Math.PI / 2.05;
 
-// LIGHTS
-scene.add(new THREE.AmbientLight(0xffffff, 1.25));
+/* LIGHTS */
+scene.add(new THREE.AmbientLight(0xffd9b0, 0.55));
 
-const keyLight = new THREE.DirectionalLight(0xfff1dc, 1.55);
-keyLight.position.set(14, 22, 10);
+const keyLight = new THREE.DirectionalLight(0xffe0aa, 2.4);
+keyLight.position.set(10, 18, 12);
+keyLight.castShadow = true;
 scene.add(keyLight);
 
-const fillLight = new THREE.DirectionalLight(0xffd7a8, 0.45);
-fillLight.position.set(-12, 10, -8);
-scene.add(fillLight);
+const warmLight = new THREE.PointLight(0xff9b35, 1.25, 40);
+warmLight.position.set(-8, 6, 8);
+scene.add(warmLight);
 
-// MATERIALS
+const rimLight = new THREE.DirectionalLight(0xffc47a, 0.75);
+rimLight.position.set(-12, 10, -10);
+scene.add(rimLight);
+
+/* TEXTURE */
+function createWoodTexture() {
+    const canvas = document.createElement('canvas');
+    canvas.width = 1024;
+    canvas.height = 1024;
+    const ctx = canvas.getContext('2d');
+
+    const gradient = ctx.createLinearGradient(0, 0, 1024, 1024);
+    gradient.addColorStop(0, '#8a4b1f');
+    gradient.addColorStop(0.35, '#b56d32');
+    gradient.addColorStop(0.65, '#6d3514');
+    gradient.addColorStop(1, '#3a1908');
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, 1024, 1024);
+
+    for (let i = 0; i < 95; i++) {
+        ctx.beginPath();
+        ctx.strokeStyle = `rgba(255, 210, 145, ${0.035 + Math.random() * 0.045})`;
+        ctx.lineWidth = 2 + Math.random() * 5;
+
+        const y = Math.random() * 1024;
+        ctx.moveTo(-100, y);
+
+        for (let x = 0; x <= 1120; x += 80) {
+            ctx.lineTo(x, y + Math.sin(x * 0.015 + i) * 22 + Math.random() * 16);
+        }
+
+        ctx.stroke();
+    }
+
+    for (let i = 0; i < 18; i++) {
+        ctx.beginPath();
+        ctx.strokeStyle = 'rgba(50, 20, 5, 0.16)';
+        ctx.lineWidth = 4;
+        ctx.ellipse(
+            Math.random() * 1024,
+            Math.random() * 1024,
+            70 + Math.random() * 120,
+            18 + Math.random() * 45,
+            Math.random() * Math.PI,
+            0,
+            Math.PI * 2
+        );
+        ctx.stroke();
+    }
+
+    const texture = new THREE.CanvasTexture(canvas);
+    texture.wrapS = THREE.RepeatWrapping;
+    texture.wrapT = THREE.RepeatWrapping;
+    texture.repeat.set(2.3, 1.15);
+    texture.anisotropy = 8;
+    return texture;
+}
+
+const woodTexture = createWoodTexture();
+
+/* MATERIALS */
 const boardMaterial = new THREE.MeshStandardMaterial({
-    color: 0x8b582a,
-    roughness: 0.62,
-    metalness: 0.02
-});
-
-const boardTopMaterial = new THREE.MeshStandardMaterial({
-    color: 0x9b6633,
-    roughness: 0.52,
-    metalness: 0.02
-});
-
-const trayMaterial = new THREE.MeshStandardMaterial({
-    color: 0x895728,
-    roughness: 0.62,
-    metalness: 0.02
-});
-
-const trayInnerMaterial = new THREE.MeshStandardMaterial({
-    color: 0xd8b98e,
+    color: 0x8a4d22,
+    map: woodTexture,
     roughness: 0.72,
-    metalness: 0.01
+    metalness: 0.03
 });
 
-const pitOuterMaterial = new THREE.MeshStandardMaterial({
-    color: 0xd4b184,
+const boardSideMaterial = new THREE.MeshStandardMaterial({
+    color: 0x522408,
+    roughness: 0.84,
+    metalness: 0.02
+});
+
+const pitRimMaterial = new THREE.MeshStandardMaterial({
+    color: 0xc48745,
+    map: woodTexture,
     roughness: 0.72,
-    metalness: 0.01
+    metalness: 0.02
 });
 
 const pitInnerMaterial = new THREE.MeshStandardMaterial({
-    color: 0xb8844f,
-    roughness: 0.82,
+    color: 0x2b1205,
+    roughness: 0.92,
+    metalness: 0.01
+});
+
+const kazanInnerMaterial = new THREE.MeshStandardMaterial({
+    color: 0x3a1807,
+    roughness: 0.9,
     metalness: 0.01
 });
 
 const stoneMaterial = new THREE.MeshStandardMaterial({
-    color: 0xf3e7cf,
-    roughness: 0.35,
+    color: 0xd8c7aa,
+    roughness: 0.42,
     metalness: 0.02
 });
 
-// BOARD
+/* BOARD GROUP */
 const boardGroup = new THREE.Group();
 scene.add(boardGroup);
 
-const boardBase = new THREE.Mesh(
-    new THREE.BoxGeometry(24.2, 2.6, 12.6),
+/* MAIN WOODEN BOARD */
+const base = new THREE.Mesh(
+    new THREE.BoxGeometry(27.5, 1.45, 12.8),
+    boardSideMaterial
+);
+base.position.set(0, 0.15, 0);
+base.castShadow = true;
+base.receiveShadow = true;
+boardGroup.add(base);
+
+const top = new THREE.Mesh(
+    new THREE.BoxGeometry(26.4, 0.55, 11.9),
     boardMaterial
 );
-boardBase.position.set(0, 0, 0);
-boardGroup.add(boardBase);
+top.position.set(0, 1.18, 0);
+top.castShadow = true;
+top.receiveShadow = true;
+boardGroup.add(top);
 
-const boardTop = new THREE.Mesh(
-    new THREE.BoxGeometry(22.0, 0.38, 10.8),
-    boardTopMaterial
-);
-boardTop.position.set(0, 1.32, 0);
-boardGroup.add(boardTop);
+/* SOFT ROUNDED CORNERS VISUAL */
+function cornerCap(x, z) {
+    const cap = new THREE.Mesh(
+        new THREE.CylinderGeometry(1.35, 1.35, 0.58, 36),
+        boardMaterial
+    );
+    cap.scale.set(1.35, 1, 1.1);
+    cap.rotation.y = Math.PI / 2;
+    cap.position.set(x, 1.19, z);
+    cap.castShadow = true;
+    cap.receiveShadow = true;
+    boardGroup.add(cap);
+}
 
-// KAZANS
+cornerCap(-12.9, -5.55);
+cornerCap(12.9, -5.55);
+cornerCap(-12.9, 5.55);
+cornerCap(12.9, 5.55);
+
+/* KAZANS */
 const storeStoneGroups = {
     A: new THREE.Group(),
     B: new THREE.Group()
@@ -111,61 +194,61 @@ const storeStoneGroups = {
 scene.add(storeStoneGroups.A);
 scene.add(storeStoneGroups.B);
 
-function createTray(xCenter) {
-    const trayGroup = new THREE.Group();
-
-    const outer = new THREE.Mesh(
-        new THREE.BoxGeometry(5.0, 2.15, 8.5),
-        trayMaterial
+function createKazan(x, z) {
+    const rim = new THREE.Mesh(
+        new THREE.CylinderGeometry(1.45, 1.55, 0.34, 48),
+        pitRimMaterial
     );
-    outer.position.set(xCenter, 0.1, 0);
-    trayGroup.add(outer);
+    rim.scale.set(1.95, 1, 0.82);
+    rim.position.set(x, 1.52, z);
+    rim.castShadow = true;
+    rim.receiveShadow = true;
+    boardGroup.add(rim);
 
     const inner = new THREE.Mesh(
-        new THREE.BoxGeometry(4.1, 1.05, 7.0),
-        trayInnerMaterial
+        new THREE.CylinderGeometry(1.12, 1.24, 0.24, 48),
+        kazanInnerMaterial
     );
-    inner.position.set(xCenter, 0.8, 0);
-    trayGroup.add(inner);
-
-    scene.add(trayGroup);
+    inner.scale.set(1.95, 1, 0.78);
+    inner.position.set(x, 1.62, z);
+    inner.receiveShadow = true;
+    boardGroup.add(inner);
 }
 
-createTray(-14.2);
-createTray(14.2);
+createKazan(-5.1, 0);
+createKazan(5.1, 0);
 
-// PITS
+/* PITS */
 const pitMeshes = [];
 const pitMeshByIndex = new Array(18);
 const pitStoneGroups = new Array(18);
 const pitStoneBase = new Array(18);
 
-const pitSpacing = 2.34;
-const startX = -9.36;
-const topRowZ = -2.55;
-const bottomRowZ = 2.55;
+const pitSpacing = 2.25;
+const startX = -9.0;
+const topRowZ = -3.25;
+const bottomRowZ = 3.25;
 
 function createPit(x, z, index) {
-    const group = new THREE.Group();
-
     const rim = new THREE.Mesh(
-        new THREE.CylinderGeometry(0.95, 1.02, 0.28, 36),
-        pitOuterMaterial
+        new THREE.CylinderGeometry(0.78, 0.88, 0.32, 44),
+        pitRimMaterial
     );
-    rim.position.set(x, 1.43, z);
-    rim.scale.set(1.22, 1, 0.92);
-    group.add(rim);
+    rim.scale.set(1.25, 1, 0.78);
+    rim.position.set(x, 1.52, z);
+    rim.castShadow = true;
+    rim.receiveShadow = true;
+    boardGroup.add(rim);
 
     const inner = new THREE.Mesh(
-        new THREE.CylinderGeometry(0.76, 0.84, 0.22, 36),
+        new THREE.CylinderGeometry(0.58, 0.69, 0.28, 44),
         pitInnerMaterial.clone()
     );
-    inner.position.set(x, 1.5, z);
-    inner.scale.set(1.18, 1, 0.88);
+    inner.scale.set(1.25, 1, 0.78);
+    inner.position.set(x, 1.63, z);
     inner.userData.index = index;
-    group.add(inner);
-
-    scene.add(group);
+    inner.receiveShadow = true;
+    boardGroup.add(inner);
 
     pitMeshes.push(inner);
     pitMeshByIndex[index] = inner;
@@ -174,21 +257,49 @@ function createPit(x, z, index) {
     scene.add(stonesGroup);
     pitStoneGroups[index] = stonesGroup;
 
-    pitStoneBase[index] = { x, y: 1.67, z };
+    pitStoneBase[index] = { x, y: 1.82, z };
 }
 
-// top row 17..9
+/* Top row: indexes 17..9 */
 for (let i = 0; i < 9; i++) {
     createPit(startX + i * pitSpacing, topRowZ, 17 - i);
 }
 
-// bottom row 0..8
+/* Bottom row: indexes 0..8 */
 for (let i = 0; i < 9; i++) {
     createPit(startX + i * pitSpacing, bottomRowZ, i);
 }
 
-// STONES
-const stoneGeometry = new THREE.SphereGeometry(0.14, 18, 18);
+/* DECORATIVE CARVED BORDER */
+const borderMaterial = new THREE.MeshStandardMaterial({
+    color: 0x3a1605,
+    roughness: 0.86
+});
+
+const borderFront = new THREE.Mesh(
+    new THREE.BoxGeometry(25.3, 0.16, 0.12),
+    borderMaterial
+);
+borderFront.position.set(0, 1.55, 5.3);
+boardGroup.add(borderFront);
+
+const borderBack = borderFront.clone();
+borderBack.position.z = -5.3;
+boardGroup.add(borderBack);
+
+const borderLeft = new THREE.Mesh(
+    new THREE.BoxGeometry(0.12, 0.16, 10.1),
+    borderMaterial
+);
+borderLeft.position.set(-12.2, 1.55, 0);
+boardGroup.add(borderLeft);
+
+const borderRight = borderLeft.clone();
+borderRight.position.x = 12.2;
+boardGroup.add(borderRight);
+
+/* STONES */
+const stoneGeometry = new THREE.SphereGeometry(0.145, 20, 20);
 
 function clearGroup(group) {
     while (group.children.length > 0) {
@@ -207,17 +318,19 @@ function renderPitStones(index, count) {
 
     for (let i = 0; i < maxVisual; i++) {
         const stone = new THREE.Mesh(stoneGeometry, stoneMaterial);
-        stone.scale.set(0.84, 0.72, 0.78);
+        stone.castShadow = true;
+        stone.receiveShadow = true;
 
         const col = i % 5;
         const row = Math.floor(i / 5);
 
         stone.position.set(
-            base.x + (col - 2) * 0.18,
-            base.y + row * 0.016,
-            base.z + (row - 2.5) * 0.14
+            base.x + (col - 2) * 0.17,
+            base.y + row * 0.018,
+            base.z + (row - 2.3) * 0.13
         );
 
+        stone.scale.set(0.86, 0.76, 0.82);
         group.add(stone);
     }
 }
@@ -227,34 +340,34 @@ function renderStoreStones(side, count) {
     clearGroup(group);
 
     const maxVisual = Math.min(count, 98);
-    const baseX = side === 'A' ? 14.2 : -14.2;
-    const topZ = -2.55;
-    const rowGap = 0.30;
+    const baseX = side === 'A' ? 5.1 : -5.1;
+    const baseZ = 0;
 
     for (let i = 0; i < maxVisual; i++) {
         const stone = new THREE.Mesh(stoneGeometry, stoneMaterial);
-        stone.scale.set(1.8, 1.4, 1.6);
+        stone.castShadow = true;
+        stone.receiveShadow = true;
 
-        const col = i % 7;
-        const row = Math.floor(i / 7);
+        const col = i % 8;
+        const row = Math.floor(i / 8);
 
         stone.position.set(
-            baseX + (col - 3) * 0.24,
-            1.24 + (row % 2) * 0.035,
-            topZ + row * rowGap
+            baseX + (col - 3.5) * 0.25,
+            1.84 + (row % 2) * 0.035,
+            baseZ + (row - 3) * 0.27
         );
 
+        stone.scale.set(1.05, 0.9, 1.0);
         group.add(stone);
     }
 }
 
-// ---------------- 3D TEXT SPRITES ----------------
+/* TEXT SPRITES */
 function makeTextTexture(text, options = {}) {
     const fontSize = options.fontSize || 64;
     const textColor = options.textColor || '#fff4dc';
-    const bgColor = options.bgColor || 'transparent';
     const padding = options.padding || 18;
-    const fontFamily = options.fontFamily || 'Arial';
+    const fontFamily = options.fontFamily || 'Outfit, Arial';
 
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
@@ -268,11 +381,6 @@ function makeTextTexture(text, options = {}) {
 
     const ctx2 = canvas.getContext('2d');
     ctx2.clearRect(0, 0, canvas.width, canvas.height);
-
-    if (bgColor !== 'transparent') {
-        ctx2.fillStyle = bgColor;
-        ctx2.fillRect(0, 0, canvas.width, canvas.height);
-    }
 
     ctx2.font = `bold ${fontSize}px ${fontFamily}`;
     ctx2.textAlign = 'center';
@@ -290,6 +398,7 @@ function makeTextTexture(text, options = {}) {
 
 function createTextSprite(text, options = {}) {
     const { texture, width, height } = makeTextTexture(text, options);
+
     const material = new THREE.SpriteMaterial({
         map: texture,
         transparent: true,
@@ -328,31 +437,29 @@ for (let i = 0; i < 18; i++) {
     const isTopRow = i >= 9;
 
     const numSprite = createTextSprite(String(pitNumberForIndex(i)), {
-        fontSize: 58,
-        textColor: '#d9b36c',
-        scaleFactor: 0.0045
+        fontSize: 52,
+        textColor: '#1a0d04',
+        scaleFactor: 0.0042
     });
 
-    // pit numbers farther out on the board
     numSprite.position.set(
         base.x,
-        1.34,
-        isTopRow ? base.z - 1.62 : base.z + 1.42
+        1.86,
+        isTopRow ? base.z - 0.68 : base.z + 0.68
     );
     scene.add(numSprite);
     pitNumberSprites[i] = numSprite;
 
     const countSprite = createTextSprite('9', {
-        fontSize: 66,
-        textColor: '#fff4dc',
-        scaleFactor: 0.0047
+        fontSize: 64,
+        textColor: '#fff0d0',
+        scaleFactor: 0.0045
     });
 
-    // pit counts clearly between the two rows, not on pits
     countSprite.position.set(
         base.x,
-        1.34,
-        isTopRow ? base.z + 1.00 : base.z - 1.50
+        1.96,
+        isTopRow ? base.z + 0.75 : base.z - 0.75
     );
     scene.add(countSprite);
     pitCountSprites[i] = countSprite;
@@ -363,8 +470,7 @@ const storeCountSpriteA = createTextSprite('0', {
     textColor: '#fff4dc',
     scaleFactor: 0.0055
 });
-// above right kazan
-storeCountSpriteA.position.set(14.2, 1.32, -4.95);
+storeCountSpriteA.position.set(5.1, 2.05, -1.35);
 scene.add(storeCountSpriteA);
 
 const storeCountSpriteB = createTextSprite('0', {
@@ -372,11 +478,10 @@ const storeCountSpriteB = createTextSprite('0', {
     textColor: '#fff4dc',
     scaleFactor: 0.0055
 });
-// above left kazan
-storeCountSpriteB.position.set(-14.2, 1.32, -4.95);
+storeCountSpriteB.position.set(-5.1, 2.05, -1.35);
 scene.add(storeCountSpriteB);
 
-// SYNC
+/* SYNC */
 function sync3DBoardFromGameState(state) {
     if (!state || !state.pits) return;
 
@@ -404,7 +509,7 @@ function sync3DBoardFromGameState(state) {
 
 window.sync3DBoardFromGameState = sync3DBoardFromGameState;
 
-// initial draw
+/* INITIAL DRAW */
 for (let i = 0; i < 18; i++) {
     renderPitStones(i, 9);
 }
@@ -419,7 +524,7 @@ function tryInitialSync() {
 setTimeout(tryInitialSync, 0);
 setTimeout(tryInitialSync, 200);
 
-// CLICK
+/* CLICK */
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
 
@@ -438,9 +543,11 @@ renderer.domElement.addEventListener('pointerup', (e) => {
 
     const splash = document.getElementById('splash');
     const settingsOverlay = document.getElementById('settingsOverlay');
+    const rulesOverlay = document.getElementById('rulesOverlay');
 
     if (splash && splash.style.display !== 'none') return;
     if (settingsOverlay && !settingsOverlay.classList.contains('hidden')) return;
+    if (rulesOverlay && !rulesOverlay.classList.contains('hidden')) return;
 
     mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
     mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
@@ -453,14 +560,14 @@ renderer.domElement.addEventListener('pointerup', (e) => {
     }
 });
 
-// RESIZE
+/* RESIZE */
 window.addEventListener('resize', () => {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
 });
 
-// LOOP
+/* LOOP */
 function animate() {
     requestAnimationFrame(animate);
     controls.update();
