@@ -854,6 +854,9 @@ h1 {
 }
 
 .intro-rules-btn {
+    position: relative;
+    overflow: hidden;
+
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -861,29 +864,49 @@ h1 {
 
     padding: 15px 30px;
 
-    border: none;
     border-radius: 999px;
+    border: 1px solid rgba(255, 212, 126, 0.35);
 
-    background: linear-gradient(
-        135deg,
-        #ffd47e,
-        #c47a24
-    );
+    background: rgba(255, 212, 126, 0.10);
 
-    color: #1f1205;
+    color: #f6d18a;
 
     font-size: 15px;
     font-weight: 850;
-
     letter-spacing: 0.4px;
 
     cursor: pointer;
 
-    box-shadow:
-        0 18px 40px rgba(196, 122, 36, 0.42),
-        inset 0 1px 0 rgba(255,255,255,0.45);
+    backdrop-filter: blur(14px);
 
-    transition: 0.25s ease;
+    box-shadow:
+        0 12px 30px rgba(0,0,0,0.38),
+        inset 0 1px 0 rgba(255,255,255,0.08);
+
+    transition: 0.28s ease;
+}
+
+.intro-rules-btn::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -80%;
+    width: 60%;
+    height: 100%;
+
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255,255,255,0.42),
+        transparent
+    );
+
+    transform: skewX(-20deg);
+    transition: 0.45s ease;
+}
+
+.intro-rules-btn:hover::after {
+    left: 130%;
 }
 
 .intro-rules-btn:hover {
@@ -891,13 +914,18 @@ h1 {
 
     background: linear-gradient(
         135deg,
-        #ffe1a0,
-        #d98b2f
+        #ffd47e,
+        #c47a24
     );
 
-    color: #120900;
+    color: #1b1005;
 
     box-shadow:
         0 24px 55px rgba(196, 122, 36, 0.68),
         inset 0 1px 0 rgba(255,255,255,0.65);
+}
+
+.rules-icon {
+    color: inherit;
+    font-size: 14px;
 }
