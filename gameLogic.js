@@ -582,25 +582,14 @@ window.resetGame = resetGame;
 window.getCurrentGameState = getCurrentGameState;
 
 window.openRules = function () {
-    playBeep(520, 0.05, 0.04);
+    document.getElementById("settingsOverlay")
+        .classList.remove("hidden");
+};
+
+window.openRules = function () {
     document.getElementById("rulesOverlay").classList.remove("hidden");
 };
 
 window.closeRules = function () {
-    playBeep(360, 0.05, 0.035);
     document.getElementById("rulesOverlay").classList.add("hidden");
 };
-
-function addHoverSound(selector) {
-    const elements = document.querySelectorAll(selector);
-
-    elements.forEach((el) => {
-        el.addEventListener("mouseenter", () => {
-            playBeep(620, 0.025, 0.025);
-        });
-    });
-}
-
-addHoverSound(".intro-start-btn");
-addHoverSound(".intro-rules-btn");
-addHoverSound(".btn");
