@@ -585,3 +585,11 @@ window.openRules = function () {
     document.getElementById("settingsOverlay")
         .classList.remove("hidden");
 };
+
+window.openRules = function () {
+    document.getElementById("rulesOverlay").classList.remove("hidden");
+};
+
+window.closeRules = function () {
+    document.getElementById("rulesOverlay").classList.add("hidden");
+};

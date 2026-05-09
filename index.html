@@ -88,10 +88,47 @@
                         <span>Learn The Rules</span>
                     </button>
                 </div>
-
             </div>
 
             <div class="intro-right board-hero-bg"></div>
+        </div>
+    </div>
+
+    <div id="rulesOverlay" class="rules-overlay hidden">
+        <div class="rules-panel">
+            <div class="rules-header">
+                <h2>How to Play Toguz Korgool</h2>
+                <button class="rules-close" onclick="closeRules()">&times;</button>
+            </div>
+
+            <div class="rules-body">
+                <h3>Goal</h3>
+                <p>Collect more stones than the computer. The first player to reach 82 stones wins.</p>
+
+                <h3>Board Setup</h3>
+                <p>The board has 18 pits in total: 9 pits for each player. Each pit starts with 9 stones. Each player also has a kazan, which stores captured stones.</p>
+
+                <h3>Players</h3>
+                <p>You play as Player A. The computer plays as Player B. You always start the game first.</p>
+
+                <h3>How a Turn Works</h3>
+                <p>On your turn, choose one of your own pits. If the selected pit has only 1 stone, that stone moves to the next pit. If the selected pit has more than 1 stone, one stone stays in the selected pit and the remaining stones are sown one by one counter-clockwise around the board.</p>
+
+                <h3>Capturing Stones</h3>
+                <p>If your last stone lands in one of the opponent’s pits and the total number of stones in that pit becomes even, all stones from that pit are captured and moved to your kazan.</p>
+
+                <h3>Tuz / Sool Rule</h3>
+                <p>If your last stone lands in an opponent’s pit and that pit becomes exactly 3 stones, that pit can become your tuz. A tuz captures any stones that later land in it automatically. Each player can create only one tuz during the game.</p>
+
+                <h3>Tuz Restrictions</h3>
+                <p>You cannot create a tuz in the opponent’s 9th pit. You also cannot create a tuz directly opposite the opponent’s tuz.</p>
+
+                <h3>Automatic Tuz Capture</h3>
+                <p>After a tuz is created, any stone that lands in that tuz pit is immediately moved to the owner’s kazan instead of staying in the pit.</p>
+
+                <h3>Winning the Game</h3>
+                <p>The game ends when one player reaches 82 or more stones in their kazan, or when one side has no stones left. At the end, remaining stones are added to each player’s kazan. The player with more stones wins.</p>
+            </div>
         </div>
     </div>
 

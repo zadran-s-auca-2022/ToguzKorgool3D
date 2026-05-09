@@ -929,3 +929,64 @@ h1 {
     color: inherit;
     font-size: 14px;
 }
+
+.rules-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    background: rgba(0, 0, 0, 0.72);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.rules-panel {
+    width: min(760px, 90vw);
+    max-height: 82vh;
+    background: linear-gradient(145deg, rgba(22, 12, 5, 0.96), rgba(7, 3, 1, 0.96));
+    border: 1px solid rgba(255, 196, 110, 0.24);
+    border-radius: 24px;
+    box-shadow: 0 30px 90px rgba(0,0,0,0.9);
+    overflow: hidden;
+}
+
+.rules-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 24px;
+    border-bottom: 1px solid rgba(255, 196, 110, 0.18);
+}
+
+.rules-header h2 {
+    margin: 0;
+    color: #f7d48a;
+    font-size: 24px;
+}
+
+.rules-close {
+    background: none;
+    border: none;
+    color: #f7d48a;
+    font-size: 30px;
+    cursor: pointer;
+}
+
+.rules-body {
+    padding: 22px 28px 30px;
+    overflow-y: auto;
+    max-height: 68vh;
+}
+
+.rules-body h3 {
+    margin: 18px 0 6px;
+    color: #ffd47e;
+    font-size: 17px;
+}
+
+.rules-body p {
+    margin: 0;
+    color: #e6d4b8;
+    font-size: 15px;
+    line-height: 1.65;
+}
