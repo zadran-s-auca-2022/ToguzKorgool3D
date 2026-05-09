@@ -195,24 +195,43 @@ scene.add(storeStoneGroups.A);
 scene.add(storeStoneGroups.B);
 
 function createKazan(x, z) {
-    const rim = new THREE.Mesh(
-        new THREE.CylinderGeometry(1.45, 1.55, 0.34, 48),
+    const kazanGroup = new THREE.Group();
+
+    const lip = new THREE.Mesh(
+        new THREE.CylinderGeometry(1.55, 1.8, 0.26, 64),
         pitRimMaterial
     );
-    rim.scale.set(1.95, 1, 0.82);
-    rim.position.set(x, 1.52, z);
-    rim.castShadow = true;
-    rim.receiveShadow = true;
-    boardGroup.add(rim);
+    lip.scale.set(2.05, 1, 0.78);
+    lip.position.set(x, 1.53, z);
+    lip.castShadow = true;
+    lip.receiveShadow = true;
+    kazanGroup.add(lip);
 
-    const inner = new THREE.Mesh(
-        new THREE.CylinderGeometry(1.12, 1.24, 0.24, 48),
+    const wall = new THREE.Mesh(
+        new THREE.CylinderGeometry(1.3, 1.6, 0.62, 64),
+        new THREE.MeshStandardMaterial({
+            color: 0x5a2a0d,
+            map: woodTexture,
+            roughness: 0.92,
+            metalness: 0.01
+        })
+    );
+    wall.scale.set(2.0, 1, 0.78);
+    wall.position.set(x, 1.30, z);
+    wall.castShadow = true;
+    wall.receiveShadow = true;
+    kazanGroup.add(wall);
+
+    const bottom = new THREE.Mesh(
+        new THREE.CylinderGeometry(1.0, 1.25, 0.08, 64),
         kazanInnerMaterial
     );
-    inner.scale.set(1.95, 1, 0.78);
-    inner.position.set(x, 1.62, z);
-    inner.receiveShadow = true;
-    boardGroup.add(inner);
+    bottom.scale.set(2.05, 1, 0.78);
+    bottom.position.set(x, 0.98, z);
+    bottom.receiveShadow = true;
+    kazanGroup.add(bottom);
+
+    boardGroup.add(kazanGroup);
 }
 
 createKazan(-5.1, 0);
@@ -230,34 +249,57 @@ const topRowZ = -3.25;
 const bottomRowZ = 3.25;
 
 function createPit(x, z, index) {
-    const rim = new THREE.Mesh(
-        new THREE.CylinderGeometry(0.78, 0.88, 0.32, 44),
+    const pitGroup = new THREE.Group();
+
+    const lip = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.78, 0.92, 0.22, 48),
         pitRimMaterial
     );
-    rim.scale.set(1.25, 1, 0.78);
-    rim.position.set(x, 1.52, z);
-    rim.castShadow = true;
-    rim.receiveShadow = true;
-    boardGroup.add(rim);
+    lip.scale.set(1.28, 1, 0.78);
+    lip.position.set(x, 1.54, z);
+    lip.castShadow = true;
+    lip.receiveShadow = true;
+    pitGroup.add(lip);
 
-    const inner = new THREE.Mesh(
-        new THREE.CylinderGeometry(0.58, 0.69, 0.28, 44),
-        pitInnerMaterial.clone()
+    const bowlWall = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.66, 0.78, 0.42, 48),
+        new THREE.MeshStandardMaterial({
+            color: 0x5a2a0d,
+            map: woodTexture,
+            roughness: 0.9,
+            metalness: 0.01
+        })
     );
-    inner.scale.set(1.25, 1, 0.78);
-    inner.position.set(x, 1.63, z);
-    inner.userData.index = index;
-    inner.receiveShadow = true;
-    boardGroup.add(inner);
+    bowlWall.scale.set(1.22, 1, 0.76);
+    bowlWall.position.set(x, 1.39, z);
+    bowlWall.castShadow = true;
+    bowlWall.receiveShadow = true;
+    pitGroup.add(bowlWall);
 
-    pitMeshes.push(inner);
-    pitMeshByIndex[index] = inner;
+    const darkBottom = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.48, 0.58, 0.08, 48),
+        new THREE.MeshStandardMaterial({
+            color: 0x160802,
+            roughness: 1,
+            metalness: 0
+        })
+    );
+    darkBottom.scale.set(1.25, 1, 0.78);
+    darkBottom.position.set(x, 1.16, z);
+    darkBottom.userData.index = index;
+    darkBottom.receiveShadow = true;
+    pitGroup.add(darkBottom);
+
+    boardGroup.add(pitGroup);
+
+    pitMeshes.push(darkBottom);
+    pitMeshByIndex[index] = darkBottom;
 
     const stonesGroup = new THREE.Group();
     scene.add(stonesGroup);
     pitStoneGroups[index] = stonesGroup;
 
-    pitStoneBase[index] = { x, y: 1.82, z };
+    pitStoneBase[index] = { x, y: 1.30, z };
 }
 
 /* Top row: indexes 17..9 */
@@ -321,16 +363,17 @@ function renderPitStones(index, count) {
         stone.castShadow = true;
         stone.receiveShadow = true;
 
-        const col = i % 5;
-        const row = Math.floor(i / 5);
+        const col = i % 3;
+        const row = Math.floor(i / 3);
+        const layer = Math.floor(i / 9);
 
         stone.position.set(
-            base.x + (col - 2) * 0.17,
-            base.y + row * 0.018,
-            base.z + (row - 2.3) * 0.13
+            base.x + (col - 1) * 0.22,
+            base.y + layer * 0.11,
+            base.z + (row % 3 - 1) * 0.18
         );
 
-        stone.scale.set(0.86, 0.76, 0.82);
+        stone.scale.set(0.95, 0.9, 0.95);
         group.add(stone);
     }
 }
@@ -348,16 +391,17 @@ function renderStoreStones(side, count) {
         stone.castShadow = true;
         stone.receiveShadow = true;
 
-        const col = i % 8;
-        const row = Math.floor(i / 8);
+        const col = i % 5;
+        const row = Math.floor(i / 5);
+        const layer = Math.floor(i / 25);
 
         stone.position.set(
-            baseX + (col - 3.5) * 0.25,
-            1.84 + (row % 2) * 0.035,
-            baseZ + (row - 3) * 0.27
+            baseX + (col - 2) * 0.36,
+            1.14 + layer * 0.10,
+            baseZ + (row % 5 - 2) * 0.32
         );
 
-        stone.scale.set(1.05, 0.9, 1.0);
+        stone.scale.set(1.15, 1.0, 1.15);
         group.add(stone);
     }
 }
@@ -438,14 +482,14 @@ for (let i = 0; i < 18; i++) {
 
     const numSprite = createTextSprite(String(pitNumberForIndex(i)), {
         fontSize: 52,
-        textColor: '#1a0d04',
+        textColor: '#120702',
         scaleFactor: 0.0042
     });
 
     numSprite.position.set(
         base.x,
-        1.86,
-        isTopRow ? base.z - 0.68 : base.z + 0.68
+        1.72,
+        isTopRow ? base.z - 0.78 : base.z + 0.78
     );
     scene.add(numSprite);
     pitNumberSprites[i] = numSprite;
@@ -458,8 +502,8 @@ for (let i = 0; i < 18; i++) {
 
     countSprite.position.set(
         base.x,
-        1.96,
-        isTopRow ? base.z + 0.75 : base.z - 0.75
+        1.72,
+        isTopRow ? base.z + 0.48 : base.z - 0.48
     );
     scene.add(countSprite);
     pitCountSprites[i] = countSprite;
