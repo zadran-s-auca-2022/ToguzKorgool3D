@@ -2,6 +2,7 @@ import * as THREE from 'https://esm.sh/three@0.160.0';
 import { OrbitControls } from 'https://esm.sh/three@0.160.0/examples/jsm/controls/OrbitControls.js';
 
 const root = document.getElementById('three-root');
+root.innerHTML = '';
 
 /* SCENE */
 const scene = new THREE.Scene();
@@ -23,9 +24,6 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 root.appendChild(renderer.domElement);
-renderer.outputColorSpace = THREE.SRGBColorSpace;
-renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 1.15;
 
 /* CONTROLS */
 const controls = new OrbitControls(camera, renderer.domElement);
@@ -37,111 +35,90 @@ controls.maxDistance = 34;
 controls.maxPolarAngle = Math.PI / 2.05;
 
 /* LIGHTS */
-scene.add(new THREE.AmbientLight(0xffd9b0, 0.55));
+scene.add(new THREE.AmbientLight(0xffd9b0, 0.7));
 
-const keyLight = new THREE.DirectionalLight(0xffe0aa, 2.4);
+const keyLight = new THREE.DirectionalLight(0xffe0aa, 2.2);
 keyLight.position.set(10, 18, 12);
 keyLight.castShadow = true;
 scene.add(keyLight);
 
-const warmLight = new THREE.PointLight(0xff9b35, 1.25, 40);
+const warmLight = new THREE.PointLight(0xff9b35, 1.3, 40);
 warmLight.position.set(-8, 6, 8);
 scene.add(warmLight);
 
-const rimLight = new THREE.DirectionalLight(0xffc47a, 0.75);
+const rimLight = new THREE.DirectionalLight(0xffc47a, 0.8);
 rimLight.position.set(-12, 10, -10);
 scene.add(rimLight);
 
 /* TEXTURE */
 function createWoodTexture() {
     const canvas = document.createElement('canvas');
-    canvas.width = 2048;
+    canvas.width = 1024;
     canvas.height = 1024;
     const ctx = canvas.getContext('2d');
 
-    ctx.fillStyle = '#8b4a1d';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    // rich wood base
-    const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-    gradient.addColorStop(0.00, 'rgba(45, 17, 5, 0.95)');
-    gradient.addColorStop(0.18, 'rgba(120, 57, 20, 0.85)');
-    gradient.addColorStop(0.38, 'rgba(190, 112, 48, 0.78)');
-    gradient.addColorStop(0.58, 'rgba(145, 70, 25, 0.88)');
-    gradient.addColorStop(0.78, 'rgba(85, 35, 10, 0.92)');
-    gradient.addColorStop(1.00, 'rgba(35, 12, 3, 0.98)');
+    const gradient = ctx.createLinearGradient(0, 0, 1024, 1024);
+    gradient.addColorStop(0, '#5a2509');
+    gradient.addColorStop(0.25, '#9a4f1d');
+    gradient.addColorStop(0.5, '#c47732');
+    gradient.addColorStop(0.75, '#7a3510');
+    gradient.addColorStop(1, '#2b0e03');
     ctx.fillStyle = gradient;
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillRect(0, 0, 1024, 1024);
 
-    // strong black/brown grain
-    for (let i = 0; i < 260; i++) {
-        const y = Math.random() * canvas.height;
+    for (let i = 0; i < 180; i++) {
+        const y = Math.random() * 1024;
+
         ctx.beginPath();
-        ctx.strokeStyle = `rgba(25, 8, 2, ${0.16 + Math.random() * 0.22})`;
-        ctx.lineWidth = 1 + Math.random() * 4;
+        ctx.strokeStyle = `rgba(30, 10, 2, ${0.10 + Math.random() * 0.18})`;
+        ctx.lineWidth = 1 + Math.random() * 3;
         ctx.moveTo(-100, y);
 
-        for (let x = -100; x <= canvas.width + 100; x += 55) {
+        for (let x = -100; x <= 1124; x += 60) {
             ctx.lineTo(
                 x,
-                y +
-                Math.sin(x * 0.013 + i) * 20 +
-                Math.sin(x * 0.04 + i * 0.5) * 7
+                y + Math.sin(x * 0.018 + i) * 18 + Math.sin(x * 0.04 + i) * 5
             );
         }
 
         ctx.stroke();
     }
 
-    // golden grain highlights
-    for (let i = 0; i < 180; i++) {
-        const y = Math.random() * canvas.height;
+    for (let i = 0; i < 90; i++) {
+        const y = Math.random() * 1024;
+
         ctx.beginPath();
-        ctx.strokeStyle = `rgba(255, 190, 95, ${0.08 + Math.random() * 0.12})`;
+        ctx.strokeStyle = `rgba(255, 190, 95, ${0.05 + Math.random() * 0.08})`;
         ctx.lineWidth = 1 + Math.random() * 2;
         ctx.moveTo(-100, y);
 
-        for (let x = -100; x <= canvas.width + 100; x += 70) {
-            ctx.lineTo(
-                x,
-                y + Math.sin(x * 0.018 + i) * 14
-            );
+        for (let x = -100; x <= 1124; x += 70) {
+            ctx.lineTo(x, y + Math.sin(x * 0.02 + i) * 12);
         }
 
         ctx.stroke();
     }
 
-    // realistic knots
-    for (let i = 0; i < 34; i++) {
-        const x = Math.random() * canvas.width;
-        const y = Math.random() * canvas.height;
-        const rx = 45 + Math.random() * 110;
-        const ry = 12 + Math.random() * 34;
-
+    for (let i = 0; i < 18; i++) {
         ctx.save();
-        ctx.translate(x, y);
+        ctx.translate(Math.random() * 1024, Math.random() * 1024);
         ctx.rotate((Math.random() - 0.5) * 0.5);
 
-        for (let r = 0; r < 6; r++) {
+        for (let r = 0; r < 5; r++) {
             ctx.beginPath();
-            ctx.strokeStyle = `rgba(20, 6, 1, ${0.18 - r * 0.018})`;
+            ctx.strokeStyle = `rgba(25, 8, 1, ${0.15 - r * 0.02})`;
             ctx.lineWidth = 2;
-            ctx.ellipse(0, 0, rx - r * 10, ry - r * 3, 0, 0, Math.PI * 2);
+            ctx.ellipse(0, 0, 50 + r * 15, 14 + r * 4, 0, 0, Math.PI * 2);
             ctx.stroke();
         }
 
         ctx.restore();
     }
 
-    // dark aged overlay
-    ctx.fillStyle = 'rgba(30, 8, 1, 0.18)';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
     const texture = new THREE.CanvasTexture(canvas);
     texture.wrapS = THREE.RepeatWrapping;
     texture.wrapT = THREE.RepeatWrapping;
-    texture.repeat.set(1.05, 0.75);
-    texture.anisotropy = renderer.capabilities.getMaxAnisotropy();
+    texture.repeat.set(2.1, 1.1);
     texture.needsUpdate = true;
 
     return texture;
@@ -151,23 +128,23 @@ const woodTexture = createWoodTexture();
 
 /* MATERIALS */
 const boardMaterial = new THREE.MeshStandardMaterial({
-    color: 0xd58a3a,
+    color: 0xb86a2b,
     map: woodTexture,
-    roughness: 0.48,
-    metalness: 0.015
+    roughness: 0.62,
+    metalness: 0.02
 });
 
 const boardSideMaterial = new THREE.MeshStandardMaterial({
     color: 0x5a2308,
     map: woodTexture,
-    roughness: 0.7,
+    roughness: 0.78,
     metalness: 0.01
 });
 
 const pitRimMaterial = new THREE.MeshStandardMaterial({
-    color: 0xd08a3f,
+    color: 0xc47732,
     map: woodTexture,
-    roughness: 0.5,
+    roughness: 0.6,
     metalness: 0.015
 });
 
@@ -193,7 +170,7 @@ const stoneMaterial = new THREE.MeshStandardMaterial({
 const boardGroup = new THREE.Group();
 scene.add(boardGroup);
 
-/* MAIN WOODEN BOARD */
+/* MAIN BOARD */
 const base = new THREE.Mesh(
     new THREE.BoxGeometry(27.5, 1.45, 12.8),
     boardSideMaterial
@@ -212,7 +189,7 @@ top.castShadow = true;
 top.receiveShadow = true;
 boardGroup.add(top);
 
-/* SOFT ROUNDED CORNERS VISUAL */
+/* CORNERS */
 function cornerCap(x, z) {
     const cap = new THREE.Mesh(
         new THREE.CylinderGeometry(1.35, 1.35, 0.58, 36),
@@ -305,17 +282,15 @@ function createPit(x, z, index) {
     pitStoneBase[index] = { x, y: 1.82, z };
 }
 
-/* Top row: indexes 17..9 */
 for (let i = 0; i < 9; i++) {
     createPit(startX + i * pitSpacing, topRowZ, 17 - i);
 }
 
-/* Bottom row: indexes 0..8 */
 for (let i = 0; i < 9; i++) {
     createPit(startX + i * pitSpacing, bottomRowZ, i);
 }
 
-/* DECORATIVE CARVED BORDER */
+/* BORDER */
 const borderMaterial = new THREE.MeshStandardMaterial({
     color: 0x3a1605,
     roughness: 0.86
@@ -412,14 +387,13 @@ function makeTextTexture(text, options = {}) {
     const fontSize = options.fontSize || 64;
     const textColor = options.textColor || '#fff4dc';
     const padding = options.padding || 18;
-    const fontFamily = options.fontFamily || 'Outfit, Arial';
+    const fontFamily = options.fontFamily || 'Arial';
 
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
 
     ctx.font = `bold ${fontSize}px ${fontFamily}`;
-    const metrics = ctx.measureText(text);
-    const textWidth = Math.ceil(metrics.width);
+    const textWidth = Math.ceil(ctx.measureText(text).width);
 
     canvas.width = textWidth + padding * 2;
     canvas.height = fontSize + padding * 2;
@@ -438,6 +412,7 @@ function makeTextTexture(text, options = {}) {
 
     const texture = new THREE.CanvasTexture(canvas);
     texture.needsUpdate = true;
+
     return { texture, width: canvas.width, height: canvas.height };
 }
 
@@ -456,6 +431,7 @@ function createTextSprite(text, options = {}) {
     sprite.scale.set(width * scaleFactor, height * scaleFactor, 1);
     sprite.userData.options = options;
     sprite.renderOrder = 10;
+
     return sprite;
 }
 
@@ -566,6 +542,7 @@ function tryInitialSync() {
         sync3DBoardFromGameState(window.getCurrentGameState());
     }
 }
+
 setTimeout(tryInitialSync, 0);
 setTimeout(tryInitialSync, 200);
 
