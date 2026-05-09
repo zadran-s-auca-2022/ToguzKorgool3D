@@ -601,8 +601,6 @@ function addHoverSound(selector) {
     });
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-    addHoverSound(".intro-start-btn");
-    addHoverSound(".intro-rules-btn");
-    addHoverSound(".btn");
-});
+addHoverSound(".intro-start-btn");
+addHoverSound(".intro-rules-btn");
+addHoverSound(".btn");
