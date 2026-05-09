@@ -990,3 +990,85 @@ h1 {
     font-size: 15px;
     line-height: 1.65;
 }
+
+/* ===== RULES MODAL POLISH ===== */
+
+.rules-overlay {
+    animation: rulesFadeIn 0.25s ease both;
+    backdrop-filter: blur(6px);
+}
+
+.rules-panel {
+    animation: rulesPanelIn 0.3s ease both;
+}
+
+@keyframes rulesFadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes rulesPanelIn {
+    from {
+        opacity: 0;
+        transform: translateY(18px) scale(0.96);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Better rules scrollbar */
+.rules-body::-webkit-scrollbar {
+    width: 8px;
+}
+
+.rules-body::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: 999px;
+}
+
+.rules-body::-webkit-scrollbar-thumb {
+    background: linear-gradient(#ffd47e, #c47a24);
+    border-radius: 999px;
+}
+
+/* Stronger modal background blur/darken */
+.rules-overlay::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.35);
+    backdrop-filter: blur(4px);
+}
+
+.rules-panel {
+    position: relative;
+    z-index: 1;
+}
+
+.intro-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image:
+        radial-gradient(circle, rgba(255, 200, 100, 0.18) 1px, transparent 1px),
+        radial-gradient(circle, rgba(255, 160, 60, 0.12) 1px, transparent 1px);
+    background-size: 110px 110px, 170px 170px;
+    opacity: 0.22;
+    animation: introParticles 16s linear infinite;
+}
+
+@keyframes introParticles {
+    from {
+        background-position: 0 0, 0 0;
+    }
+    to {
+        background-position: 180px -120px, -160px 140px;
+    }
+}
