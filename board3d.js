@@ -223,7 +223,7 @@ function createKazan(x, z) {
         new THREE.CylinderGeometry(1.55, 1.75, 0.26, 64),
         pitRimMaterial
     );
-    rim.scale.set(2.45, 1, 0.95);
+    rim.scale.set(1.95, 1, 1.15);
     rim.position.set(x, 1.55, z);
     rim.castShadow = true;
     rim.receiveShadow = true;
@@ -233,7 +233,7 @@ function createKazan(x, z) {
         new THREE.CylinderGeometry(1.08, 1.52, 0.94, 64, 1, true),
         kazanInnerMaterial
     );
-    wall.scale.set(2.45, 1, 0.95);
+    wall.scale.set(1.95, 1, 1.15);
     wall.position.set(x, 1.12, z);
     wall.castShadow = true;
     wall.receiveShadow = true;
@@ -243,7 +243,7 @@ function createKazan(x, z) {
         new THREE.CylinderGeometry(1.08, 1.16, 0.08, 64),
         kazanInnerMaterial
     );
-    inner.scale.set(2.45, 1, 0.95);
+    inner.scale.set(1.95, 1, 1.15);
     inner.position.set(x, 0.62, z);
     inner.receiveShadow = true;
     boardGroup.add(inner);
@@ -268,7 +268,7 @@ function createPit(x, z, index) {
         new THREE.CylinderGeometry(0.92, 1.05, 0.24, 64),
         pitRimMaterial
     );
-    rim.scale.set(1.55, 1, 0.88);
+    rim.scale.set(1.0, 1, 1.55);
     rim.position.set(x, 1.55, z);
     rim.castShadow = true;
     rim.receiveShadow = true;
@@ -278,7 +278,7 @@ function createPit(x, z, index) {
         new THREE.CylinderGeometry(0.66, 0.90, 0.70, 64, 1, true),
         pitInnerMaterial.clone()
     );
-    wall.scale.set(1.55, 1, 0.88);
+    wall.scale.set(1.0, 1, 1.55);
     wall.position.set(x, 1.24, z);
     wall.castShadow = true;
     wall.receiveShadow = true;
@@ -288,7 +288,7 @@ function createPit(x, z, index) {
         new THREE.CylinderGeometry(0.64, 0.68, 0.08, 64),
         pitInnerMaterial.clone()
     );
-    inner.scale.set(1.55, 1, 0.88);
+    inner.scale.set(1.0, 1, 1.55);
     inner.position.set(x, 0.86, z);
     inner.userData.index = index;
     inner.receiveShadow = true;
@@ -367,9 +367,9 @@ function renderPitStones(index, count) {
         const row = Math.floor(i / 5);
 
         stone.position.set(
-            base.x + (col - 2) * 0.19,
+            base.x + (col - 2) * 0.11,
             base.y + row * 0.025,
-            base.z + (row - 2.3) * 0.145
+            base.z + (row - 2.3) * 0.22
         );
 
         stone.scale.set(0.9, 0.78, 0.84);
