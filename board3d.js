@@ -257,7 +257,7 @@ function createPit(x, z, index) {
         pitRimMaterial
     );
     rim.scale.set(0.95, 1, 1.55);
-    rim.position.set(x, 0.47, z);
+    rim.position.set(x, 1.47, z);
     rim.castShadow = true;
     rim.receiveShadow = true;
     boardGroup.add(rim);
@@ -267,7 +267,7 @@ function createPit(x, z, index) {
         pitInnerMaterial.clone()
     );
     bowl.scale.set(0.82, 1, 1.32);
-    bowl.position.set(x, 0.22, z);
+    bowl.position.set(x, 1.22, z);
     bowl.receiveShadow = true;
     boardGroup.add(bowl);
 
