@@ -287,7 +287,7 @@ function createPit(x, z, index) {
     scene.add(stonesGroup);
     pitStoneGroups[index] = stonesGroup;
 
-    pitStoneBase[index] = { x, y: 1.32, z };
+    pitStoneBase[index] = { x, y: 1.58, z };
 }
 
 for (let i = 0; i < 9; i++) {
@@ -353,9 +353,9 @@ function renderPitStones(index, count) {
         const row = Math.floor(i / 5);
 
         stone.position.set(
-            base.x + (col - 2) * 0.12,
-            base.y + row * 0.018,
-            base.z + (row - 2.2) * 0.16
+            base.x + (col - 2) * 0.13,
+            base.y + row * 0.025,
+            base.z + (row - 2.2) * 0.18
         );
 
         stone.scale.set(0.9, 0.78, 0.84);
