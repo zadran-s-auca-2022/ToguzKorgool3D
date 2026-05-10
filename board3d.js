@@ -301,7 +301,7 @@ function createPit(x, z, index) {
     scene.add(stonesGroup);
     pitStoneGroups[index] = stonesGroup;
 
-    pitStoneBase[index] = { x, y: 1.16, z };
+    pitStoneBase[index] = { x, y: 1.42, z };
 }
 
 for (let i = 0; i < 9; i++) {
@@ -368,7 +368,7 @@ function renderPitStones(index, count) {
 
         stone.position.set(
             base.x + (col - 2) * 0.11,
-            base.y + row * 0.025,
+            base.y + row * 0.035,
             base.z + (row - 2.3) * 0.22
         );
 
@@ -501,8 +501,8 @@ for (let i = 0; i < 18; i++) {
 
     countSprite.position.set(
         base.x,
-        1.62,
-        isTopRow ? base.z + 0.75 : base.z - 0.75
+        1.95,
+        isTopRow ? base.z + 0.92 : base.z - 0.92
     );
     scene.add(countSprite);
     pitCountSprites[i] = countSprite;
