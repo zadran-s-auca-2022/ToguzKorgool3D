@@ -218,32 +218,23 @@ scene.add(storeStoneGroups.B);
 
 function createKazan(x, z) {
     const rim = new THREE.Mesh(
-        new THREE.CylinderGeometry(1.55, 1.75, 0.22, 64),
+        new THREE.CylinderGeometry(1.55, 1.75, 0.12, 64),
         pitRimMaterial
     );
     rim.scale.set(1.95, 1, 1.15);
-    rim.position.set(x, 1.55, z);
+    rim.position.set(x, 1.47, z);
     rim.castShadow = true;
     rim.receiveShadow = true;
     boardGroup.add(rim);
 
-    const darkBowl = new THREE.Mesh(
-        new THREE.CylinderGeometry(1.18, 1.35, 0.16, 64),
+    const bowl = new THREE.Mesh(
+        new THREE.CylinderGeometry(1.05, 1.35, 0.50, 64),
         kazanInnerMaterial
     );
-    darkBowl.scale.set(1.72, 1, 0.95);
-    darkBowl.position.set(x, 1.58, z);
-    darkBowl.receiveShadow = true;
-    boardGroup.add(darkBowl);
-
-    const bottom = new THREE.Mesh(
-        new THREE.CylinderGeometry(1.0, 1.1, 0.06, 64),
-        kazanInnerMaterial
-    );
-    bottom.scale.set(1.6, 1, 0.85);
-    bottom.position.set(x, 1.42, z);
-    bottom.receiveShadow = true;
-    boardGroup.add(bottom);
+    bowl.scale.set(1.65, 1, 0.92);
+    bowl.position.set(x, 1.15, z);
+    bowl.receiveShadow = true;
+    boardGroup.add(bowl);
 }
 
 createKazan(-5.1, 0);
@@ -262,45 +253,41 @@ const bottomRowZ = 3.25;
 
 function createPit(x, z, index) {
     const rim = new THREE.Mesh(
-        new THREE.CylinderGeometry(0.78, 0.9, 0.22, 64),
+        new THREE.CylinderGeometry(0.78, 0.88, 0.12, 64),
         pitRimMaterial
     );
-    rim.scale.set(0.92, 1, 1.48);
-    rim.position.set(x, 1.55, z);
+    rim.scale.set(0.95, 1, 1.55);
+    rim.position.set(x, 1.47, z);
     rim.castShadow = true;
     rim.receiveShadow = true;
     boardGroup.add(rim);
 
-    const darkBowl = new THREE.Mesh(
-        new THREE.CylinderGeometry(0.54, 0.68, 0.14, 64),
+    const bowl = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.52, 0.68, 0.42, 64),
         pitInnerMaterial.clone()
     );
-    darkBowl.scale.set(0.82, 1, 1.22);
-    darkBowl.position.set(x, 1.58, z);
-    darkBowl.receiveShadow = true;
-    boardGroup.add(darkBowl);
+    bowl.scale.set(0.82, 1, 1.32);
+    bowl.position.set(x, 1.22, z);
+    bowl.receiveShadow = true;
+    boardGroup.add(bowl);
 
     const clickSurface = new THREE.Mesh(
-        new THREE.CylinderGeometry(0.66, 0.78, 0.08, 64),
-        new THREE.MeshBasicMaterial({
-            transparent: true,
-            opacity: 0,
-            depthWrite: false
-        })
+        new THREE.CylinderGeometry(0.7, 0.8, 0.05, 64),
+        new THREE.MeshBasicMaterial({ transparent: true, opacity: 0 })
     );
-    clickSurface.scale.set(0.95, 1, 1.5);
-    clickSurface.position.set(x, 1.64, z);
+    clickSurface.scale.set(0.95, 1, 1.55);
+    clickSurface.position.set(x, 1.50, z);
     clickSurface.userData.index = index;
     boardGroup.add(clickSurface);
 
     pitMeshes.push(clickSurface);
-    pitMeshByIndex[index] = darkBowl;
+    pitMeshByIndex[index] = bowl;
 
     const stonesGroup = new THREE.Group();
     scene.add(stonesGroup);
     pitStoneGroups[index] = stonesGroup;
 
-    pitStoneBase[index] = { x, y: 1.72, z };
+    pitStoneBase[index] = { x, y: 1.32, z };
 }
 
 for (let i = 0; i < 9; i++) {
@@ -366,9 +353,9 @@ function renderPitStones(index, count) {
         const row = Math.floor(i / 5);
 
         stone.position.set(
-            base.x + (col - 2) * 0.13,
-            base.y + row * 0.025,
-            base.z + (row - 2.2) * 0.18
+            base.x + (col - 2) * 0.12,
+            base.y + row * 0.018,
+            base.z + (row - 2.2) * 0.16
         );
 
         stone.scale.set(0.9, 0.78, 0.84);
@@ -393,9 +380,9 @@ function renderStoreStones(side, count) {
         const row = Math.floor(i / 8);
 
         stone.position.set(
-            baseX + (col - 3.5) * 0.25,
-            1.68 + (row % 2) * 0.035,
-            baseZ + (row - 3) * 0.27
+            baseX + (col - 3.5) * 0.22,
+            1.33 + (row % 2) * 0.025,
+            baseZ + (row - 3) * 0.22
         );
 
         stone.scale.set(1.05, 0.9, 1.0);
@@ -444,7 +431,7 @@ function createTextSprite(text, options = {}) {
         map: texture,
         transparent: true,
         depthWrite: false,
-        depthTest: false
+        depthTest: true
     });
 
     const sprite = new THREE.Sprite(material);
