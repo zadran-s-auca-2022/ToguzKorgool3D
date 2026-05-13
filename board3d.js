@@ -411,16 +411,27 @@ function renderPitStones(index, count) {
         stone.castShadow = true;
         stone.receiveShadow = true;
 
-        const col = i % 5;
-        const row = Math.floor(i / 5);
+        const angle = i * 2.399 + index * 0.37;
+        const radius = 0.08 + Math.sqrt(i % 18) * 0.13;
+
+        const randomX = Math.sin(angle) * radius;
+        const randomZ = Math.cos(angle) * radius * 1.35;
 
         stone.position.set(
-            base.x + (col - 2) * 0.13,
-            base.y + Math.floor(row / 3) * 0.035,
-            base.z + (row - 2.2) * 0.16
+            base.x + randomX,
+            base.y + Math.floor(i / 10) * 0.055,
+            base.z + randomZ
         );
 
-        stone.scale.set(0.9, 0.78, 0.86);
+        stone.rotation.set(
+            Math.random() * 0.6,
+            Math.random() * 0.6,
+            Math.random() * 0.6
+        );
+
+        const size = 0.82 + Math.random() * 0.22;
+        stone.scale.set(size, 0.72 + Math.random() * 0.18, size);
+
         group.add(stone);
     }
 }
@@ -438,16 +449,27 @@ function renderStoreStones(side, count) {
         stone.castShadow = true;
         stone.receiveShadow = true;
 
-        const col = i % 10;
-        const row = Math.floor(i / 10);
+        const angle = i * 2.399 + (side === 'A' ? 0.4 : 1.2);
+        const radius = 0.12 + Math.sqrt(i % 35) * 0.18;
+
+        const randomX = Math.sin(angle) * radius * 1.55;
+        const randomZ = Math.cos(angle) * radius * 0.72;
 
         stone.position.set(
-            baseX + (col - 4.5) * 0.20,
-            1.72 + Math.floor(row / 3) * 0.035,
-            baseZ + (row - 4.2) * 0.16
+            baseX + randomX,
+            1.72 + Math.floor(i / 22) * 0.055,
+            baseZ + randomZ
         );
 
-        stone.scale.set(1.02, 0.82, 0.95);
+        stone.rotation.set(
+            Math.random() * 0.6,
+            Math.random() * 0.6,
+            Math.random() * 0.6
+        );
+
+        const size = 0.92 + Math.random() * 0.2;
+        stone.scale.set(size, 0.78 + Math.random() * 0.16, size);
+
         group.add(stone);
     }
 }
