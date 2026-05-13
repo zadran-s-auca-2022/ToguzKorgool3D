@@ -149,14 +149,14 @@ const pitRimMaterial = new THREE.MeshStandardMaterial({
 });
 
 const pitInnerMaterial = new THREE.MeshStandardMaterial({
-    color: 0x120603,
-    roughness: 0.98,
+    color: 0x090201,
+    roughness: 1.0,
     metalness: 0.0
 });
 
 const kazanInnerMaterial = new THREE.MeshStandardMaterial({
-    color: 0x170703,
-    roughness: 0.98,
+    color: 0x090201,
+    roughness: 1.0,
     metalness: 0.0
 });
 
@@ -217,24 +217,55 @@ scene.add(storeStoneGroups.A);
 scene.add(storeStoneGroups.B);
 
 function createKazan(x, z) {
-    const rim = new THREE.Mesh(
-        new THREE.CylinderGeometry(1.55, 1.75, 0.12, 64),
+    const rimTop = new THREE.Mesh(
+        new THREE.TorusGeometry(1.45, 0.11, 18, 120),
         pitRimMaterial
     );
-    rim.scale.set(1.95, 1, 1.15);
-    rim.position.set(x, 1.47, z);
-    rim.castShadow = true;
-    rim.receiveShadow = true;
-    boardGroup.add(rim);
+    rimTop.rotation.x = Math.PI / 2;
+    rimTop.scale.set(1.95, 1.05, 1);
+    rimTop.position.set(x, 1.62, z);
+    rimTop.castShadow = true;
+    rimTop.receiveShadow = true;
+    boardGroup.add(rimTop);
 
-    const bowl = new THREE.Mesh(
-        new THREE.CylinderGeometry(1.05, 1.35, 0.50, 64),
+    const rimMiddle = new THREE.Mesh(
+        new THREE.TorusGeometry(1.25, 0.075, 16, 120),
         kazanInnerMaterial
     );
-    bowl.scale.set(1.65, 1, 0.92);
-    bowl.position.set(x, 1.15, z);
-    bowl.receiveShadow = true;
-    boardGroup.add(bowl);
+    rimMiddle.rotation.x = Math.PI / 2;
+    rimMiddle.scale.set(1.85, 0.98, 1);
+    rimMiddle.position.set(x, 1.42, z);
+    rimMiddle.castShadow = true;
+    rimMiddle.receiveShadow = true;
+    boardGroup.add(rimMiddle);
+
+    const rimDeep = new THREE.Mesh(
+        new THREE.TorusGeometry(1.02, 0.055, 16, 120),
+        new THREE.MeshBasicMaterial({
+            color: 0x030100,
+            transparent: true,
+            opacity: 0.9
+        })
+    );
+    rimDeep.rotation.x = Math.PI / 2;
+    rimDeep.scale.set(1.75, 0.92, 1);
+    rimDeep.position.set(x, 1.22, z);
+    boardGroup.add(rimDeep);
+
+    const darkBottom = new THREE.Mesh(
+        new THREE.CircleGeometry(1.02, 120),
+        new THREE.MeshBasicMaterial({
+            color: 0x030100,
+            transparent: true,
+            opacity: 0.68,
+            side: THREE.DoubleSide,
+            depthWrite: false
+        })
+    );
+    darkBottom.rotation.x = -Math.PI / 2;
+    darkBottom.scale.set(1.75, 0.92, 1);
+    darkBottom.position.set(x, 1.13, z);
+    boardGroup.add(darkBottom);
 }
 
 createKazan(-5.1, 0);
@@ -407,19 +438,16 @@ function renderStoreStones(side, count) {
         stone.castShadow = true;
         stone.receiveShadow = true;
 
-        const col = i % 9;
-        const row = Math.floor(i / 9);
-
-        const xOffset = (col - 4) * 0.28;
-        const zOffset = (row - 4.5) * 0.18;
+        const col = i % 10;
+        const row = Math.floor(i / 10);
 
         stone.position.set(
-            baseX + xOffset,
-            1.58 + Math.floor(row / 3) * 0.035,
-            baseZ + zOffset
+            baseX + (col - 4.5) * 0.20,
+            1.72 + Math.floor(row / 3) * 0.035,
+            baseZ + (row - 4.2) * 0.16
         );
 
-        stone.scale.set(1.05, 0.82, 1.0);
+        stone.scale.set(1.02, 0.82, 0.95);
         group.add(stone);
     }
 }
