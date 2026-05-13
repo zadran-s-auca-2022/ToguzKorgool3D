@@ -391,35 +391,32 @@ function renderPitStones(index, count) {
     const maxVisual = Math.min(count, 24);
 
     for (let i = 0; i < maxVisual; i++) {
-
         const stone = new THREE.Mesh(stoneGeometry, stoneMaterial);
         stone.castShadow = true;
         stone.receiveShadow = true;
 
-        const angle = i * 2.399 + index * 0.45;
+        const seed = index * 17.37 + i * 3.91;
+        const angle = i * 2.15 + index * 0.83;
+        const radius = 0.08 + Math.sqrt((i % 12) + 1) * 0.09;
 
-        // tighter positioning
-        const radius = 0.07 + Math.sqrt(i % 12) * 0.065;
+        const messyX = Math.sin(seed) * 0.045;
+        const messyZ = Math.cos(seed * 1.3) * 0.055;
 
         const layer = Math.floor(i / 12);
 
         stone.position.set(
-            base.x + Math.cos(angle) * radius,
+            base.x + Math.cos(angle) * radius + messyX,
             base.y + 0.13 + layer * 0.055,
-            base.z + Math.sin(angle) * radius * 1.15
+            base.z + Math.sin(angle) * radius * 1.35 + messyZ
         );
 
-        // SMALLER stones
-        const size = 1.05 + Math.random() * 0.06;
+        const size = 0.90 + ((i + index) % 4) * 0.035;
+        stone.scale.set(size, size * 0.86, size);
 
-        // slightly flattened like real board stones
-        stone.scale.set(size, size * 0.82, size);
-
-        // tiny random rotations
         stone.rotation.set(
-            Math.random() * 0.2,
-            Math.random() * Math.PI,
-            Math.random() * 0.2
+            Math.sin(seed) * 0.35,
+            Math.cos(seed) * 0.55,
+            Math.sin(seed * 0.7) * 0.35
         );
 
         group.add(stone);
