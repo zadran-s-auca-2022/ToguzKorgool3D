@@ -217,55 +217,43 @@ scene.add(storeStoneGroups.A);
 scene.add(storeStoneGroups.B);
 
 function createKazan(x, z) {
-    const rimTop = new THREE.Mesh(
-        new THREE.TorusGeometry(1.45, 0.11, 18, 120),
+
+    const outerRim = new THREE.Mesh(
+        new THREE.TorusGeometry(1.48, 0.18, 24, 140),
         pitRimMaterial
     );
-    rimTop.rotation.x = Math.PI / 2;
-    rimTop.scale.set(1.95, 1.05, 1);
-    rimTop.position.set(x, 1.62, z);
-    rimTop.castShadow = true;
-    rimTop.receiveShadow = true;
-    boardGroup.add(rimTop);
+    outerRim.rotation.x = Math.PI / 2;
+    outerRim.scale.set(1.92, 1.02, 1);
+    outerRim.position.set(x, 1.74, z);
+    outerRim.castShadow = true;
+    outerRim.receiveShadow = true;
+    boardGroup.add(outerRim);
 
-    const rimMiddle = new THREE.Mesh(
-        new THREE.TorusGeometry(1.25, 0.075, 16, 120),
+    const innerWall = new THREE.Mesh(
+        new THREE.TorusGeometry(1.18, 0.12, 20, 140),
         kazanInnerMaterial
     );
-    rimMiddle.rotation.x = Math.PI / 2;
-    rimMiddle.scale.set(1.85, 0.98, 1);
-    rimMiddle.position.set(x, 1.42, z);
-    rimMiddle.castShadow = true;
-    rimMiddle.receiveShadow = true;
-    boardGroup.add(rimMiddle);
+    innerWall.rotation.x = Math.PI / 2;
+    innerWall.scale.set(1.82, 0.94, 1);
+    innerWall.position.set(x, 1.44, z);
+    innerWall.castShadow = true;
+    innerWall.receiveShadow = true;
+    boardGroup.add(innerWall);
 
-    const rimDeep = new THREE.Mesh(
-        new THREE.TorusGeometry(1.02, 0.055, 16, 120),
+    const deepShadow = new THREE.Mesh(
+        new THREE.CircleGeometry(1.04, 140),
         new THREE.MeshBasicMaterial({
-            color: 0x030100,
+            color: 0x020100,
             transparent: true,
-            opacity: 0.9
-        })
-    );
-    rimDeep.rotation.x = Math.PI / 2;
-    rimDeep.scale.set(1.75, 0.92, 1);
-    rimDeep.position.set(x, 1.22, z);
-    boardGroup.add(rimDeep);
-
-    const darkBottom = new THREE.Mesh(
-        new THREE.CircleGeometry(1.02, 120),
-        new THREE.MeshBasicMaterial({
-            color: 0x030100,
-            transparent: true,
-            opacity: 0.68,
+            opacity: 0.92,
             side: THREE.DoubleSide,
             depthWrite: false
         })
     );
-    darkBottom.rotation.x = -Math.PI / 2;
-    darkBottom.scale.set(1.75, 0.92, 1);
-    darkBottom.position.set(x, 1.13, z);
-    boardGroup.add(darkBottom);
+    deepShadow.rotation.x = -Math.PI / 2;
+    deepShadow.scale.set(1.72, 0.92, 1);
+    deepShadow.position.set(x, 1.16, z);
+    boardGroup.add(deepShadow);
 }
 
 createKazan(-5.1, 0);
@@ -283,73 +271,69 @@ const topRowZ = -3.25;
 const bottomRowZ = 3.25;
 
 function createPit(x, z, index) {
-    const rimTop = new THREE.Mesh(
-        new THREE.TorusGeometry(0.78, 0.09, 18, 96),
+
+    const outerRim = new THREE.Mesh(
+        new THREE.TorusGeometry(0.82, 0.14, 24, 120),
         pitRimMaterial
     );
-    rimTop.rotation.x = Math.PI / 2;
-    rimTop.scale.set(1.08, 1.62, 1);
-    rimTop.position.set(x, 1.62, z);
-    rimTop.castShadow = true;
-    rimTop.receiveShadow = true;
-    boardGroup.add(rimTop);
+    outerRim.rotation.x = Math.PI / 2;
+    outerRim.scale.set(1.08, 1.65, 1);
+    outerRim.position.set(x, 1.68, z);
+    outerRim.castShadow = true;
+    outerRim.receiveShadow = true;
+    boardGroup.add(outerRim);
 
-    const rimMiddle = new THREE.Mesh(
-        new THREE.TorusGeometry(0.68, 0.055, 16, 96),
-        pitInnerMaterial.clone()
+    const innerWall = new THREE.Mesh(
+        new THREE.TorusGeometry(0.63, 0.09, 20, 120),
+        pitInnerMaterial
     );
-    rimMiddle.rotation.x = Math.PI / 2;
-    rimMiddle.scale.set(1.03, 1.55, 1);
-    rimMiddle.position.set(x, 1.44, z);
-    rimMiddle.castShadow = true;
-    rimMiddle.receiveShadow = true;
-    boardGroup.add(rimMiddle);
+    innerWall.rotation.x = Math.PI / 2;
+    innerWall.scale.set(1.02, 1.56, 1);
+    innerWall.position.set(x, 1.43, z);
+    innerWall.castShadow = true;
+    innerWall.receiveShadow = true;
+    boardGroup.add(innerWall);
 
-    const rimDeep = new THREE.Mesh(
-        new THREE.TorusGeometry(0.54, 0.045, 16, 96),
+    const deepShadow = new THREE.Mesh(
+        new THREE.CircleGeometry(0.52, 120),
         new THREE.MeshBasicMaterial({
-            color: 0x050100,
+            color: 0x020100,
             transparent: true,
-            opacity: 0.88
-        })
-    );
-    rimDeep.rotation.x = Math.PI / 2;
-    rimDeep.scale.set(0.98, 1.48, 1);
-    rimDeep.position.set(x, 1.25, z);
-    boardGroup.add(rimDeep);
-
-    const darkBottom = new THREE.Mesh(
-        new THREE.CircleGeometry(0.48, 96),
-        new THREE.MeshBasicMaterial({
-            color: 0x030100,
-            transparent: true,
-            opacity: 0.62,
+            opacity: 0.92,
             side: THREE.DoubleSide,
             depthWrite: false
         })
     );
-    darkBottom.rotation.x = -Math.PI / 2;
-    darkBottom.scale.set(1.0, 1.52, 1);
-    darkBottom.position.set(x, 1.17, z);
-    boardGroup.add(darkBottom);
+    deepShadow.rotation.x = -Math.PI / 2;
+    deepShadow.scale.set(1.0, 1.55, 1);
+    deepShadow.position.set(x, 1.18, z);
+    boardGroup.add(deepShadow);
 
     const clickSurface = new THREE.Mesh(
-        new THREE.CylinderGeometry(0.9, 0.9, 0.08, 64),
-        new THREE.MeshBasicMaterial({ transparent: true, opacity: 0 })
+        new THREE.CylinderGeometry(0.92, 0.92, 0.08, 64),
+        new THREE.MeshBasicMaterial({
+            transparent: true,
+            opacity: 0
+        })
     );
-    clickSurface.scale.set(1.08, 1, 1.62);
-    clickSurface.position.set(x, 1.70, z);
+
+    clickSurface.scale.set(1.08, 1, 1.65);
+    clickSurface.position.set(x, 1.80, z);
     clickSurface.userData.index = index;
     boardGroup.add(clickSurface);
 
     pitMeshes.push(clickSurface);
-    pitMeshByIndex[index] = rimMiddle;
+    pitMeshByIndex[index] = innerWall;
 
     const stonesGroup = new THREE.Group();
     scene.add(stonesGroup);
     pitStoneGroups[index] = stonesGroup;
 
-    pitStoneBase[index] = { x, y: 1.72, z };
+    pitStoneBase[index] = {
+        x,
+        y: 1.34,
+        z
+    };
 }
 
 for (let i = 0; i < 9; i++) {
