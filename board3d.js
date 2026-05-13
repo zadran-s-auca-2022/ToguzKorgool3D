@@ -419,7 +419,7 @@ function renderPitStones(index, count) {
 
         stone.position.set(
             base.x + randomX,
-            base.y + Math.floor(i / 10) * 0.055,
+            base.y - 0.22 + Math.floor(i / 10) * 0.045,
             base.z + randomZ
         );
 
@@ -457,7 +457,7 @@ function renderStoreStones(side, count) {
 
         stone.position.set(
             baseX + randomX,
-            1.72 + Math.floor(i / 22) * 0.055,
+            1.38 + Math.floor(i / 22) * 0.045,
             baseZ + randomZ
         );
 
