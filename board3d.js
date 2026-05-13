@@ -376,16 +376,19 @@ function renderStoreStones(side, count) {
         stone.castShadow = true;
         stone.receiveShadow = true;
 
-        const col = i % 8;
-        const row = Math.floor(i / 8);
+        const col = i % 9;
+        const row = Math.floor(i / 9);
+
+        const xOffset = (col - 4) * 0.28;
+        const zOffset = (row - 4.5) * 0.18;
 
         stone.position.set(
-            baseX + (col - 3.5) * 0.22,
-            1.33 + (row % 2) * 0.025,
-            baseZ + (row - 3) * 0.22
+            baseX + xOffset,
+            1.58 + Math.floor(row / 3) * 0.035,
+            baseZ + zOffset
         );
 
-        stone.scale.set(1.05, 0.9, 1.0);
+        stone.scale.set(1.05, 0.82, 1.0);
         group.add(stone);
     }
 }
