@@ -388,7 +388,7 @@ function renderPitStones(index, count) {
 
     clearGroup(group);
 
-    const maxVisual = Math.min(count, 30);
+    const maxVisual = Math.min(count, 24);
 
     for (let i = 0; i < maxVisual; i++) {
         const stone = new THREE.Mesh(stoneGeometry, stoneMaterial);
@@ -396,31 +396,23 @@ function renderPitStones(index, count) {
         stone.receiveShadow = true;
 
         const angle = i * 2.399 + index * 0.45;
-        const radius = Math.sqrt(i % 12) * 0.105;
-
-        const x = Math.cos(angle) * radius;
-        const z = Math.sin(angle) * radius * 1.35;
+        const radius = 0.10 + Math.sqrt(i % 12) * 0.095;
 
         const layer = Math.floor(i / 12);
 
         stone.position.set(
-            base.x + x,
-            base.y + layer * 0.055,
-            base.z + z
+            base.x + Math.cos(angle) * radius,
+            base.y + 0.16 + layer * 0.06,
+            base.z + Math.sin(angle) * radius * 1.25
         );
 
-        const size = 0.88 + ((i + index) % 4) * 0.035;
-        stone.scale.set(size, 0.78, size);
-
-        stone.rotation.set(
-            (i * 0.19) % 0.5,
-            (i * 0.31) % 0.5,
-            (i * 0.27) % 0.5
-        );
+        const size = 1.25 + (i % 4) * 0.04;
+        stone.scale.set(size, size * 0.88, size);
 
         group.add(stone);
     }
 }
+
 function renderStoreStones(side, count) {
     const group = storeStoneGroups[side];
     clearGroup(group);
