@@ -252,65 +252,55 @@ const topRowZ = -3.25;
 const bottomRowZ = 3.25;
 
 function createPit(x, z, index) {
-    const rim = new THREE.Mesh(
-        new THREE.CylinderGeometry(0.76, 0.98, 0.18, 96),
+    const outerRim = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.92, 1.02, 0.18, 96),
         pitRimMaterial
     );
-    rim.scale.set(0.78, 1, 1.75);
-    rim.position.set(x, 1.50, z);
-    rim.castShadow = true;
-    rim.receiveShadow = true;
-    boardGroup.add(rim);
+    outerRim.scale.set(1.05, 1, 1.45);
+    outerRim.position.set(x, 1.50, z);
+    outerRim.castShadow = true;
+    outerRim.receiveShadow = true;
+    boardGroup.add(outerRim);
 
-    const innerWall = new THREE.Mesh(
-        new THREE.CylinderGeometry(0.62, 0.42, 0.62, 96, 1, true),
+    const deepBowl = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.72, 0.48, 0.72, 96),
         pitInnerMaterial.clone()
     );
-    innerWall.scale.set(0.78, 1, 1.75);
-    innerWall.position.set(x, 1.20, z);
-    innerWall.castShadow = true;
-    innerWall.receiveShadow = true;
-    boardGroup.add(innerWall);
+    deepBowl.scale.set(1.00, 1, 1.38);
+    deepBowl.position.set(x, 1.12, z);
+    deepBowl.castShadow = true;
+    deepBowl.receiveShadow = true;
+    boardGroup.add(deepBowl);
 
-    const darkBottom = new THREE.Mesh(
-        new THREE.CylinderGeometry(0.42, 0.48, 0.04, 96),
-        pitInnerMaterial.clone()
-    );
-    darkBottom.scale.set(0.78, 1, 1.75);
-    darkBottom.position.set(x, 0.88, z);
-    darkBottom.receiveShadow = true;
-    boardGroup.add(darkBottom);
-
-    const shadowLayer = new THREE.Mesh(
-        new THREE.CylinderGeometry(0.57, 0.44, 0.05, 96),
+    const blackHole = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.57, 0.40, 0.05, 96),
         new THREE.MeshBasicMaterial({
             color: 0x000000,
             transparent: true,
-            opacity: 0.42,
-            depthWrite: false
+            opacity: 0.55
         })
     );
-    shadowLayer.scale.set(0.78, 1, 1.75);
-    shadowLayer.position.set(x, 1.05, z);
-    boardGroup.add(shadowLayer);
+    blackHole.scale.set(1.00, 1, 1.38);
+    blackHole.position.set(x, 1.31, z);
+    boardGroup.add(blackHole);
 
     const clickSurface = new THREE.Mesh(
-        new THREE.CylinderGeometry(0.7, 0.9, 0.08, 64),
+        new THREE.CylinderGeometry(0.92, 1.02, 0.08, 64),
         new THREE.MeshBasicMaterial({ transparent: true, opacity: 0 })
     );
-    clickSurface.scale.set(0.78, 1, 1.75);
-    clickSurface.position.set(x, 1.55, z);
+    clickSurface.scale.set(1.05, 1, 1.45);
+    clickSurface.position.set(x, 1.58, z);
     clickSurface.userData.index = index;
     boardGroup.add(clickSurface);
 
     pitMeshes.push(clickSurface);
-    pitMeshByIndex[index] = innerWall;
+    pitMeshByIndex[index] = deepBowl;
 
     const stonesGroup = new THREE.Group();
     scene.add(stonesGroup);
     pitStoneGroups[index] = stonesGroup;
 
-    pitStoneBase[index] = { x, y: 1.05, z };
+    pitStoneBase[index] = { x, y: 1.42, z };
 }
 
 for (let i = 0; i < 9; i++) {
@@ -372,16 +362,16 @@ function renderPitStones(index, count) {
         stone.castShadow = true;
         stone.receiveShadow = true;
 
-        const col = i % 4;
-        const row = Math.floor(i / 4);
+        const col = i % 5;
+        const row = Math.floor(i / 5);
 
         stone.position.set(
-            base.x + (col - 1.5) * 0.16,
-            base.y + 0.04 + Math.floor(row / 3) * 0.035,
-            base.z + (row - 2.3) * 0.16
+            base.x + (col - 2) * 0.13,
+            base.y + Math.floor(row / 3) * 0.035,
+            base.z + (row - 2.2) * 0.16
         );
 
-        stone.scale.set(0.82, 0.72, 0.82);
+        stone.scale.set(0.88, 0.72, 0.82);
         group.add(stone);
     }
 }
