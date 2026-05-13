@@ -395,31 +395,32 @@ function renderPitStones(index, count) {
         stone.castShadow = true;
         stone.receiveShadow = true;
 
-        const angle = i * 2.399 + index * 0.37;
-        const radius = 0.08 + Math.sqrt(i % 18) * 0.13;
+        const angle = i * 2.399 + index * 0.45;
+        const radius = Math.sqrt(i % 12) * 0.105;
 
-        const randomX = Math.sin(angle) * radius;
-        const randomZ = Math.cos(angle) * radius * 1.35;
+        const x = Math.cos(angle) * radius;
+        const z = Math.sin(angle) * radius * 1.35;
+
+        const layer = Math.floor(i / 12);
 
         stone.position.set(
-            base.x + randomX,
-            base.y - 0.22 + Math.floor(i / 10) * 0.045,
-            base.z + randomZ
+            base.x + x,
+            base.y + layer * 0.055,
+            base.z + z
         );
+
+        const size = 0.88 + ((i + index) % 4) * 0.035;
+        stone.scale.set(size, 0.78, size);
 
         stone.rotation.set(
-            Math.random() * 0.6,
-            Math.random() * 0.6,
-            Math.random() * 0.6
+            (i * 0.19) % 0.5,
+            (i * 0.31) % 0.5,
+            (i * 0.27) % 0.5
         );
-
-        const size = 0.82 + Math.random() * 0.22;
-        stone.scale.set(size, 0.72 + Math.random() * 0.18, size);
 
         group.add(stone);
     }
 }
-
 function renderStoreStones(side, count) {
     const group = storeStoneGroups[side];
     clearGroup(group);
@@ -433,26 +434,28 @@ function renderStoreStones(side, count) {
         stone.castShadow = true;
         stone.receiveShadow = true;
 
-        const angle = i * 2.399 + (side === 'A' ? 0.4 : 1.2);
-        const radius = 0.12 + Math.sqrt(i % 35) * 0.18;
+        const angle = i * 2.399 + (side === 'A' ? 0.5 : 1.4);
+        const radius = Math.sqrt(i % 34) * 0.14;
 
-        const randomX = Math.sin(angle) * radius * 1.55;
-        const randomZ = Math.cos(angle) * radius * 0.72;
+        const x = Math.cos(angle) * radius * 1.75;
+        const z = Math.sin(angle) * radius * 0.75;
+
+        const layer = Math.floor(i / 34);
 
         stone.position.set(
-            baseX + randomX,
-            1.52 + Math.floor(i / 22) * 0.045,
-            baseZ + randomZ
+            baseX + x,
+            1.56 + layer * 0.055,
+            baseZ + z
         );
+
+        const size = 0.92 + (i % 5) * 0.025;
+        stone.scale.set(size, 0.80, size);
 
         stone.rotation.set(
-            Math.random() * 0.6,
-            Math.random() * 0.6,
-            Math.random() * 0.6
+            (i * 0.17) % 0.5,
+            (i * 0.29) % 0.5,
+            (i * 0.23) % 0.5
         );
-
-        const size = 0.92 + Math.random() * 0.2;
-        stone.scale.set(size, 0.78 + Math.random() * 0.16, size);
 
         group.add(stone);
     }
