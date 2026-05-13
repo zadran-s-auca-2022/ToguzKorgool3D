@@ -405,12 +405,12 @@ function renderPitStones(index, count) {
 
         stone.position.set(
             base.x + Math.cos(angle) * radius,
-            base.y + 0.03 + layer * 0.04,
+            base.y + 0.13 + layer * 0.055,
             base.z + Math.sin(angle) * radius * 1.15
         );
 
         // SMALLER stones
-        const size = 0.62 + Math.random() * 0.04;
+        const size = 1.05 + Math.random() * 0.06;
 
         // slightly flattened like real board stones
         stone.scale.set(size, size * 0.82, size);
