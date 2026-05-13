@@ -252,78 +252,73 @@ const topRowZ = -3.25;
 const bottomRowZ = 3.25;
 
 function createPit(x, z, index) {
-    const rim = new THREE.Mesh(
-        new THREE.TorusGeometry(0.78, 0.075, 18, 96),
+    const rimTop = new THREE.Mesh(
+        new THREE.TorusGeometry(0.78, 0.09, 18, 96),
         pitRimMaterial
     );
-    rim.rotation.x = Math.PI / 2;
-    rim.scale.set(1.05, 1.58, 1);
-    rim.position.set(x, 1.53, z);
-    rim.castShadow = true;
-    rim.receiveShadow = true;
-    boardGroup.add(rim);
+    rimTop.rotation.x = Math.PI / 2;
+    rimTop.scale.set(1.08, 1.62, 1);
+    rimTop.position.set(x, 1.62, z);
+    rimTop.castShadow = true;
+    rimTop.receiveShadow = true;
+    boardGroup.add(rimTop);
 
-    const wallMaterial = pitInnerMaterial.clone();
-    wallMaterial.side = THREE.DoubleSide;
+    const rimMiddle = new THREE.Mesh(
+        new THREE.TorusGeometry(0.68, 0.055, 16, 96),
+        pitInnerMaterial.clone()
+    );
+    rimMiddle.rotation.x = Math.PI / 2;
+    rimMiddle.scale.set(1.03, 1.55, 1);
+    rimMiddle.position.set(x, 1.44, z);
+    rimMiddle.castShadow = true;
+    rimMiddle.receiveShadow = true;
+    boardGroup.add(rimMiddle);
 
-    const bowlProfile = [
-        new THREE.Vector2(0.72, 0.08),
-        new THREE.Vector2(0.62, -0.10),
-        new THREE.Vector2(0.48, -0.36),
-        new THREE.Vector2(0.36, -0.58)
-    ];
-
-    const bowlGeometry = new THREE.LatheGeometry(bowlProfile, 96);
-    const bowl = new THREE.Mesh(bowlGeometry, wallMaterial);
-    bowl.scale.set(1.05, 1, 1.58);
-    bowl.position.set(x, 1.45, z);
-    bowl.castShadow = true;
-    bowl.receiveShadow = true;
-    boardGroup.add(bowl);
-
-    const bottom = new THREE.Mesh(
-        new THREE.CylinderGeometry(0.38, 0.38, 0.035, 96),
+    const rimDeep = new THREE.Mesh(
+        new THREE.TorusGeometry(0.54, 0.045, 16, 96),
         new THREE.MeshBasicMaterial({
             color: 0x050100,
             transparent: true,
             opacity: 0.88
         })
     );
-    bottom.scale.set(1.05, 1, 1.58);
-    bottom.position.set(x, 0.86, z);
-    boardGroup.add(bottom);
+    rimDeep.rotation.x = Math.PI / 2;
+    rimDeep.scale.set(0.98, 1.48, 1);
+    rimDeep.position.set(x, 1.25, z);
+    boardGroup.add(rimDeep);
 
-    const upperShadow = new THREE.Mesh(
-        new THREE.TorusGeometry(0.64, 0.055, 16, 96),
+    const darkBottom = new THREE.Mesh(
+        new THREE.CircleGeometry(0.48, 96),
         new THREE.MeshBasicMaterial({
-            color: 0x000000,
+            color: 0x030100,
             transparent: true,
-            opacity: 0.35,
+            opacity: 0.62,
+            side: THREE.DoubleSide,
             depthWrite: false
         })
     );
-    upperShadow.rotation.x = Math.PI / 2;
-    upperShadow.scale.set(1.05, 1.58, 1);
-    upperShadow.position.set(x, 1.37, z);
-    boardGroup.add(upperShadow);
+    darkBottom.rotation.x = -Math.PI / 2;
+    darkBottom.scale.set(1.0, 1.52, 1);
+    darkBottom.position.set(x, 1.17, z);
+    boardGroup.add(darkBottom);
 
     const clickSurface = new THREE.Mesh(
         new THREE.CylinderGeometry(0.9, 0.9, 0.08, 64),
         new THREE.MeshBasicMaterial({ transparent: true, opacity: 0 })
     );
-    clickSurface.scale.set(1.05, 1, 1.58);
-    clickSurface.position.set(x, 1.60, z);
+    clickSurface.scale.set(1.08, 1, 1.62);
+    clickSurface.position.set(x, 1.70, z);
     clickSurface.userData.index = index;
     boardGroup.add(clickSurface);
 
     pitMeshes.push(clickSurface);
-    pitMeshByIndex[index] = bowl;
+    pitMeshByIndex[index] = rimMiddle;
 
     const stonesGroup = new THREE.Group();
     scene.add(stonesGroup);
     pitStoneGroups[index] = stonesGroup;
 
-    pitStoneBase[index] = { x, y: 1.18, z };
+    pitStoneBase[index] = { x, y: 1.72, z };
 }
 
 for (let i = 0; i < 9; i++) {
@@ -389,9 +384,9 @@ function renderPitStones(index, count) {
         const row = Math.floor(i / 5);
 
         stone.position.set(
-            base.x + (col - 2) * 0.14,
-            base.y + Math.floor(row / 3) * 0.045,
-            base.z + (row - 2.2) * 0.17
+            base.x + (col - 2) * 0.13,
+            base.y + Math.floor(row / 3) * 0.035,
+            base.z + (row - 2.2) * 0.16
         );
 
         stone.scale.set(0.9, 0.78, 0.86);
