@@ -55,19 +55,6 @@ const rimLight = new THREE.DirectionalLight(0xffa24a, 1.25);
 rimLight.position.set(8, 9, -10);
 scene.add(rimLight);
 
-/* DARK TABLE */
-const tableMaterial = new THREE.MeshStandardMaterial({
-    color: 0x130804,
-    roughness: 0.92,
-    metalness: 0.0
-});
-
-const table = new THREE.Mesh(new THREE.PlaneGeometry(70, 45), tableMaterial);
-table.rotation.x = -Math.PI / 2;
-table.position.y = -0.66;
-table.receiveShadow = true;
-scene.add(table);
-
 /* TEXTURE */
 function createWoodTexture() {
     const canvas = document.createElement('canvas');
@@ -328,30 +315,6 @@ function updateTextSprite(sprite, text) {
     sprite.scale.set(width * scaleFactor, height * scaleFactor, 1);
 }
 
-/* ENGRAVED TITLE EFFECT */
-function addEngravedTitle() {
-    const title1 = createTextSprite('TOGUZ', {
-        fontSize: 90,
-        textColor: '#1a0702',
-        stroke: false,
-        scaleFactor: 0.0058
-    });
-    title1.position.set(0, 1.38, -0.35);
-    title1.rotation.x = -Math.PI / 2;
-    scene.add(title1);
-
-    const title2 = createTextSprite('KORGOOL', {
-        fontSize: 90,
-        textColor: '#1a0702',
-        stroke: false,
-        scaleFactor: 0.0058
-    });
-    title2.position.set(0, 1.38, 0.42);
-    title2.rotation.x = -Math.PI / 2;
-    scene.add(title2);
-}
-addEngravedTitle();
-
 /* STORE / KAZAN GROUPS */
 const storeStoneGroups = {
     A: new THREE.Group(),
@@ -362,64 +325,60 @@ scene.add(storeStoneGroups.B);
 
 /* DEEP CARVED OVAL */
 function createCarvedOval(x, z, options = {}) {
-    const length = options.length || 1.9;
-    const width = options.width || 0.82;
-    const depth = options.depth || 0.62;
-    const topY = options.topY || 1.35;
-    const innerScale = options.innerScale || 1.0;
+    const length = options.length || 1.35;
+    const width = options.width || 0.58;
+    const depth = options.depth || 0.82;
+    const topY = options.topY || 1.36;
 
     const group = new THREE.Group();
     group.position.set(x, 0, z);
     boardGroup.add(group);
 
-    const shadow = new THREE.Mesh(
-        new THREE.CylinderGeometry(width * 0.72, width * 0.82, 0.035, 72),
-        darkCarveMaterial
+    const rim = new THREE.Mesh(
+        new THREE.TorusGeometry(width, 0.075, 18, 96),
+        rimMaterial
     );
-    shadow.rotation.x = Math.PI / 2;
-    shadow.scale.set(1.0, length / width, 1);
-    shadow.position.y = topY - depth - 0.035;
-    shadow.receiveShadow = true;
-    group.add(shadow);
+    rim.rotation.x = Math.PI / 2;
+    rim.scale.set(1.0, length / width, 1.0);
+    rim.position.y = topY + 0.05;
+    rim.castShadow = true;
+    rim.receiveShadow = true;
+    group.add(rim);
 
-    for (let i = 0; i < 7; i++) {
-        const t = i / 6;
-        const ringW = width * (1.02 - t * 0.34) * innerScale;
-        const ringL = length * (1.02 - t * 0.25) * innerScale;
-        const y = topY - t * depth;
-
-        const ring = new THREE.Mesh(
-            new THREE.TorusGeometry(ringW, 0.038 - t * 0.002, 72, 10),
-            i < 2 ? rimMaterial : innerWoodMaterial
-        );
-        ring.rotation.x = Math.PI / 2;
-        ring.scale.set(1.0, ringL / ringW, 1.0);
-        ring.position.y = y;
-        ring.castShadow = true;
-        ring.receiveShadow = true;
-        group.add(ring);
-    }
-
-    const innerWall = new THREE.Mesh(
-        new THREE.CylinderGeometry(width * 0.78, width * 0.52, depth, 72, 1, true),
+    const wall = new THREE.Mesh(
+        new THREE.CylinderGeometry(width * 0.80, width * 0.55, depth, 96, 1, true),
         innerWoodMaterial
     );
-    innerWall.rotation.x = Math.PI / 2;
-    innerWall.scale.set(1, length / width, 1);
-    innerWall.position.y = topY - depth / 2;
-    innerWall.castShadow = true;
-    innerWall.receiveShadow = true;
-    group.add(innerWall);
+    wall.scale.set(1.0, 1.0, length / width);
+    wall.position.y = topY - depth / 2;
+    wall.castShadow = true;
+    wall.receiveShadow = true;
+    group.add(wall);
 
-    const darkCore = new THREE.Mesh(
-        new THREE.CylinderGeometry(width * 0.52, width * 0.60, 0.12, 72),
+    const bottom = new THREE.Mesh(
+        new THREE.CylinderGeometry(width * 0.54, width * 0.54, 0.08, 96),
         darkCarveMaterial
     );
-    darkCore.rotation.x = Math.PI / 2;
-    darkCore.scale.set(1, length / width, 1);
-    darkCore.position.y = topY - depth + 0.015;
-    darkCore.receiveShadow = true;
-    group.add(darkCore);
+    bottom.scale.set(1.0, 1.0, length / width);
+    bottom.position.y = topY - depth;
+    bottom.receiveShadow = true;
+    group.add(bottom);
+
+    const darkInner = new THREE.Mesh(
+        new THREE.CylinderGeometry(width * 0.70, width * 0.56, depth * 0.95, 96, 1, true),
+        new THREE.MeshStandardMaterial({
+            color: 0x040100,
+            roughness: 1,
+            metalness: 0,
+            side: THREE.DoubleSide,
+            transparent: true,
+            opacity: 0.42
+        })
+    );
+    darkInner.scale.set(1.0, 1.0, length / width);
+    darkInner.position.y = topY - depth / 2 - 0.02;
+    darkInner.receiveShadow = true;
+    group.add(darkInner);
 
     return group;
 }
@@ -460,14 +419,13 @@ const bottomRowZ = 3.05;
 
 function createPit(x, z, index) {
     const carved = createCarvedOval(x, z, {
-        length: 1.34,
+        length: 1.35,
         width: 0.58,
-        depth: 0.66,
-        topY: 1.36,
-        innerScale: 1.0
+        depth: 0.82,
+        topY: 1.36
     });
 
-    pitMeshByIndex[index] = carved.children[carved.children.length - 1];
+    pitMeshByIndex[index] = carved.children[2];
 
     const clickSurface = new THREE.Mesh(
         new THREE.CylinderGeometry(0.58, 0.58, 0.08, 72),
@@ -485,7 +443,7 @@ function createPit(x, z, index) {
     scene.add(stonesGroup);
     pitStoneGroups[index] = stonesGroup;
 
-    pitStoneBase[index] = { x, y: 0.88, z };
+    pitStoneBase[index] = { x, y: 0.78, z };
 }
 
 for (let i = 0; i < 9; i++) {
@@ -537,12 +495,12 @@ function renderPitStones(index, count) {
         const layer = Math.floor(i / 12);
 
         stone.position.set(
-            base.x + (col - 1) * 0.18 + (row % 2) * 0.04,
-            base.y + layer * 0.09,
-            base.z + (row - 1.6) * 0.20
+            base.x + (col - 1) * 0.16 + (row % 2) * 0.035,
+            base.y + layer * 0.075,
+            base.z + (row - 1.55) * 0.17
         );
 
-        stone.scale.set(0.95, 0.82, 0.95);
+        stone.scale.set(0.9, 0.78, 0.9);
         group.add(stone);
     }
 }
