@@ -253,41 +253,64 @@ const bottomRowZ = 3.25;
 
 function createPit(x, z, index) {
     const rim = new THREE.Mesh(
-        new THREE.CylinderGeometry(0.78, 0.88, 0.12, 64),
+        new THREE.CylinderGeometry(0.76, 0.98, 0.18, 96),
         pitRimMaterial
     );
-    rim.scale.set(0.95, 1, 1.55);
-    rim.position.set(x, 1.47, z);
+    rim.scale.set(0.78, 1, 1.75);
+    rim.position.set(x, 1.50, z);
     rim.castShadow = true;
     rim.receiveShadow = true;
     boardGroup.add(rim);
 
-    const bowl = new THREE.Mesh(
-        new THREE.CylinderGeometry(0.52, 0.68, 0.42, 64),
+    const innerWall = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.62, 0.42, 0.62, 96, 1, true),
         pitInnerMaterial.clone()
     );
-    bowl.scale.set(0.82, 1, 1.32);
-    bowl.position.set(x, 1.22, z);
-    bowl.receiveShadow = true;
-    boardGroup.add(bowl);
+    innerWall.scale.set(0.78, 1, 1.75);
+    innerWall.position.set(x, 1.20, z);
+    innerWall.castShadow = true;
+    innerWall.receiveShadow = true;
+    boardGroup.add(innerWall);
+
+    const darkBottom = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.42, 0.48, 0.04, 96),
+        pitInnerMaterial.clone()
+    );
+    darkBottom.scale.set(0.78, 1, 1.75);
+    darkBottom.position.set(x, 0.88, z);
+    darkBottom.receiveShadow = true;
+    boardGroup.add(darkBottom);
+
+    const shadowLayer = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.57, 0.44, 0.05, 96),
+        new THREE.MeshBasicMaterial({
+            color: 0x000000,
+            transparent: true,
+            opacity: 0.42,
+            depthWrite: false
+        })
+    );
+    shadowLayer.scale.set(0.78, 1, 1.75);
+    shadowLayer.position.set(x, 1.05, z);
+    boardGroup.add(shadowLayer);
 
     const clickSurface = new THREE.Mesh(
-        new THREE.CylinderGeometry(0.7, 0.8, 0.05, 64),
+        new THREE.CylinderGeometry(0.7, 0.9, 0.08, 64),
         new THREE.MeshBasicMaterial({ transparent: true, opacity: 0 })
     );
-    clickSurface.scale.set(0.95, 1, 1.55);
-    clickSurface.position.set(x, 1.50, z);
+    clickSurface.scale.set(0.78, 1, 1.75);
+    clickSurface.position.set(x, 1.55, z);
     clickSurface.userData.index = index;
     boardGroup.add(clickSurface);
 
     pitMeshes.push(clickSurface);
-    pitMeshByIndex[index] = bowl;
+    pitMeshByIndex[index] = innerWall;
 
     const stonesGroup = new THREE.Group();
     scene.add(stonesGroup);
     pitStoneGroups[index] = stonesGroup;
 
-    pitStoneBase[index] = { x, y: 1.58, z };
+    pitStoneBase[index] = { x, y: 1.05, z };
 }
 
 for (let i = 0; i < 9; i++) {
@@ -349,16 +372,16 @@ function renderPitStones(index, count) {
         stone.castShadow = true;
         stone.receiveShadow = true;
 
-        const col = i % 5;
-        const row = Math.floor(i / 5);
+        const col = i % 4;
+        const row = Math.floor(i / 4);
 
         stone.position.set(
-            base.x + (col - 2) * 0.13,
-            base.y + row * 0.025,
-            base.z + (row - 2.2) * 0.18
+            base.x + (col - 1.5) * 0.16,
+            base.y + 0.04 + Math.floor(row / 3) * 0.035,
+            base.z + (row - 2.3) * 0.16
         );
 
-        stone.scale.set(0.9, 0.78, 0.84);
+        stone.scale.set(0.82, 0.72, 0.82);
         group.add(stone);
     }
 }
