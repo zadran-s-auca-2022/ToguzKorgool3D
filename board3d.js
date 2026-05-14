@@ -400,7 +400,7 @@ function renderPitStones(index, count) {
         stone.castShadow = true;
         stone.receiveShadow = true;
 
-        const seed = index * 91.7 + i * 43.3;
+        const seed = Math.random() * 10000;
 
         const angle = seededRandom(seed) * Math.PI * 2;
         const radius = Math.sqrt(seededRandom(seed + 12.5)) * 0.34;
