@@ -264,7 +264,6 @@ const pitMeshes = [];
 const pitMeshByIndex = new Array(18);
 const pitStoneGroups = new Array(18);
 const pitStoneBase = new Array(18);
-const tuzMarkerByIndex = new Array(18);
 
 const pitSpacing = 2.25;
 const startX = -9.0;
@@ -335,24 +334,6 @@ function createPit(x, z, index) {
         y: 1.34,
         z
     };
-
-        const tuzMarker = new THREE.Mesh(
-        new THREE.TorusGeometry(0.88, 0.045, 18, 96),
-        new THREE.MeshBasicMaterial({
-            color: 0xffd000,
-            transparent: true,
-            opacity: 0,
-            depthWrite: false
-        })
-    );
-
-    tuzMarker.rotation.x = Math.PI / 2;
-    tuzMarker.scale.set(1.12, 1.70, 1);
-    tuzMarker.position.set(x, 1.86, z);
-    tuzMarker.renderOrder = 20;
-    boardGroup.add(tuzMarker);
-
-    tuzMarkerByIndex[index] = tuzMarker;
 }
 
 for (let i = 0; i < 9; i++) {
@@ -596,22 +577,6 @@ function pitNumberForIndex(index) {
 }
 
 for (let i = 0; i < 18; i++) {
-
-    const marker = tuzMarkerByIndex[i];
-
-    if (marker) {
-        marker.material.opacity = 0;
-
-        if (i === state.tuzA) {
-            marker.material.color.setHex(0xffdd00);
-            marker.material.opacity = 1;
-        }
-
-        if (i === state.tuzB) {
-            marker.material.color.setHex(0xff6a00);
-            marker.material.opacity = 1;
-        }
-    }
     const base = pitStoneBase[i];
     const isTopRow = i >= 9;
 
@@ -670,18 +635,18 @@ function sync3DBoardFromGameState(state) {
         const pit = pitMeshByIndex[i];
         if (!pit) continue;
 
-        pit.material.emissive.setHex(0x000000);
-        pit.material.color.setHex(0x090201);
+    pit.material.emissive.setHex(0x000000);
+    pit.material.color.setHex(0x090201);
 
-        if (i === state.tuzA) {
-            pit.material.color.setHex(0x3b2a00);
-            pit.material.emissive.setHex(0xffcc00);
-        }
+    if (i === state.tuzA) {
+        pit.material.color.setHex(0x3b2a00);
+        pit.material.emissive.setHex(0xffcc00);
+    }
 
-        if (i === state.tuzB) {
-            pit.material.color.setHex(0x2b1600);
-            pit.material.emissive.setHex(0xff7a00);
-        }
+    if (i === state.tuzB) {
+        pit.material.color.setHex(0x2b1600);
+        pit.material.emissive.setHex(0xff7a00);
+    }
 
         updateTextSprite(pitCountSprites[i], String(state.pits[i]));
     }
