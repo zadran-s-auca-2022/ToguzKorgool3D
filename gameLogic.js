@@ -1,4 +1,4 @@
-wher eshould i change in this here is my whole code  const NUM_PITS_PER_PLAYER = 9;
+const NUM_PITS_PER_PLAYER = 9;
 const TOTAL_PITS = NUM_PITS_PER_PLAYER * 2;
 const INITIAL_STONES = 9;
 const TARGET_SCORE = 82;
