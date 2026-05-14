@@ -636,9 +636,16 @@ function sync3DBoardFromGameState(state) {
         if (!pit) continue;
 
         pit.material.emissive.setHex(0x000000);
+        pit.material.color.setHex(0x090201);
 
-        if (i === state.tuzA || i === state.tuzB) {
-            pit.material.emissive.setHex(0x7a6408);
+        if (i === state.tuzA) {
+            pit.material.color.setHex(0x3b2a00);
+            pit.material.emissive.setHex(0xffcc00);
+        }
+
+        if (i === state.tuzB) {
+            pit.material.color.setHex(0x2b1600);
+            pit.material.emissive.setHex(0xff7a00);
         }
 
         updateTextSprite(pitCountSprites[i], String(state.pits[i]));
