@@ -384,6 +384,19 @@ function clearGroup(group) {
 const pitStoneSeeds = new Array(18).fill(null);
 const pitLastCounts = new Array(18).fill(null);
 
+function resetStoneLayouts() {
+    for (let i = 0; i < 18; i++) {
+        pitStoneSeeds[i] = null;
+        pitLastCounts[i] = null;
+    }
+
+    storeStoneSeeds.A = null;
+    storeStoneSeeds.B = null;
+
+    storeLastCounts.A = null;
+    storeLastCounts.B = null;
+}
+
 function renderPitStones(index, count) {
     const group = pitStoneGroups[index];
     const base = pitStoneBase[index];
@@ -448,6 +461,19 @@ const storeLastCounts = {
     A: null,
     B: null
 };
+
+function resetStoneLayouts() {
+    for (let i = 0; i < 18; i++) {
+        pitStoneSeeds[i] = null;
+        pitLastCounts[i] = null;
+    }
+
+    storeStoneSeeds.A = null;
+    storeStoneSeeds.B = null;
+
+    storeLastCounts.A = null;
+    storeLastCounts.B = null;
+}
 
 function renderStoreStones(side, count) {
     const group = storeStoneGroups[side];

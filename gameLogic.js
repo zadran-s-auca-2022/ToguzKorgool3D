@@ -273,6 +273,10 @@ function renderAll() {
 }
 
 function resetGame() {
+    if (typeof window.resetStoneLayouts === 'function') {
+        window.resetStoneLayouts();
+    }
+
     pits = new Array(TOTAL_PITS).fill(INITIAL_STONES);
     storeA = 0;
     storeB = 0;
