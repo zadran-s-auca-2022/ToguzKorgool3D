@@ -381,10 +381,20 @@ function clearGroup(group) {
     }
 }
 
+const pitStoneSeeds = new Array(18).fill(null);
+const pitLastCounts = new Array(18).fill(null);
+
 function renderPitStones(index, count) {
     const group = pitStoneGroups[index];
     const base = pitStoneBase[index];
     if (!group || !base) return;
+
+    if (pitLastCounts[index] === count && pitStoneSeeds[index] !== null) {
+        return;
+    }
+
+    pitLastCounts[index] = count;
+    pitStoneSeeds[index] = Math.random() * 10000;
 
     clearGroup(group);
 
@@ -400,7 +410,7 @@ function renderPitStones(index, count) {
         stone.castShadow = true;
         stone.receiveShadow = true;
 
-        const seed = Math.random() * 10000;
+        const seed = pitStoneSeeds[index] + i * 43.3;
 
         const angle = seededRandom(seed) * Math.PI * 2;
         const radius = Math.sqrt(seededRandom(seed + 12.5)) * 0.34;
