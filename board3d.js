@@ -439,24 +439,50 @@ function renderPitStones(index, count) {
     }
 }
 
+const storeStoneSeeds = {
+    A: null,
+    B: null
+};
+
+const storeLastCounts = {
+    A: null,
+    B: null
+};
+
 function renderStoreStones(side, count) {
     const group = storeStoneGroups[side];
+    if (!group) return;
+
+    if (storeLastCounts[side] === count && storeStoneSeeds[side] !== null) {
+        return;
+    }
+
+    storeLastCounts[side] = count;
+    storeStoneSeeds[side] = Math.random() * 10000;
+
     clearGroup(group);
 
     const maxVisual = Math.min(count, 98);
     const baseX = side === 'A' ? 5.1 : -5.1;
     const baseZ = 0;
 
+    function seededRandom(seed) {
+        const x = Math.sin(seed) * 10000;
+        return x - Math.floor(x);
+    }
+
     for (let i = 0; i < maxVisual; i++) {
         const stone = new THREE.Mesh(stoneGeometry, stoneMaterial);
         stone.castShadow = true;
         stone.receiveShadow = true;
 
-        const angle = i * 2.399 + (side === 'A' ? 0.5 : 1.4);
-        const radius = Math.sqrt(i % 34) * 0.14;
+        const seed = storeStoneSeeds[side] + i * 37.8;
 
-        const x = Math.cos(angle) * radius * 1.75;
-        const z = Math.sin(angle) * radius * 0.75;
+        const angle = seededRandom(seed) * Math.PI * 2;
+        const radius = Math.sqrt(seededRandom(seed + 12.5)) * 0.95;
+
+        const x = Math.cos(angle) * radius * 1.65;
+        const z = Math.sin(angle) * radius * 0.72;
 
         const layer = Math.floor(i / 34);
 
@@ -466,13 +492,13 @@ function renderStoreStones(side, count) {
             baseZ + z
         );
 
-        const size = 0.92 + (i % 5) * 0.025;
-        stone.scale.set(size, 0.80, size);
+        const size = 0.92 + seededRandom(seed + 5.2) * 0.08;
+        stone.scale.set(size, size * 0.80, size);
 
         stone.rotation.set(
-            (i * 0.17) % 0.5,
-            (i * 0.29) % 0.5,
-            (i * 0.23) % 0.5
+            seededRandom(seed + 1.1) * 0.35,
+            seededRandom(seed + 2.2) * Math.PI,
+            seededRandom(seed + 3.3) * 0.35
         );
 
         group.add(stone);
