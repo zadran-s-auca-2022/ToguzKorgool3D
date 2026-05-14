@@ -390,33 +390,39 @@ function renderPitStones(index, count) {
 
     const maxVisual = Math.min(count, 24);
 
+    function seededRandom(seed) {
+        const x = Math.sin(seed) * 10000;
+        return x - Math.floor(x);
+    }
+
     for (let i = 0; i < maxVisual; i++) {
         const stone = new THREE.Mesh(stoneGeometry, stoneMaterial);
         stone.castShadow = true;
         stone.receiveShadow = true;
 
-        const seed = index * 17.37 + i * 3.91;
-        const angle = i * 2.15 + index * 0.83;
-        const radius = 0.08 + Math.sqrt((i % 12) + 1) * 0.09;
+        const seed = index * 91.7 + i * 43.3;
 
-        const messyX = Math.sin(seed) * 0.045;
-        const messyZ = Math.cos(seed * 1.3) * 0.055;
+        const angle = seededRandom(seed) * Math.PI * 2;
+        const radius = Math.sqrt(seededRandom(seed + 12.5)) * 0.34;
 
-        const layer = Math.floor(i / 12);
+        const x = Math.cos(angle) * radius;
+        const z = Math.sin(angle) * radius * 1.28;
+
+        const layer = Math.floor(i / 13);
 
         stone.position.set(
-            base.x + Math.cos(angle) * radius + messyX,
+            base.x + x,
             base.y + 0.13 + layer * 0.055,
-            base.z + Math.sin(angle) * radius * 1.35 + messyZ
+            base.z + z
         );
 
-        const size = 0.90 + ((i + index) % 4) * 0.035;
+        const size = 0.88 + seededRandom(seed + 5.2) * 0.08;
         stone.scale.set(size, size * 0.86, size);
 
         stone.rotation.set(
-            Math.sin(seed) * 0.35,
-            Math.cos(seed) * 0.55,
-            Math.sin(seed * 0.7) * 0.35
+            seededRandom(seed + 1.1) * 0.35,
+            seededRandom(seed + 2.2) * Math.PI,
+            seededRandom(seed + 3.3) * 0.35
         );
 
         group.add(stone);
