@@ -173,29 +173,7 @@ const stoneMaterial = new THREE.MeshStandardMaterial({
 const boardGroup = new THREE.Group();
 scene.add(boardGroup);
 
-const floorMaterial = new THREE.MeshStandardMaterial({
-    color: 0x120704,
-    roughness: 0.92,
-    metalness: 0.0
-});
-
-const floor = new THREE.Mesh(
-    new THREE.PlaneGeometry(80, 50),
-    floorMaterial
-);
-
-floor.rotation.x = -Math.PI / 2;
-floor.position.y = -0.65;
-floor.receiveShadow = true;
-scene.add(floor);
-
-const carpetTexture = loader.load(
-    'https://threejs.org/examples/textures/hardwood2_diffuse.jpg'
-);
-
-carpetTexture.wrapS = THREE.RepeatWrapping;
-carpetTexture.wrapT = THREE.RepeatWrapping;
-carpetTexture.repeat.set(4, 4);
+scene.background = new THREE.Color(0x090403);
 
 /* MAIN BOARD */
 const base = new THREE.Mesh(
