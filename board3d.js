@@ -375,9 +375,58 @@ boardGroup.add(borderRight);
 /* STONES */
 const stoneGeometry = new THREE.SphereGeometry(0.145, 20, 20);
 
+const tuzMarkerGeometry = new THREE.SphereGeometry(0.19, 24, 24);
+
+const tuzMarkerMaterialA = new THREE.MeshStandardMaterial({
+    color: 0xc49a3a,
+    roughness: 0.42,
+    metalness: 0.18
+});
+
+const tuzMarkerMaterialB = new THREE.MeshStandardMaterial({
+    color: 0x7a2f12,
+    roughness: 0.48,
+    metalness: 0.12
+});
+
+const tuzMarkerGroups = new Array(18);
+
+for (let i = 0; i < 18; i++) {
+    tuzMarkerGroups[i] = new THREE.Group();
+    scene.add(tuzMarkerGroups[i]);
+}
+
 function clearGroup(group) {
     while (group.children.length > 0) {
         group.remove(group.children[0]);
+    }
+}
+
+function renderTuzMarkers(state) {
+    for (let i = 0; i < 18; i++) {
+        const group = tuzMarkerGroups[i];
+        const base = pitStoneBase[i];
+        if (!group || !base) continue;
+
+        clearGroup(group);
+
+        if (i !== state.tuzA && i !== state.tuzB) continue;
+
+        const material = i === state.tuzA ? tuzMarkerMaterialA : tuzMarkerMaterialB;
+
+        const marker = new THREE.Mesh(tuzMarkerGeometry, material);
+        marker.castShadow = true;
+        marker.receiveShadow = true;
+
+        marker.position.set(
+            base.x,
+            base.y + 0.22,
+            base.z
+        );
+
+        marker.scale.set(1.15, 0.72, 1.15);
+
+        group.add(marker);
     }
 }
 
@@ -635,21 +684,12 @@ function sync3DBoardFromGameState(state) {
         const pit = pitMeshByIndex[i];
         if (!pit) continue;
 
-    pit.material.emissive.setHex(0x000000);
-    pit.material.color.setHex(0x090201);
-
-    if (i === state.tuzA) {
-        pit.material.color.setHex(0x3b2a00);
-        pit.material.emissive.setHex(0xffcc00);
-    }
-
-    if (i === state.tuzB) {
-        pit.material.color.setHex(0x2b1600);
-        pit.material.emissive.setHex(0xff7a00);
-    }
+        pit.material.color.setHex(0x090201);
 
         updateTextSprite(pitCountSprites[i], String(state.pits[i]));
     }
+
+    renderTuzMarkers(state);
 
     renderStoreStones('A', state.storeA || 0);
     renderStoreStones('B', state.storeB || 0);
