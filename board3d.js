@@ -229,17 +229,6 @@ function createKazan(x, z) {
     outerRim.receiveShadow = true;
     boardGroup.add(outerRim);
 
-    const innerWall = new THREE.Mesh(
-        new THREE.TorusGeometry(1.18, 0.12, 20, 140),
-        kazanInnerMaterial
-    );
-    innerWall.rotation.x = Math.PI / 2;
-    innerWall.scale.set(1.82, 0.94, 1);
-    innerWall.position.set(x, 1.44, z);
-    innerWall.castShadow = true;
-    innerWall.receiveShadow = true;
-    boardGroup.add(innerWall);
-
     const deepShadow = new THREE.Mesh(
         new THREE.CircleGeometry(1.04, 140),
         new THREE.MeshBasicMaterial({
@@ -283,17 +272,6 @@ function createPit(x, z, index) {
     outerRim.receiveShadow = true;
     boardGroup.add(outerRim);
 
-    const innerWall = new THREE.Mesh(
-        new THREE.TorusGeometry(0.63, 0.09, 20, 120),
-        pitInnerMaterial
-    );
-    innerWall.rotation.x = Math.PI / 2;
-    innerWall.scale.set(1.02, 1.56, 1);
-    innerWall.position.set(x, 1.43, z);
-    innerWall.castShadow = true;
-    innerWall.receiveShadow = true;
-    boardGroup.add(innerWall);
-
     const deepShadow = new THREE.Mesh(
         new THREE.CircleGeometry(0.52, 120),
         new THREE.MeshBasicMaterial({
@@ -323,7 +301,7 @@ function createPit(x, z, index) {
     boardGroup.add(clickSurface);
 
     pitMeshes.push(clickSurface);
-    pitMeshByIndex[index] = innerWall;
+    pitMeshByIndex[index] = clickSurface;
 
     const stonesGroup = new THREE.Group();
     scene.add(stonesGroup);
