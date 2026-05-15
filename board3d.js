@@ -245,7 +245,7 @@ function createKazan(x, z) {
         new THREE.MeshBasicMaterial({
             color: 0x3a1205,
             transparent: true,
-            opacity: 0.32,
+            opacity: 0.12,
             side: THREE.DoubleSide,
             depthWrite: false
         })
@@ -299,7 +299,7 @@ function createPit(x, z, index) {
         new THREE.MeshBasicMaterial({
             color: 0x3a1205,
             transparent: true,
-            opacity: 0.32,
+            opacity: 0.12,
             side: THREE.DoubleSide,
             depthWrite: false
         })
@@ -378,19 +378,15 @@ const stoneGeometry = new THREE.SphereGeometry(0.145, 20, 20);
 const tuzMarkerGeometry = new THREE.SphereGeometry(0.19, 24, 24);
 
 const tuzMarkerMaterialA = new THREE.MeshStandardMaterial({
-    color: 0xffd000,
-    roughness: 0.18,
-    metalness: 0.55,
-    emissive: 0xb88600,
-    emissiveIntensity: 0.65
+    color: 0xd6a43a,
+    roughness: 0.35,
+    metalness: 0.22
 });
 
 const tuzMarkerMaterialB = new THREE.MeshStandardMaterial({
-    color: 0xff5a1f,
-    roughness: 0.22,
-    metalness: 0.38,
-    emissive: 0x8a1f00,
-    emissiveIntensity: 0.65
+    color: 0x9b3b18,
+    roughness: 0.4,
+    metalness: 0.16
 });
 
 const tuzMarkerGroups = new Array(18);
@@ -424,31 +420,13 @@ function renderTuzMarkers(state) {
 
         marker.position.set(
             base.x,
-            base.y + 0.42,
+            base.y + 0.23,
             base.z
         );
 
-        marker.scale.set(1.95, 0.95, 1.95);
-        marker.renderOrder = 50;
+        marker.scale.set(1.25, 0.72, 1.25);
 
         group.add(marker);
-
-        const markerRing = new THREE.Mesh(
-            new THREE.TorusGeometry(0.25, 0.028, 16, 48),
-            material
-        );
-
-        markerRing.rotation.x = Math.PI / 2;
-        markerRing.position.set(
-            base.x,
-            base.y + 0.44,
-            base.z
-        );
-
-        markerRing.scale.set(1.25, 1.25, 1);
-        markerRing.renderOrder = 51;
-
-        group.add(markerRing);
     }
 }
 
