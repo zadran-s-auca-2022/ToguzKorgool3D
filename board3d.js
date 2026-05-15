@@ -6,7 +6,7 @@ root.innerHTML = '';
 
 /* SCENE */
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(0x090403);
+scene.background = new THREE.Color(0x050201);
 
 /* CAMERA */
 const camera = new THREE.PerspectiveCamera(
@@ -15,7 +15,7 @@ const camera = new THREE.PerspectiveCamera(
     0.1,
     1000
 );
-camera.position.set(0, 13.5, 22);
+camera.position.set(0, 18, 18);
 
 /* RENDERER */
 const renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -27,7 +27,7 @@ root.appendChild(renderer.domElement);
 
 /* CONTROLS */
 const controls = new OrbitControls(camera, renderer.domElement);
-controls.target.set(0, 1.2, 0);
+controls.target.set(0, 1.1, 0);
 controls.enableDamping = true;
 controls.enablePan = false;
 controls.minDistance = 9;
@@ -169,6 +169,22 @@ const stoneMaterial = new THREE.MeshStandardMaterial({
 /* BOARD GROUP */
 const boardGroup = new THREE.Group();
 scene.add(boardGroup);
+
+const floorMaterial = new THREE.MeshStandardMaterial({
+    color: 0x120704,
+    roughness: 0.92,
+    metalness: 0.0
+});
+
+const floor = new THREE.Mesh(
+    new THREE.PlaneGeometry(80, 50),
+    floorMaterial
+);
+
+floor.rotation.x = -Math.PI / 2;
+floor.position.y = -0.65;
+floor.receiveShadow = true;
+scene.add(floor);
 
 /* MAIN BOARD */
 const base = new THREE.Mesh(
@@ -356,15 +372,15 @@ const stoneGeometry = new THREE.SphereGeometry(0.145, 20, 20);
 const tuzMarkerGeometry = new THREE.SphereGeometry(0.19, 24, 24);
 
 const tuzMarkerMaterialA = new THREE.MeshStandardMaterial({
-    color: 0xd6a43a,
-    roughness: 0.35,
-    metalness: 0.22
+    color: 0x050505,
+    roughness: 0.22,
+    metalness: 0.35
 });
 
 const tuzMarkerMaterialB = new THREE.MeshStandardMaterial({
-    color: 0x9b3b18,
-    roughness: 0.4,
-    metalness: 0.16
+    color: 0x050505,
+    roughness: 0.22,
+    metalness: 0.35
 });
 
 const tuzMarkerGroups = new Array(18);
