@@ -243,9 +243,9 @@ function createKazan(x, z) {
     const deepShadow = new THREE.Mesh(
         new THREE.CircleGeometry(1.04, 140),
         new THREE.MeshBasicMaterial({
-            color: 0x020100,
+            color: 0x3a1205,
             transparent: true,
-            opacity: 0.92,
+            opacity: 0.55,
             side: THREE.DoubleSide,
             depthWrite: false
         })
@@ -297,9 +297,9 @@ function createPit(x, z, index) {
     const deepShadow = new THREE.Mesh(
         new THREE.CircleGeometry(0.52, 120),
         new THREE.MeshBasicMaterial({
-            color: 0x020100,
+            color: 0x3a1205,
             transparent: true,
-            opacity: 0.92,
+            opacity: 0.55,
             side: THREE.DoubleSide,
             depthWrite: false
         })
@@ -378,15 +378,19 @@ const stoneGeometry = new THREE.SphereGeometry(0.145, 20, 20);
 const tuzMarkerGeometry = new THREE.SphereGeometry(0.19, 24, 24);
 
 const tuzMarkerMaterialA = new THREE.MeshStandardMaterial({
-    color: 0xc49a3a,
-    roughness: 0.42,
-    metalness: 0.18
+    color: 0xffd34a,
+    roughness: 0.28,
+    metalness: 0.35,
+    emissive: 0x5a3b00,
+    emissiveIntensity: 0.45
 });
 
 const tuzMarkerMaterialB = new THREE.MeshStandardMaterial({
-    color: 0x7a2f12,
-    roughness: 0.48,
-    metalness: 0.12
+    color: 0xff7a24,
+    roughness: 0.32,
+    metalness: 0.25,
+    emissive: 0x4a1300,
+    emissiveIntensity: 0.45
 });
 
 const tuzMarkerGroups = new Array(18);
@@ -424,7 +428,7 @@ function renderTuzMarkers(state) {
             base.z
         );
 
-        marker.scale.set(1.15, 0.72, 1.15);
+        marker.scale.set(1.45, 0.82, 1.45);
 
         group.add(marker);
     }
