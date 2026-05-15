@@ -9,20 +9,7 @@ const scene = new THREE.Scene();
 
 const loader = new THREE.TextureLoader();
 
-const loader = new THREE.TextureLoader();
-
-loader.load(
-    'https://threejs.org/examples/textures/uv_grid_opengl.jpg',
-    function(texture) {
-
-        texture.wrapS = THREE.RepeatWrapping;
-        texture.wrapT = THREE.RepeatWrapping;
-
-        texture.repeat.set(1, 1);
-
-        scene.background = texture;
-    }
-);
+scene.background = new THREE.Color(0x090403);
 
 /* CAMERA */
 const camera = new THREE.PerspectiveCamera(
@@ -209,9 +196,6 @@ const carpetTexture = loader.load(
 carpetTexture.wrapS = THREE.RepeatWrapping;
 carpetTexture.wrapT = THREE.RepeatWrapping;
 carpetTexture.repeat.set(4, 4);
-
-floor.material.map = carpetTexture;
-floor.material.needsUpdate = true;
 
 /* MAIN BOARD */
 const base = new THREE.Mesh(
