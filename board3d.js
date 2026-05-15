@@ -6,7 +6,23 @@ root.innerHTML = '';
 
 /* SCENE */
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(0x050201);
+
+const loader = new THREE.TextureLoader();
+
+const loader = new THREE.TextureLoader();
+
+loader.load(
+    'https://threejs.org/examples/textures/uv_grid_opengl.jpg',
+    function(texture) {
+
+        texture.wrapS = THREE.RepeatWrapping;
+        texture.wrapT = THREE.RepeatWrapping;
+
+        texture.repeat.set(1, 1);
+
+        scene.background = texture;
+    }
+);
 
 /* CAMERA */
 const camera = new THREE.PerspectiveCamera(
@@ -185,6 +201,17 @@ floor.rotation.x = -Math.PI / 2;
 floor.position.y = -0.65;
 floor.receiveShadow = true;
 scene.add(floor);
+
+const carpetTexture = loader.load(
+    'https://threejs.org/examples/textures/hardwood2_diffuse.jpg'
+);
+
+carpetTexture.wrapS = THREE.RepeatWrapping;
+carpetTexture.wrapT = THREE.RepeatWrapping;
+carpetTexture.repeat.set(4, 4);
+
+floor.material.map = carpetTexture;
+floor.material.needsUpdate = true;
 
 /* MAIN BOARD */
 const base = new THREE.Mesh(
