@@ -9,35 +9,7 @@ const scene = new THREE.Scene();
 
 const loader = new THREE.TextureLoader();
 
-scene.background = new THREE.Color(0x050202);
-
-/* CARPET FLOOR */
-
-const floorTexture = new THREE.TextureLoader().load(
-    'https://threejs.org/examples/textures/hardwood2_diffuse.jpg'
-);
-
-floorTexture.wrapS = THREE.RepeatWrapping;
-floorTexture.wrapT = THREE.RepeatWrapping;
-floorTexture.repeat.set(6, 6);
-
-const floorMaterial = new THREE.MeshStandardMaterial({
-    map: floorTexture,
-    color: 0x552211,
-    roughness: 0.92,
-    metalness: 0.02
-});
-
-const floor = new THREE.Mesh(
-    new THREE.PlaneGeometry(120, 120),
-    floorMaterial
-);
-
-floor.rotation.x = -Math.PI / 2;
-floor.position.y = -1.25;
-floor.receiveShadow = true;
-
-scene.add(floor);
+scene.background = new THREE.Color(0x090403);
 
 /* CAMERA */
 const camera = new THREE.PerspectiveCamera(
@@ -46,8 +18,7 @@ const camera = new THREE.PerspectiveCamera(
     0.1,
     1000
 );
-
-camera.position.set(0, 9.5, 18);
+camera.position.set(0, 18, 18);
 
 /* RENDERER */
 const renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -59,13 +30,12 @@ root.appendChild(renderer.domElement);
 
 /* CONTROLS */
 const controls = new OrbitControls(camera, renderer.domElement);
-controls.target.set(0, 1.8, 0);
-
-controls.minPolarAngle = 0.75;
-controls.maxPolarAngle = 1.15;
-
-controls.minDistance = 12;
-controls.maxDistance = 26;
+controls.target.set(0, 1.1, 0);
+controls.enableDamping = true;
+controls.enablePan = false;
+controls.minDistance = 9;
+controls.maxDistance = 34;
+controls.maxPolarAngle = Math.PI / 2.05;
 
 /* LIGHTS */
 scene.add(new THREE.AmbientLight(0xffd9b0, 0.62));
