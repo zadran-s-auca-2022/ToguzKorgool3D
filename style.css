@@ -63,28 +63,6 @@ body {
     pointer-events: none;
 }
 
-h1 {
-    margin: 8px 0 4px;
-    font-family: Georgia, 'Times New Roman', serif;
-    font-size: 52px;
-    font-weight: 800;
-    letter-spacing: 1px;
-    color: #f6df9f;
-    text-shadow:
-        0 2px 8px rgba(0, 0, 0, 0.95),
-        0 0 18px rgba(214, 157, 48, 0.45);
-}
-
-h1::after {
-    content: "━━━━ ◈ ◆ ◈ ━━━━";
-    display: block;
-    margin-top: 2px;
-    font-size: 18px;
-    letter-spacing: 4px;
-    color: #d6a12f;
-    text-shadow: 0 0 12px rgba(214, 161, 47, 0.55);
-}
-
 .scores {
     width: 100%;
     max-width: 1200px;
@@ -1004,4 +982,47 @@ h1::after {
     color: #e6d4b8;
     font-size: 15px;
     line-height: 1.65;
+}
+
+.game-title-wrap{
+    position:absolute;
+    top:18px;
+    left:50%;
+    transform:translateX(-50%);
+    z-index:100;
+
+    text-align:center;
+    pointer-events:none;
+}
+
+.game-title{
+    font-family:'Cinzel', serif;
+
+    font-size:72px;
+    font-weight:700;
+
+    color:#f6e6b3;
+
+    letter-spacing:1px;
+
+    text-shadow:
+        0 0 10px rgba(255,215,120,0.25),
+        0 0 24px rgba(255,180,50,0.12);
+
+    user-select:none;
+}
+
+.title-decoration{
+    margin-top:-10px;
+
+    font-size:24px;
+
+    letter-spacing:5px;
+
+    color:#d7a12f;
+
+    text-shadow:
+        0 0 10px rgba(255,180,40,0.2);
+
+    user-select:none;
 }
