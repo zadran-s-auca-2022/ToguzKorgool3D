@@ -38,10 +38,10 @@ controls.maxDistance = 34;
 controls.maxPolarAngle = Math.PI / 2.05;
 
 /* LIGHTS */
-scene.add(new THREE.AmbientLight(0xffd9b0, 0.62));
+scene.add(new THREE.AmbientLight(0xffc38a, 0.52));
 
-const keyLight = new THREE.DirectionalLight(0xffe0aa, 2.35);
-keyLight.position.set(10, 18, 12);
+const keyLight = new THREE.DirectionalLight(0xffd18a, 3.8);
+keyLight.position.set(-6, 14, 10);
 keyLight.castShadow = true;
 scene.add(keyLight);
 
@@ -49,7 +49,7 @@ const warmLight = new THREE.PointLight(0xff9b35, 1.25, 40);
 warmLight.position.set(-8, 6, 8);
 scene.add(warmLight);
 
-const rimLight = new THREE.DirectionalLight(0xffc47a, 0.75);
+const rimLight = new THREE.DirectionalLight(0xffb15a, 1.8);
 rimLight.position.set(-12, 10, -10);
 scene.add(rimLight);
 
@@ -156,35 +156,35 @@ const woodTexture = createWoodTexture();
 
 /* MATERIALS */
 const boardMaterial = new THREE.MeshStandardMaterial({
-    color: 0x3b1406,
+    color: 0xa14d22,
     map: woodTexture,
-    roughness: 0.88,
-    metalness: 0.015
+    roughness: 0.62,
+    metalness: 0.02
 });
 
 const boardSideMaterial = new THREE.MeshStandardMaterial({
-    color: 0x160602,
+    color: 0x2a0d04,
     map: woodTexture,
-    roughness: 0.94,
+    roughness: 0.9,
     metalness: 0.0
 });
 
 const pitRimMaterial = new THREE.MeshStandardMaterial({
-    color: 0x4a1706,
+    color: 0x8a3a14,
     map: woodTexture,
-    roughness: 0.86,
+    roughness: 0.78,
     metalness: 0.01
 });
 
 const pitInnerMaterial = new THREE.MeshStandardMaterial({
-    color: 0x090201,
-    roughness: 1.0,
+    color: 0x1a0803,
+    roughness: 0.95,
     metalness: 0.0
 });
 
 const kazanInnerMaterial = new THREE.MeshStandardMaterial({
-    color: 0x090201,
-    roughness: 1.0,
+    color: 0x140602,
+    roughness: 0.95,
     metalness: 0.0
 });
 
@@ -209,8 +209,10 @@ rugTexture.anisotropy = renderer.capabilities.getMaxAnisotropy();
 
 const rugMaterial = new THREE.MeshStandardMaterial({
     map: rugTexture,
-    roughness: 0.92,
-    metalness: 0.0
+    roughness: 1.0,
+    metalness: 0.0,
+    transparent: true,
+    opacity: 0.58
 });
 
 const rugFloor = new THREE.Mesh(
@@ -287,7 +289,7 @@ function createKazan(x, z) {
         new THREE.MeshBasicMaterial({
             color: 0x3a1205,
             transparent: true,
-            opacity: 0.12,
+            opacity: 0.28,
             side: THREE.DoubleSide,
             depthWrite: false
         })
@@ -330,7 +332,7 @@ function createPit(x, z, index) {
         new THREE.MeshBasicMaterial({
             color: 0x3a1205,
             transparent: true,
-            opacity: 0.12,
+            opacity: 0.28,
             side: THREE.DoubleSide,
             depthWrite: false
         })
