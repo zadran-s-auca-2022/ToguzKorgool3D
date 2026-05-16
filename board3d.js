@@ -56,90 +56,97 @@ scene.add(rimLight);
 /* TEXTURE */
 function createWoodTexture() {
     const canvas = document.createElement('canvas');
-    canvas.width = 1400;
-    canvas.height = 1400;
+    canvas.width = 1600;
+    canvas.height = 1600;
+
     const ctx = canvas.getContext('2d');
 
-    const gradient = ctx.createLinearGradient(0, 0, 1400, 1400);
-    gradient.addColorStop(0, '#2a0b02');
-    gradient.addColorStop(0.18, '#5c1b05');
-    gradient.addColorStop(0.38, '#9a3f12');
-    gradient.addColorStop(0.58, '#5a1905');
-    gradient.addColorStop(0.78, '#b35a1e');
-    gradient.addColorStop(1, '#240801');
+    const gradient = ctx.createLinearGradient(0, 0, 1600, 1600);
+    gradient.addColorStop(0, '#120502');
+    gradient.addColorStop(0.18, '#2a0d04');
+    gradient.addColorStop(0.38, '#5a230c');
+    gradient.addColorStop(0.58, '#2b0c03');
+    gradient.addColorStop(0.78, '#7a3210');
+    gradient.addColorStop(1, '#130501');
 
     ctx.fillStyle = gradient;
-    ctx.fillRect(0, 0, 1400, 1400);
+    ctx.fillRect(0, 0, 1600, 1600);
 
-    for (let i = 0; i < 420; i++) {
-        const y = Math.random() * 1400;
+    // dark walnut grain lines
+    for (let i = 0; i < 520; i++) {
+        const y = Math.random() * 1600;
 
         ctx.beginPath();
-        ctx.strokeStyle = `rgba(20, 6, 1, ${0.16 + Math.random() * 0.25})`;
-        ctx.lineWidth = 0.8 + Math.random() * 2.8;
-        ctx.moveTo(-120, y);
+        ctx.strokeStyle = `rgba(8, 3, 1, ${0.18 + Math.random() * 0.34})`;
+        ctx.lineWidth = 0.8 + Math.random() * 3.2;
+        ctx.moveTo(-150, y);
 
-        for (let x = -120; x <= 1520; x += 45) {
+        for (let x = -150; x <= 1750; x += 45) {
             ctx.lineTo(
                 x,
                 y +
-                Math.sin(x * 0.018 + i * 0.7) * 22 +
-                Math.sin(x * 0.041 + i) * 7
+                Math.sin(x * 0.015 + i * 0.55) * 24 +
+                Math.sin(x * 0.038 + i) * 8
             );
         }
 
         ctx.stroke();
     }
 
-    for (let i = 0; i < 160; i++) {
-        const y = Math.random() * 1400;
+    // golden walnut highlights
+    for (let i = 0; i < 180; i++) {
+        const y = Math.random() * 1600;
 
         ctx.beginPath();
-        ctx.strokeStyle = `rgba(255, 181, 82, ${0.035 + Math.random() * 0.08})`;
-        ctx.lineWidth = 0.7 + Math.random() * 1.6;
-        ctx.moveTo(-120, y);
+        ctx.strokeStyle = `rgba(190, 105, 38, ${0.04 + Math.random() * 0.08})`;
+        ctx.lineWidth = 0.6 + Math.random() * 1.7;
+        ctx.moveTo(-150, y);
 
-        for (let x = -120; x <= 1520; x += 55) {
+        for (let x = -150; x <= 1750; x += 55) {
             ctx.lineTo(
                 x,
-                y + Math.sin(x * 0.018 + i) * 16
+                y + Math.sin(x * 0.017 + i) * 18
             );
         }
 
         ctx.stroke();
     }
 
-    for (let i = 0; i < 38; i++) {
+    // knots
+    for (let i = 0; i < 45; i++) {
         ctx.save();
-        ctx.translate(Math.random() * 1400, Math.random() * 1400);
-        ctx.rotate((Math.random() - 0.5) * 0.7);
 
-        for (let r = 0; r < 6; r++) {
+        ctx.translate(Math.random() * 1600, Math.random() * 1600);
+        ctx.rotate((Math.random() - 0.5) * 0.75);
+
+        for (let r = 0; r < 7; r++) {
             ctx.beginPath();
-            ctx.strokeStyle = `rgba(18, 5, 1, ${0.20 - r * 0.025})`;
-            ctx.lineWidth = 1.5;
-            ctx.ellipse(0, 0, 44 + r * 14, 10 + r * 4, 0, 0, Math.PI * 2);
+            ctx.strokeStyle = `rgba(10, 4, 1, ${0.26 - r * 0.025})`;
+            ctx.lineWidth = 1.4;
+            ctx.ellipse(0, 0, 42 + r * 15, 10 + r * 4, 0, 0, Math.PI * 2);
             ctx.stroke();
         }
 
         ctx.restore();
     }
 
+    // dark vignette
     const vignette = ctx.createRadialGradient(
-        700, 700, 120,
-        700, 700, 850
+        800, 800, 120,
+        800, 800, 900
     );
-    vignette.addColorStop(0, 'rgba(255, 160, 70, 0.08)');
-    vignette.addColorStop(1, 'rgba(0, 0, 0, 0.28)');
+
+    vignette.addColorStop(0, 'rgba(255, 150, 55, 0.06)');
+    vignette.addColorStop(1, 'rgba(0, 0, 0, 0.38)');
 
     ctx.fillStyle = vignette;
-    ctx.fillRect(0, 0, 1400, 1400);
+    ctx.fillRect(0, 0, 1600, 1600);
 
     const texture = new THREE.CanvasTexture(canvas);
     texture.wrapS = THREE.RepeatWrapping;
     texture.wrapT = THREE.RepeatWrapping;
-    texture.repeat.set(2.6, 1.3);
-    texture.anisotropy = 8;
+    texture.repeat.set(2.8, 1.35);
+    texture.anisotropy = renderer.capabilities.getMaxAnisotropy();
     texture.needsUpdate = true;
 
     return texture;
@@ -149,24 +156,24 @@ const woodTexture = createWoodTexture();
 
 /* MATERIALS */
 const boardMaterial = new THREE.MeshStandardMaterial({
-    color: 0x8a3510,
+    color: 0x3b1406,
     map: woodTexture,
-    roughness: 0.66,
-    metalness: 0.02
+    roughness: 0.88,
+    metalness: 0.015
 });
 
 const boardSideMaterial = new THREE.MeshStandardMaterial({
-    color: 0x2b0b02,
+    color: 0x160602,
     map: woodTexture,
-    roughness: 0.82,
-    metalness: 0.01
+    roughness: 0.94,
+    metalness: 0.0
 });
 
 const pitRimMaterial = new THREE.MeshStandardMaterial({
-    color: 0x9a3a10,
+    color: 0x4a1706,
     map: woodTexture,
-    roughness: 0.68,
-    metalness: 0.015
+    roughness: 0.86,
+    metalness: 0.01
 });
 
 const pitInnerMaterial = new THREE.MeshStandardMaterial({
