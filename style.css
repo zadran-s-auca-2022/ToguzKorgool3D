@@ -64,10 +64,25 @@ body {
 }
 
 h1 {
-    margin: 4px 0 8px;
-    font-size: 32px;
+    margin: 8px 0 4px;
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 52px;
+    font-weight: 800;
     letter-spacing: 1px;
-    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+    color: #f6df9f;
+    text-shadow:
+        0 2px 8px rgba(0, 0, 0, 0.95),
+        0 0 18px rgba(214, 157, 48, 0.45);
+}
+
+h1::after {
+    content: "━━━━ ◈ ◆ ◈ ━━━━";
+    display: block;
+    margin-top: 2px;
+    font-size: 18px;
+    letter-spacing: 4px;
+    color: #d6a12f;
+    text-shadow: 0 0 12px rgba(214, 161, 47, 0.55);
 }
 
 .scores {
