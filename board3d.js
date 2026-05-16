@@ -191,7 +191,7 @@ const stoneMaterial = new THREE.MeshStandardMaterial({
 const boardGroup = new THREE.Group();
 scene.add(boardGroup);
 
-scene.background = new THREE.Color(0x090403);
+scene.background = null;
 
 /* RUG BACKGROUND FLOOR */
 const rugTexture = new THREE.TextureLoader().load('images/rug-background.png');
