@@ -193,6 +193,29 @@ scene.add(boardGroup);
 
 scene.background = new THREE.Color(0x090403);
 
+/* RUG BACKGROUND FLOOR */
+const rugTexture = new THREE.TextureLoader().load('images/rug-background.png');
+
+rugTexture.wrapS = THREE.ClampToEdgeWrapping;
+rugTexture.wrapT = THREE.ClampToEdgeWrapping;
+rugTexture.anisotropy = renderer.capabilities.getMaxAnisotropy();
+
+const rugMaterial = new THREE.MeshStandardMaterial({
+    map: rugTexture,
+    roughness: 0.92,
+    metalness: 0.0
+});
+
+const rugFloor = new THREE.Mesh(
+    new THREE.PlaneGeometry(46, 28),
+    rugMaterial
+);
+
+rugFloor.rotation.x = -Math.PI / 2;
+rugFloor.position.set(0, -0.72, 0);
+rugFloor.receiveShadow = true;
+scene.add(rugFloor);
+
 /* MAIN BOARD */
 const base = new THREE.Mesh(
     new THREE.BoxGeometry(27.5, 1.45, 12.8),
