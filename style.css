@@ -1177,230 +1177,379 @@ button,
     position: fixed;
     inset: 0;
     z-index: 20000;
+
     display: flex;
     align-items: center;
     justify-content: center;
+
     overflow: hidden;
-    background: rgba(0, 0, 0, 0.9);
-    backdrop-filter: blur(16px);
+
+    background:
+        radial-gradient(circle at 50% 47%, rgba(255, 178, 48, 0.22), transparent 28%),
+        radial-gradient(circle at 50% 50%, rgba(120, 60, 12, 0.25), transparent 46%),
+        linear-gradient(180deg, rgba(3, 1, 0, 0.96), rgba(0, 0, 0, 0.98));
+
+    backdrop-filter: blur(18px);
 }
 
 .game-result-overlay.hidden {
     display: none;
 }
 
+/* soft golden particles only, no circles */
 .gold-confetti {
     position: absolute;
     inset: 0;
+
     background-image:
-        radial-gradient(circle, rgba(255,220,100,0.9) 2px, transparent 3px),
-        radial-gradient(circle, rgba(255,170,40,0.75) 1px, transparent 2px);
-    background-size: 90px 90px, 140px 140px;
-    animation: confettiMove 5s linear infinite;
+        radial-gradient(circle, rgba(255, 210, 100, 0.75) 1.6px, transparent 2.5px),
+        radial-gradient(circle, rgba(255, 165, 40, 0.45) 1px, transparent 2px),
+        radial-gradient(circle, rgba(255, 240, 170, 0.32) 1px, transparent 2px);
+
+    background-size: 160px 160px, 230px 230px, 310px 310px;
+    background-position: 20px 30px, 80px 120px, 160px 60px;
+
     opacity: 0.55;
+
+    animation: confettiMove 9s linear infinite;
 }
 
-.firework {
-    position: absolute;
-    width: 300px;
-    height: 300px;
-    border-radius: 50%;
-    background: repeating-radial-gradient(
-        circle,
-        rgba(255,200,70,0.75) 0 2px,
-        transparent 3px 17px
-    );
-    opacity: 0.28;
-    animation: fireworkPulse 1.8s ease-in-out infinite;
-}
-
-.firework-left {
-    left: 9%;
-    top: 18%;
-}
-
+/* disable old firework/circle elements */
+.firework,
+.firework-left,
 .firework-right {
-    right: 9%;
-    top: 18%;
+    display: none !important;
 }
 
 .game-result-card {
     position: relative;
-    width: min(760px, 90vw);
-    padding: 90px 72px 62px;
+
+    width: min(650px, 86vw);
+    padding: 74px 58px 48px;
+
     text-align: center;
 
-    border-radius: 36px;
-    border: 2px solid rgba(255, 210, 90, 0.9);
+    border-radius: 30px;
+
+    border: 1.5px solid rgba(255, 205, 85, 0.92);
 
     background:
-        radial-gradient(circle at center, rgba(255, 190, 60, 0.2), transparent 48%),
-        linear-gradient(145deg, rgba(55, 25, 5, 0.96), rgba(5, 2, 1, 0.98));
+        radial-gradient(circle at 50% 36%, rgba(255, 190, 70, 0.20), transparent 34%),
+        radial-gradient(circle at 50% 72%, rgba(255, 150, 30, 0.12), transparent 36%),
+        linear-gradient(145deg, rgba(43, 19, 4, 0.94), rgba(7, 3, 1, 0.97));
 
     box-shadow:
-        0 0 45px rgba(255, 180, 40, 0.45),
-        0 0 120px rgba(255, 145, 20, 0.35),
-        inset 0 0 60px rgba(255, 210, 100, 0.12);
+        0 0 22px rgba(255, 205, 90, 0.38),
+        0 0 80px rgba(255, 150, 30, 0.24),
+        0 38px 120px rgba(0, 0, 0, 0.95),
+        inset 0 0 42px rgba(255, 215, 120, 0.10);
 
-    animation: royalPopup 0.8s cubic-bezier(.16,1.25,.35,1) forwards;
+    animation: royalPopup 0.78s cubic-bezier(.16,1.25,.35,1) forwards;
 }
 
+/* inner border like the reference */
 .game-result-card::before {
     content: "";
     position: absolute;
-    inset: 20px;
-    border-radius: 26px;
-    border: 1px solid rgba(255, 220, 120, 0.35);
+    inset: 18px;
+
+    border-radius: 22px;
+
+    border: 1px solid rgba(255, 215, 110, 0.32);
+
+    pointer-events: none;
+}
+
+/* small corner ornaments */
+.game-result-card::after {
+    content: "❧        ❧";
+    position: absolute;
+    top: 22px;
+    left: 28px;
+    right: 28px;
+
+    display: flex;
+    justify-content: space-between;
+
+    color: rgba(255, 205, 90, 0.82);
+
+    font-size: 34px;
+
+    text-shadow:
+        0 0 10px rgba(255, 180, 40, 0.45);
+
     pointer-events: none;
 }
 
 .result-crown {
     position: absolute;
-    top: -70px;
+
+    top: -74px;
     left: 50%;
     transform: translateX(-50%);
-    font-size: 108px;
+
+    font-size: 104px;
+    line-height: 1;
+
     color: #ffd76d;
+
     text-shadow:
-        0 0 25px rgba(255, 210, 80, 0.95),
-        0 0 65px rgba(255, 150, 30, 0.75);
-    animation: crownFloat 1.8s ease-in-out infinite;
+        0 0 16px rgba(255, 230, 140, 0.95),
+        0 0 42px rgba(255, 180, 40, 0.85),
+        0 8px 18px rgba(0,0,0,0.8);
+
+    animation: crownFloat 1.9s ease-in-out infinite;
 }
 
 .game-result-title {
+    margin-top: 16px;
+
     font-family: 'Cinzel', serif;
-    font-size: 94px;
+
+    font-size: clamp(56px, 6vw, 82px);
     font-weight: 900;
-    letter-spacing: 3px;
-    color: #ffd86f;
+
+    letter-spacing: 2px;
+
+    color: #ffe29a;
+
+    text-transform: uppercase;
+
+    background: linear-gradient(
+        180deg,
+        #fff6c8 0%,
+        #ffd66f 35%,
+        #b8751e 70%,
+        #fff0a6 100%
+    );
+
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+
     text-shadow:
-        0 0 20px rgba(255, 210, 80, 0.9),
-        0 0 65px rgba(255, 160, 30, 0.7),
-        0 8px 18px rgba(0,0,0,0.95);
-    animation: titleGlow 1.5s ease-in-out infinite;
+        0 0 14px rgba(255, 210, 90, 0.42),
+        0 0 40px rgba(255, 150, 25, 0.32),
+        0 7px 16px rgba(0, 0, 0, 0.92);
+
+    animation: titleGlow 1.8s ease-in-out infinite;
 }
 
 .result-divider {
-    margin: 14px auto 24px;
-    font-size: 30px;
-    color: #d41414;
-    text-shadow: 0 0 18px rgba(255, 210, 90, 0.85);
+    position: relative;
+
+    margin: 20px auto 24px;
+
+    width: 260px;
+
+    color: #e01616;
+
+    font-size: 23px;
+
+    text-shadow:
+        0 0 14px rgba(255, 210, 90, 0.9),
+        0 0 24px rgba(255, 80, 40, 0.35);
+}
+
+.result-divider::before,
+.result-divider::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+
+    width: 100px;
+    height: 1px;
+
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 205, 90, 0.95),
+        transparent
+    );
+}
+
+.result-divider::before {
+    right: 55%;
+}
+
+.result-divider::after {
+    left: 55%;
 }
 
 .game-result-score {
     display: inline-block;
-    padding: 16px 46px;
-    margin-bottom: 38px;
+
+    padding: 14px 42px;
+
+    margin-bottom: 32px;
+
+    min-width: 360px;
+
     font-family: 'Cinzel', serif;
-    font-size: 34px;
-    color: #fff1c7;
-    border: 1px solid rgba(255, 205, 90, 0.55);
-    background: rgba(0,0,0,0.35);
-    box-shadow: inset 0 0 18px rgba(255, 180, 60, 0.14);
+
+    font-size: 27px;
+    font-weight: 500;
+
+    color: #fff0c4;
+
+    border: 1px solid rgba(255, 205, 90, 0.58);
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(255, 210, 90, 0.06),
+            rgba(0, 0, 0, 0.38)
+        );
+
+    box-shadow:
+        inset 0 0 20px rgba(255, 180, 60, 0.14),
+        0 0 18px rgba(255, 150, 30, 0.12);
 }
 
 .result-btn {
     position: relative;
+
     overflow: hidden;
-    padding: 22px 82px;
-    border-radius: 20px;
-    border: 2px solid rgba(255, 230, 150, 0.95);
+
+    padding: 19px 72px;
+
+    border-radius: 18px;
+
+    border: 1.5px solid rgba(255, 230, 150, 0.98);
+
     background:
         linear-gradient(
             180deg,
-            #ffe39a 0%,
-            #ffca63 45%,
-            #d78a24 100%
+            #fff0b8 0%,
+            #ffd06b 42%,
+            #d98a24 72%,
+            #9c5815 100%
         );
+
     color: #2a1400;
+
     font-family: 'Cinzel', serif;
-    font-size: 30px;
+
+    font-size: 26px;
     font-weight: 900;
+
     cursor: pointer;
+
     box-shadow:
-        0 0 40px rgba(255,190,60,0.55),
-        inset 0 2px 10px rgba(255,255,255,0.35);
+        0 0 28px rgba(255,190,60,0.62),
+        0 0 70px rgba(255,150,30,0.22),
+        inset 0 2px 12px rgba(255,255,255,0.38),
+        inset 0 -8px 16px rgba(120, 55, 5, 0.28);
+
+    transition:
+        transform 0.25s ease,
+        filter 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+.result-btn::before {
+    content: "";
+    position: absolute;
+    inset: 5px;
+
+    border-radius: 13px;
+
+    border: 1px solid rgba(255, 255, 220, 0.28);
+
+    pointer-events: none;
 }
 
 .result-btn::after {
     content: "";
     position: absolute;
+
     top: 0;
     left: -90%;
+
     width: 60%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.55), transparent);
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(255,255,255,0.58),
+            transparent
+        );
+
     transform: skewX(-20deg);
-    animation: buttonShine 2.2s infinite;
+
+    animation: buttonShine 2.4s infinite;
 }
 
 .result-btn:hover {
-    transform: translateY(-5px) scale(1.04);
+    transform: translateY(-4px) scale(1.035);
+
+    filter: brightness(1.08);
+
     box-shadow:
-        0 0 60px rgba(255,210,100,0.9),
-        0 0 130px rgba(255,180,50,0.4);
-    filter: brightness(1.1);
+        0 0 45px rgba(255,210,100,0.85),
+        0 0 100px rgba(255,180,50,0.38),
+        inset 0 2px 12px rgba(255,255,255,0.45);
 }
 
-/* LOSE DESIGN */
+/* LOSE VERSION */
 .lose-result {
     background:
-        radial-gradient(circle at center, rgba(180, 20, 20, 0.22), transparent 35%),
-        rgba(0, 0, 0, 0.92);
-}
-
-.lose-result .gold-confetti {
-    background-image:
-        radial-gradient(circle, rgba(255,60,60,0.8) 2px, transparent 3px),
-        radial-gradient(circle, rgba(120,0,0,0.75) 1px, transparent 2px);
+        radial-gradient(circle at 50% 47%, rgba(200, 28, 28, 0.23), transparent 30%),
+        linear-gradient(180deg, rgba(8, 1, 1, 0.97), rgba(0, 0, 0, 0.98));
 }
 
 .lose-result .game-result-card {
-    border-color: rgba(255, 70, 70, 0.85);
+    border-color: rgba(255, 80, 70, 0.85);
+
+    background:
+        radial-gradient(circle at 50% 36%, rgba(255, 60, 50, 0.18), transparent 34%),
+        linear-gradient(145deg, rgba(44, 5, 4, 0.96), rgba(5, 1, 1, 0.98));
+
     box-shadow:
-        0 0 45px rgba(180, 20, 20, 0.5),
-        0 0 120px rgba(120, 0, 0, 0.45),
-        inset 0 0 60px rgba(255, 50, 50, 0.1);
+        0 0 30px rgba(255, 55, 45, 0.36),
+        0 0 90px rgba(160, 0, 0, 0.35),
+        inset 0 0 42px rgba(255, 70, 60, 0.10);
 }
 
 .lose-result .result-crown,
 .lose-result .game-result-title {
     color: #ff5a4d;
+
+    background: none;
+    -webkit-background-clip: initial;
+    background-clip: initial;
+
     text-shadow:
-        0 0 20px rgba(255, 70, 70, 0.9),
-        0 0 65px rgba(180, 0, 0, 0.7);
+        0 0 22px rgba(255, 70, 70, 0.9),
+        0 0 64px rgba(150, 0, 0, 0.7);
 }
 
 .lose-result .result-divider {
-    color: #7a0000;
+    color: #ff3b2f;
 }
 
 .lose-result .result-btn {
     background:
         linear-gradient(
             180deg,
-            #ff8a72 0%,
-            #b52217 55%,
-            #4a0502 100%
+            #ff9a84 0%,
+            #c92218 55%,
+            #520502 100%
         );
-    color: #ffe3d6;
-    border-color: rgba(255,120,100,0.9);
-}
 
-/* DRAW DESIGN */
-.draw-result .result-crown,
-.draw-result .game-result-title {
-    color: #d8d8d8;
-    text-shadow:
-        0 0 20px rgba(255,255,255,0.5),
-        0 0 65px rgba(180,180,180,0.25);
+    color: #ffe1d6;
+
+    border-color: rgba(255, 130, 110, 0.95);
 }
 
 @keyframes royalPopup {
     from {
         opacity: 0;
-        transform: scale(0.55) translateY(80px);
+        transform: scale(0.66) translateY(45px);
     }
+
     to {
         opacity: 1;
         transform: scale(1) translateY(0);
@@ -1411,8 +1560,9 @@ button,
     0%, 100% {
         transform: translateX(-50%) translateY(0) scale(1);
     }
+
     50% {
-        transform: translateX(-50%) translateY(-10px) scale(1.08);
+        transform: translateX(-50%) translateY(-8px) scale(1.06);
     }
 }
 
@@ -1420,28 +1570,19 @@ button,
     0%, 100% {
         filter: brightness(1);
     }
+
     50% {
-        filter: brightness(1.25);
+        filter: brightness(1.22);
     }
 }
 
 @keyframes confettiMove {
     from {
-        background-position: 0 0, 0 0;
+        background-position: 20px 30px, 80px 120px, 160px 60px;
     }
-    to {
-        background-position: 120px 260px, -160px 220px;
-    }
-}
 
-@keyframes fireworkPulse {
-    0%, 100% {
-        transform: scale(0.8);
-        opacity: 0.18;
-    }
-    50% {
-        transform: scale(1.15);
-        opacity: 0.45;
+    to {
+        background-position: 120px 260px, -160px 220px, 260px 330px;
     }
 }
 
@@ -1449,9 +1590,11 @@ button,
     0% {
         left: -90%;
     }
+
     45% {
         left: 130%;
     }
+
     100% {
         left: 130%;
     }
