@@ -344,6 +344,24 @@ function createPit(x, z, index) {
     };
 }
 
+const playerSideEmblem = createTextSprite('♛', {
+    fontSize: 90,
+    textColor: '#d8a42d',
+    scaleFactor: 0.009
+});
+
+playerSideEmblem.position.set(0, 1.22, 6.25);
+scene.add(playerSideEmblem);
+
+const computerSideEmblem = createTextSprite('◆', {
+    fontSize: 70,
+    textColor: '#2b1205',
+    scaleFactor: 0.007
+});
+
+computerSideEmblem.position.set(0, 1.22, -6.25);
+scene.add(computerSideEmblem);
+
 for (let i = 0; i < 9; i++) {
     createPit(startX + i * pitSpacing, topRowZ, 17 - i);
 }
@@ -672,7 +690,7 @@ const storeCountSpriteA = createTextSprite('0', {
     scaleFactor: 0.0055
 });
 storeCountSpriteA.position.set(5.1, 1.92, -1.35);
-scene.add(storeCountSpriteA);
+// scene.add(storeCountSpriteA);
 
 const storeCountSpriteB = createTextSprite('0', {
     fontSize: 82,
@@ -680,7 +698,7 @@ const storeCountSpriteB = createTextSprite('0', {
     scaleFactor: 0.0055
 });
 storeCountSpriteB.position.set(-5.1, 1.92, -1.35);
-scene.add(storeCountSpriteB);
+// scene.add(storeCountSpriteB);
 
 /* SYNC */
 function sync3DBoardFromGameState(state) {
