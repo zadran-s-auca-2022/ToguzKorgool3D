@@ -1,7 +1,7 @@
 const NUM_PITS_PER_PLAYER = 9;
 const TOTAL_PITS = NUM_PITS_PER_PLAYER * 2;
 const INITIAL_STONES = 9;
-const TARGET_SCORE = 10;
+const TARGET_SCORE = 82;
 const SOW_DELAY = 200;
 
 let pits = new Array(TOTAL_PITS).fill(INITIAL_STONES);
@@ -608,13 +608,21 @@ function showGameResult(resultText) {
 
     overlay.classList.remove('win-result', 'lose-result', 'draw-result');
 
-    overlay.classList.add('lose-result');
+    if (storeA > storeB) {
+        overlay.classList.add('win-result');
+        crown.textContent = '♛';
+        title.textContent = 'YOU WIN!';
+    } else if (storeB > storeA) {
+        overlay.classList.add('lose-result');
+        crown.textContent = '☠';
+        title.textContent = 'YOU LOSE!';
+    } else {
+        overlay.classList.add('draw-result');
+        crown.textContent = '✦';
+        title.textContent = 'DRAW';
+    }
 
-    crown.textContent = '☠';
-
-    title.textContent = 'YOU LOSE!';
-
-    score.textContent = `You: ${storeA}  •  Computer: ${storeB}`;
+    score.textContent = `You: ${storeA} • Computer: ${storeB}`;
     overlay.classList.remove('hidden');
 }
 
