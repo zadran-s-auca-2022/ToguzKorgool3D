@@ -600,21 +600,29 @@ window.closeRules = function () {
 
 function showGameResult(resultText) {
     const overlay = document.getElementById('gameResultOverlay');
+    const crown = document.getElementById('resultCrown');
     const title = document.getElementById('gameResultTitle');
     const score = document.getElementById('gameResultScore');
 
-    if (!overlay || !title || !score) return;
+    if (!overlay || !crown || !title || !score) return;
+
+    overlay.classList.remove('win-result', 'lose-result', 'draw-result');
 
     if (storeA > storeB) {
+        overlay.classList.add('win-result');
+        crown.textContent = '♛';
         title.textContent = 'YOU WIN!';
     } else if (storeB > storeA) {
+        overlay.classList.add('lose-result');
+        crown.textContent = '☠';
         title.textContent = 'YOU LOSE';
     } else {
+        overlay.classList.add('draw-result');
+        crown.textContent = '◆';
         title.textContent = 'DRAW';
     }
 
     score.textContent = `You: ${storeA}  •  Computer: ${storeB}`;
-
     overlay.classList.remove('hidden');
 }
 
