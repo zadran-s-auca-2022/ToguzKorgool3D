@@ -184,15 +184,20 @@
     </div>
 
     <div id="gameResultOverlay" class="game-result-overlay hidden">
+        <div class="result-particles"></div>
+
         <div class="game-result-card">
+            <div class="result-crown">♛</div>
             <div id="gameResultIcon" class="game-result-icon">🏆</div>
             <div id="gameResultTitle" class="game-result-title">You Win!</div>
             <div id="gameResultScore" class="game-result-score"></div>
+
             <button class="result-btn" onclick="resetGame(); closeGameResult();">
                 Play Again
             </button>
         </div>
     </div>
+    
 
     <script defer src="gameLogic.js"></script>
     <script type="module" src="board3d.js"></script>
