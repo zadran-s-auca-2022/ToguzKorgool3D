@@ -608,9 +608,11 @@ function showGameResult(resultText) {
 
     overlay.classList.remove('win-result', 'lose-result', 'draw-result');
 
-    icon.textContent = '☠';
+    overlay.classList.add('lose-result');
+
+    crown.textContent = '☠';
+
     title.textContent = 'YOU LOSE!';
-    score.textContent = 'You: 79 • Computer: 83';
 
     score.textContent = `You: ${storeA}  •  Computer: ${storeB}`;
     overlay.classList.remove('hidden');
