@@ -182,22 +182,27 @@
             </div>
         </div>
     </div>
+    
 
     <div id="gameResultOverlay" class="game-result-overlay hidden">
-        <div class="result-particles"></div>
+        <div class="gold-confetti"></div>
+        <div class="firework firework-left"></div>
+        <div class="firework firework-right"></div>
 
         <div class="game-result-card">
             <div class="result-crown">♛</div>
-            <div id="gameResultIcon" class="game-result-icon">🏆</div>
-            <div id="gameResultTitle" class="game-result-title">You Win!</div>
+
+            <div id="gameResultTitle" class="game-result-title">YOU WIN!</div>
+
+            <div class="result-divider">◆</div>
+
             <div id="gameResultScore" class="game-result-score"></div>
 
             <button class="result-btn" onclick="resetGame(); closeGameResult();">
-                Play Again
+                PLAY AGAIN
             </button>
         </div>
     </div>
-    
 
     <script defer src="gameLogic.js"></script>
     <script type="module" src="board3d.js"></script>

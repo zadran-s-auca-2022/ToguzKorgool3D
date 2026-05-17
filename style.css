@@ -1180,8 +1180,13 @@ button,
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(0,0,0,0.88);
-    backdrop-filter: blur(14px);
+    overflow: hidden;
+
+    background:
+        radial-gradient(circle at center, rgba(255, 170, 30, 0.18), transparent 35%),
+        rgba(0, 0, 0, 0.88);
+
+    backdrop-filter: blur(16px);
 }
 
 .game-result-overlay.hidden {
@@ -1189,73 +1194,159 @@ button,
 }
 
 .game-result-card {
+    position: relative;
     width: min(720px, 90vw);
-    padding: 70px 55px;
+    padding: 80px 70px 58px;
     text-align: center;
+
     border-radius: 34px;
-    border: 2px solid rgba(255, 205, 90, 0.75);
+    border: 2px solid rgba(255, 205, 90, 0.9);
+
     background:
-        radial-gradient(circle at center, rgba(255,190,70,0.16), transparent 55%),
-        linear-gradient(145deg, rgba(55,25,5,0.98), rgba(5,2,1,0.98));
+        radial-gradient(circle at center, rgba(255, 190, 60, 0.18), transparent 48%),
+        linear-gradient(145deg, rgba(55, 25, 5, 0.94), rgba(5, 2, 1, 0.98));
+
     box-shadow:
-        0 0 90px rgba(255,170,40,0.35),
-        0 45px 130px rgba(0,0,0,0.95),
-        inset 0 0 45px rgba(255,215,120,0.12);
-    animation: resultZoomIn 0.7s ease forwards;
+        0 0 40px rgba(255, 180, 40, 0.45),
+        0 0 110px rgba(255, 145, 20, 0.35),
+        inset 0 0 60px rgba(255, 210, 100, 0.12);
+
+    animation: royalPopup 0.8s cubic-bezier(.16,1.25,.35,1) forwards;
 }
 
-.game-result-icon {
-    font-size: 95px;
-    margin-bottom: 18px;
-    filter: drop-shadow(0 0 25px rgba(255,190,70,0.8));
-    animation: trophyFloat 1.6s ease-in-out infinite;
+.game-result-card::before {
+    content: "";
+    position: absolute;
+    inset: 18px;
+    border-radius: 24px;
+    border: 1px solid rgba(255, 220, 120, 0.38);
+    pointer-events: none;
+}
+
+.result-crown {
+    position: absolute;
+    top: -58px;
+    left: 50%;
+    transform: translateX(-50%);
+
+    font-size: 96px;
+    color: #ffd76d;
+
+    text-shadow:
+        0 0 22px rgba(255, 210, 80, 0.9),
+        0 0 55px rgba(255, 150, 30, 0.7);
+
+    animation: crownFloat 1.8s ease-in-out infinite;
 }
 
 .game-result-title {
     font-family: 'Cinzel', serif;
-    font-size: 76px;
-    font-weight: 800;
-    color: #ffe29a;
-    text-transform: uppercase;
+    font-size: 92px;
+    font-weight: 900;
     letter-spacing: 3px;
+    color: #ffd86f;
+
     text-shadow:
-        0 0 22px rgba(255,210,100,0.65),
-        0 0 55px rgba(255,160,40,0.35),
-        0 6px 18px rgba(0,0,0,0.9);
+        0 0 18px rgba(255, 210, 80, 0.9),
+        0 0 55px rgba(255, 160, 30, 0.65),
+        0 8px 18px rgba(0,0,0,0.95);
+
+    animation: titleGlow 1.5s ease-in-out infinite;
+}
+
+.result-divider {
+    margin: 12px auto 22px;
+    font-size: 28px;
+    color: #d41414;
+    text-shadow: 0 0 18px rgba(255, 210, 90, 0.8);
 }
 
 .game-result-score {
-    margin: 26px 0 38px;
+    display: inline-block;
+    padding: 16px 42px;
+    margin-bottom: 34px;
+
     font-family: 'Cinzel', serif;
     font-size: 32px;
-    color: #fff0c4;
-    letter-spacing: 1px;
+    color: #fff1c7;
+
+    border: 1px solid rgba(255, 205, 90, 0.5);
+    background: rgba(0,0,0,0.35);
+    box-shadow: inset 0 0 18px rgba(255, 180, 60, 0.12);
 }
 
 .result-btn {
-    padding: 20px 58px;
-    border-radius: 999px;
-    border: 2px solid rgba(255,215,120,0.65);
-    background: linear-gradient(135deg, #ffd77f, #b97022);
-    color: #201004;
+    position: relative;
+    overflow: hidden;
+
+    padding: 20px 78px;
+    border-radius: 18px;
+
+    border: 2px solid rgba(255, 220, 120, 0.9);
+
+    background:
+        linear-gradient(180deg, rgba(255, 210, 100, 0.28), rgba(80, 35, 5, 0.95));
+
+    color: #ffe7a5;
+
     font-family: 'Cinzel', serif;
-    font-size: 24px;
+    font-size: 28px;
     font-weight: 900;
+
     cursor: pointer;
+
     box-shadow:
-        0 25px 60px rgba(196,122,36,0.55),
-        inset 0 1px 0 rgba(255,255,255,0.55);
+        0 0 35px rgba(255, 170, 40, 0.45),
+        inset 0 0 22px rgba(255, 210, 90, 0.18);
 }
 
-.result-btn:hover {
-    transform: translateY(-4px) scale(1.04);
-    filter: brightness(1.12);
+.result-btn::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -90%;
+    width: 60%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.55), transparent);
+    transform: skewX(-20deg);
+    animation: buttonShine 2.2s infinite;
 }
 
-@keyframes resultZoomIn {
+.gold-confetti {
+    position: absolute;
+    inset: 0;
+    background-image:
+        radial-gradient(circle, rgba(255,220,100,0.95) 2px, transparent 3px),
+        radial-gradient(circle, rgba(255,160,40,0.75) 1px, transparent 2px);
+    background-size: 90px 90px, 130px 130px;
+    animation: confettiMove 5s linear infinite;
+}
+
+.firework {
+    position: absolute;
+    width: 280px;
+    height: 280px;
+    border-radius: 50%;
+    background:
+        repeating-radial-gradient(circle, rgba(255,200,70,0.9) 0 2px, transparent 3px 16px);
+    opacity: 0.35;
+    animation: fireworkPulse 1.8s ease-in-out infinite;
+}
+
+.firework-left {
+    left: 10%;
+    top: 20%;
+}
+
+.firework-right {
+    right: 10%;
+    top: 20%;
+}
+
+@keyframes royalPopup {
     from {
         opacity: 0;
-        transform: scale(0.55) translateY(60px);
+        transform: scale(0.55) translateY(80px);
     }
     to {
         opacity: 1;
@@ -1263,11 +1354,28 @@ button,
     }
 }
 
-@keyframes trophyFloat {
-    0%, 100% {
-        transform: translateY(0) scale(1);
-    }
-    50% {
-        transform: translateY(-12px) scale(1.1);
-    }
+@keyframes crownFloat {
+    0%, 100% { transform: translateX(-50%) translateY(0) scale(1); }
+    50% { transform: translateX(-50%) translateY(-10px) scale(1.08); }
+}
+
+@keyframes titleGlow {
+    0%, 100% { filter: brightness(1); }
+    50% { filter: brightness(1.25); }
+}
+
+@keyframes confettiMove {
+    from { background-position: 0 0, 0 0; }
+    to { background-position: 120px 260px, -160px 220px; }
+}
+
+@keyframes fireworkPulse {
+    0%, 100% { transform: scale(0.8); opacity: 0.18; }
+    50% { transform: scale(1.15); opacity: 0.45; }
+}
+
+@keyframes buttonShine {
+    0% { left: -90%; }
+    45% { left: 130%; }
+    100% { left: 130%; }
 }
