@@ -1183,174 +1183,47 @@ button,
     justify-content: center;
 
     background:
-        radial-gradient(circle at center, rgba(255, 190, 70, 0.16), transparent 38%),
-        rgba(0, 0, 0, 0.82);
+        radial-gradient(circle at center, rgba(255, 190, 80, 0.25), transparent 32%),
+        linear-gradient(135deg, rgba(10,4,1,0.96), rgba(0,0,0,0.92));
 
-    backdrop-filter: blur(14px);
-
+    backdrop-filter: blur(18px);
     overflow: hidden;
-}
-
-.game-result-overlay::before,
-.game-result-overlay::after {
-    content: "";
-    position: absolute;
-    width: 620px;
-    height: 620px;
-    border-radius: 50%;
-    border: 1px solid rgba(255, 210, 120, 0.18);
-    animation: resultRing 3.5s linear infinite;
-}
-
-.game-result-overlay::after {
-    width: 820px;
-    height: 820px;
-    animation-duration: 5.2s;
-    animation-direction: reverse;
-}
-
-.game-result-card {
-    position: relative;
-    width: min(620px, 90vw);
-    padding: 52px 42px;
-
-    text-align: center;
-
-    border-radius: 36px;
-    border: 1px solid rgba(255, 215, 120, 0.42);
-
-    background:
-        linear-gradient(145deg, rgba(45, 22, 6, 0.96), rgba(5, 2, 1, 0.98));
-
-    box-shadow:
-        0 45px 130px rgba(0,0,0,0.95),
-        0 0 70px rgba(255,180,60,0.22),
-        inset 0 0 34px rgba(255,215,120,0.08);
-
-    animation: resultCardIn 0.8s cubic-bezier(.15,1.25,.25,1) forwards;
-}
-
-.game-result-card::before {
-    content: "✦ ✦ ✦";
-    display: block;
-    margin-bottom: 16px;
-
-    color: #d8a63c;
-    font-size: 22px;
-    letter-spacing: 16px;
-
-    text-shadow: 0 0 18px rgba(255,180,60,0.5);
-}
-
-.game-result-icon {
-    font-size: 84px;
-    margin-bottom: 10px;
-
-    filter: drop-shadow(0 0 22px rgba(255,190,70,0.7));
-
-    animation: resultIconFloat 1.8s ease-in-out infinite;
-}
-
-.game-result-title {
-    font-family: 'Cinzel', serif;
-    font-size: 58px;
-    font-weight: 800;
-
-    color: #ffe7a8;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-
-    text-shadow:
-        0 0 18px rgba(255,210,120,0.45),
-        0 0 42px rgba(255,170,40,0.22),
-        0 5px 15px rgba(0,0,0,0.9);
-}
-
-.game-result-score {
-    margin: 20px 0 34px;
-
-    font-family: 'Cinzel', serif;
-    font-size: 26px;
-    color: #fff2c9;
-    letter-spacing: 1px;
-}
-
-.result-btn {
-    position: relative;
-    overflow: hidden;
-
-    padding: 17px 48px;
-
-    border-radius: 999px;
-    border: 1px solid rgba(255,215,120,0.42);
-
-    background: linear-gradient(135deg, #ffd77f, #b97022);
-
-    color: #201004;
-
-    font-family: 'Cinzel', serif;
-    font-size: 19px;
-    font-weight: 900;
-
-    cursor: pointer;
-
-    box-shadow:
-        0 22px 55px rgba(196,122,36,0.48),
-        inset 0 1px 0 rgba(255,255,255,0.55);
-}
-
-.result-btn::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: -90%;
-    width: 60%;
-    height: 100%;
-
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.45), transparent);
-    transform: skewX(-20deg);
-    transition: 0.55s ease;
-}
-
-.result-btn:hover::after {
-    left: 130%;
-}
-
-.result-btn:hover {
-    transform: translateY(-4px) scale(1.03);
 }
 
 .game-result-overlay.hidden {
     display: none;
 }
 
-@keyframes resultCardIn {
-    from {
-        opacity: 0;
-        transform: scale(0.65) translateY(60px) rotateX(18deg);
-    }
-    to {
-        opacity: 1;
-        transform: scale(1) translateY(0) rotateX(0);
-    }
+.result-particles {
+    position: absolute;
+    inset: 0;
+    background-image:
+        radial-gradient(circle, rgba(255,215,120,0.9) 2px, transparent 3px),
+        radial-gradient(circle, rgba(255,160,50,0.75) 1px, transparent 2px),
+        radial-gradient(circle, rgba(255,255,255,0.55) 1px, transparent 2px);
+    background-size: 90px 90px, 130px 130px, 170px 170px;
+    animation: fancyParticles 7s linear infinite;
+    opacity: 0.55;
 }
 
-@keyframes resultIconFloat {
-    0%, 100% {
-        transform: translateY(0) scale(1);
-    }
-    50% {
-        transform: translateY(-10px) scale(1.08);
-    }
-}
+.game-result-card {
+    position: relative;
+    width: min(640px, 90vw);
+    padding: 58px 46px 48px;
 
-@keyframes resultRing {
-    from {
-        transform: rotate(0deg) scale(0.9);
-        opacity: 0.65;
-    }
-    to {
-        transform: rotate(360deg) scale(1.05);
-        opacity: 0.2;
-    }
+    text-align: center;
+
+    border-radius: 38px;
+    border: 1px solid rgba(255,215,120,0.55);
+
+    background:
+        linear-gradient(145deg, rgba(45,20,5,0.92), rgba(8,3,1,0.98));
+
+    box-shadow:
+        0 0 0 1px rgba(255,215,120,0.12),
+        0 45px 130px rgba(0,0,0,0.95),
+        0 0 90px rgba(255,170,40,0.35),
+        inset 0 0 45px rgba(255,215,120,0.10);
+
+    animation: fancyCardEnter 0.9s cubic-bezier(.15,1.25,.25,1) forwards;
 }
