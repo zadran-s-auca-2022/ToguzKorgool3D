@@ -608,19 +608,9 @@ function showGameResult(resultText) {
 
     overlay.classList.remove('win-result', 'lose-result', 'draw-result');
 
-    if (storeA > storeB) {
-        overlay.classList.add('win-result');
-        crown.textContent = '♛';
-        title.textContent = 'YOU WIN!';
-    } else if (storeB > storeA) {
-        overlay.classList.add('lose-result');
-        crown.textContent = '☠';
-        title.textContent = 'YOU LOSE';
-    } else {
-        overlay.classList.add('draw-result');
-        crown.textContent = '◆';
-        title.textContent = 'DRAW';
-    }
+    icon.textContent = '☠';
+    title.textContent = 'YOU LOSE!';
+    score.textContent = 'You: 79 • Computer: 83';
 
     score.textContent = `You: ${storeA}  •  Computer: ${storeB}`;
     overlay.classList.remove('hidden');
