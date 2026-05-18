@@ -714,7 +714,7 @@ for (let i = 0; i < 18; i++) {
 
     numText.position.set(
         base.x,
-        1.485,
+        1.535,
         isTopRow ? base.z - 0.9 : base.z + 0.9
     );
 
@@ -731,8 +731,8 @@ for (let i = 0; i < 18; i++) {
 
     countText.position.set(
         base.x,
-        1.235,
-        base.z
+        1.535,
+        isTopRow ? base.z + 0.72 : base.z - 0.72
     );
 
     boardGroup.add(countText);
@@ -747,7 +747,7 @@ const storeCountSpriteA = createSurfaceText('0', {
     padding: 28
 });
 
-storeCountSpriteA.position.set(5.1, 1.245, 0);
+storeCountSpriteA.position.set(5.1, 1.535, 0);
 boardGroup.add(storeCountSpriteA);
 
 const storeCountSpriteB = createSurfaceText('0', {
@@ -758,7 +758,7 @@ const storeCountSpriteB = createSurfaceText('0', {
     padding: 28
 });
 
-storeCountSpriteB.position.set(-5.1, 1.245, 0);
+storeCountSpriteB.position.set(-5.1, 1.535, 0);
 boardGroup.add(storeCountSpriteB);
 
 /* SYNC */
