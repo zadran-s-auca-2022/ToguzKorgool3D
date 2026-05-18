@@ -609,17 +609,19 @@ function renderStoreStones(side, count) {
     }
 }
 
-/* TEXT SPRITES */
-function makeTextTexture(text, options = {}) {
-    const fontSize = options.fontSize || 64;
-    const textColor = options.textColor || '#fff4dc';
-    const padding = options.padding || 18;
-    const fontFamily = options.fontFamily || 'Arial';
+/* ENGRAVED / FLAT BOARD TEXT - visible but not floating */
+
+function makeSurfaceTextTexture(text, options = {}) {
+    const fontSize = options.fontSize || 72;
+    const textColor = options.textColor || '#ffe8a6';
+    const strokeColor = options.strokeColor || 'rgba(45, 18, 2, 0.95)';
+    const padding = options.padding || 26;
+    const fontFamily = options.fontFamily || 'Cinzel';
 
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
 
-    ctx.font = `bold ${fontSize}px ${fontFamily}`;
+    ctx.font = `900 ${fontSize}px ${fontFamily}, serif`;
     const textWidth = Math.ceil(ctx.measureText(text).width);
 
     canvas.width = textWidth + padding * 2;
@@ -628,14 +630,23 @@ function makeTextTexture(text, options = {}) {
     const ctx2 = canvas.getContext('2d');
     ctx2.clearRect(0, 0, canvas.width, canvas.height);
 
-    ctx2.font = `bold ${fontSize}px ${fontFamily}`;
+    ctx2.font = `900 ${fontSize}px ${fontFamily}, serif`;
     ctx2.textAlign = 'center';
     ctx2.textBaseline = 'middle';
-    ctx2.lineWidth = 8;
-    ctx2.strokeStyle = 'rgba(0,0,0,0.75)';
-    ctx2.strokeText(text, canvas.width / 2, canvas.height / 2 + 2);
+
+    /* carved shadow */
+    ctx2.lineWidth = 9;
+    ctx2.strokeStyle = strokeColor;
+    ctx2.strokeText(text, canvas.width / 2 + 2, canvas.height / 2 + 3);
+
+    /* bright engraved gold */
     ctx2.fillStyle = textColor;
-    ctx2.fillText(text, canvas.width / 2, canvas.height / 2 + 2);
+    ctx2.fillText(text, canvas.width / 2, canvas.height / 2);
+
+    /* small highlight */
+    ctx2.lineWidth = 2;
+    ctx2.strokeStyle = 'rgba(255, 245, 190, 0.45)';
+    ctx2.strokeText(text, canvas.width / 2 - 1, canvas.height / 2 - 1);
 
     const texture = new THREE.CanvasTexture(canvas);
     texture.needsUpdate = true;
@@ -643,33 +654,42 @@ function makeTextTexture(text, options = {}) {
     return { texture, width: canvas.width, height: canvas.height };
 }
 
-function createTextSprite(text, options = {}) {
-    const { texture, width, height } = makeTextTexture(text, options);
+function createSurfaceText(text, options = {}) {
+    const { texture, width, height } = makeSurfaceTextTexture(text, options);
 
-    const material = new THREE.SpriteMaterial({
+    const material = new THREE.MeshBasicMaterial({
         map: texture,
         transparent: true,
         depthWrite: false,
-        depthTest: true
+        depthTest: true,
+        side: THREE.DoubleSide
     });
 
-    const sprite = new THREE.Sprite(material);
     const scaleFactor = options.scaleFactor || 0.006;
-    sprite.scale.set(width * scaleFactor, height * scaleFactor, 1);
-    sprite.userData.options = options;
-    sprite.renderOrder = 10;
 
-    return sprite;
+    const mesh = new THREE.Mesh(
+        new THREE.PlaneGeometry(width * scaleFactor, height * scaleFactor),
+        material
+    );
+
+    mesh.rotation.x = -Math.PI / 2;
+    mesh.renderOrder = 20;
+    mesh.userData.options = options;
+
+    return mesh;
 }
 
-function updateTextSprite(sprite, text) {
-    const { texture, width, height } = makeTextTexture(text, sprite.userData.options || {});
-    sprite.material.map.dispose();
-    sprite.material.map = texture;
-    sprite.material.needsUpdate = true;
+function updateSurfaceText(mesh, text) {
+    const { texture, width, height } = makeSurfaceTextTexture(text, mesh.userData.options || {});
 
-    const scaleFactor = sprite.userData.options?.scaleFactor || 0.006;
-    sprite.scale.set(width * scaleFactor, height * scaleFactor, 1);
+    if (mesh.material.map) mesh.material.map.dispose();
+
+    mesh.material.map = texture;
+    mesh.material.needsUpdate = true;
+
+    const scaleFactor = mesh.userData.options?.scaleFactor || 0.006;
+    mesh.geometry.dispose();
+    mesh.geometry = new THREE.PlaneGeometry(width * scaleFactor, height * scaleFactor);
 }
 
 const pitNumberSprites = new Array(18);
@@ -684,50 +704,62 @@ for (let i = 0; i < 18; i++) {
     const base = pitStoneBase[i];
     const isTopRow = i >= 9;
 
-    const numSprite = createTextSprite(String(pitNumberForIndex(i)), {
-        fontSize: 52,
-        textColor: '#1a0d04',
-        scaleFactor: 0.0042
+    const numText = createSurfaceText(String(pitNumberForIndex(i)), {
+        fontSize: 58,
+        textColor: '#ffd987',
+        strokeColor: 'rgba(35, 12, 2, 0.95)',
+        scaleFactor: 0.0043,
+        padding: 18
     });
 
-    numSprite.position.set(
+    numText.position.set(
         base.x,
-        1.86,
-        isTopRow ? base.z - 0.88 : base.z + 0.88
+        1.485,
+        isTopRow ? base.z - 0.9 : base.z + 0.9
     );
-    scene.add(numSprite);
-    pitNumberSprites[i] = numSprite;
 
-    const countSprite = createTextSprite('9', {
-        fontSize: 64,
-        textColor: '#fff0d0',
-        scaleFactor: 0.0045
+    boardGroup.add(numText);
+    pitNumberSprites[i] = numText;
+
+    const countText = createSurfaceText('9', {
+        fontSize: 74,
+        textColor: '#fff1c4',
+        strokeColor: 'rgba(45, 16, 2, 0.98)',
+        scaleFactor: 0.0048,
+        padding: 22
     });
 
-    countSprite.position.set(
+    countText.position.set(
         base.x,
-        2.0,
-        isTopRow ? base.z + 0.92 : base.z - 0.92
+        1.235,
+        base.z
     );
-    scene.add(countSprite);
-    pitCountSprites[i] = countSprite;
+
+    boardGroup.add(countText);
+    pitCountSprites[i] = countText;
 }
 
-const storeCountSpriteA = createTextSprite('0', {
-    fontSize: 82,
-    textColor: '#fff4dc',
-    scaleFactor: 0.0055
+const storeCountSpriteA = createSurfaceText('0', {
+    fontSize: 96,
+    textColor: '#fff1c4',
+    strokeColor: 'rgba(45, 16, 2, 0.98)',
+    scaleFactor: 0.0062,
+    padding: 28
 });
-storeCountSpriteA.position.set(5.1, 1.93, 0);
-scene.add(storeCountSpriteA);
 
-const storeCountSpriteB = createTextSprite('0', {
-    fontSize: 82,
-    textColor: '#fff4dc',
-    scaleFactor: 0.0055
+storeCountSpriteA.position.set(5.1, 1.245, 0);
+boardGroup.add(storeCountSpriteA);
+
+const storeCountSpriteB = createSurfaceText('0', {
+    fontSize: 96,
+    textColor: '#fff1c4',
+    strokeColor: 'rgba(45, 16, 2, 0.98)',
+    scaleFactor: 0.0062,
+    padding: 28
 });
-storeCountSpriteB.position.set(-5.1, 1.93, 0);
-scene.add(storeCountSpriteB);
+
+storeCountSpriteB.position.set(-5.1, 1.245, 0);
+boardGroup.add(storeCountSpriteB);
 
 /* SYNC */
 function sync3DBoardFromGameState(state) {
@@ -741,7 +773,7 @@ function sync3DBoardFromGameState(state) {
 
         pit.material.color.setHex(0x090201);
 
-        updateTextSprite(pitCountSprites[i], String(state.pits[i]));
+        updateSurfaceText(pitCountSprites[i], String(state.pits[i]));
     }
 
     renderTuzMarkers(state);
@@ -749,8 +781,8 @@ function sync3DBoardFromGameState(state) {
     renderStoreStones('A', state.storeA || 0);
     renderStoreStones('B', state.storeB || 0);
 
-    updateTextSprite(storeCountSpriteA, String(state.storeA || 0));
-    updateTextSprite(storeCountSpriteB, String(state.storeB || 0));
+    updateSurfaceText(storeCountSpriteA, String(state.storeA || 0));
+    updateSurfaceText(storeCountSpriteB, String(state.storeB || 0));
 }
 
 window.sync3DBoardFromGameState = sync3DBoardFromGameState;
