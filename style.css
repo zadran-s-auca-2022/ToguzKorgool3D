@@ -1599,3 +1599,10 @@ button,
         left: 130%;
     }
 }
+
+/* Remove top YOU / COMPUTER score texts completely */
+#scores,
+.scores,
+.score {
+    display: none !important;
+}

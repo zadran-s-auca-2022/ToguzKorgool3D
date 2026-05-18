@@ -278,6 +278,53 @@ function createKazan(x, z) {
 createKazan(-5.1, 0);
 createKazan(5.1, 0);
 
+/* ENGRAVED BOARD DECORATIONS - integrated into wood, not floating */
+const engravingMaterial = new THREE.MeshStandardMaterial({
+    color: 0x1b0702,
+    roughness: 0.92,
+    metalness: 0.0
+});
+
+function addEngravedLine(x, z, width, depth) {
+    const line = new THREE.Mesh(
+        new THREE.BoxGeometry(width, 0.018, depth),
+        engravingMaterial
+    );
+
+    line.position.set(x, 1.465, z);
+    line.receiveShadow = true;
+    boardGroup.add(line);
+}
+
+function addEngravedDiamond(x, z, size = 0.22) {
+    const diamond = new THREE.Mesh(
+        new THREE.BoxGeometry(size, 0.018, size),
+        engravingMaterial
+    );
+
+    diamond.position.set(x, 1.47, z);
+    diamond.rotation.y = Math.PI / 4;
+    diamond.receiveShadow = true;
+    boardGroup.add(diamond);
+}
+
+/* subtle carved center ornaments */
+addEngravedLine(0, 0, 1.9, 0.045);
+addEngravedLine(0, 0, 0.045, 1.0);
+
+addEngravedDiamond(0, 0, 0.28);
+addEngravedDiamond(-0.55, 0, 0.18);
+addEngravedDiamond(0.55, 0, 0.18);
+
+/* carved side identity marks, part of board surface */
+addEngravedLine(0, 4.95, 3.4, 0.05);
+addEngravedDiamond(-1.9, 4.95, 0.18);
+addEngravedDiamond(1.9, 4.95, 0.18);
+
+addEngravedLine(0, -4.95, 3.4, 0.05);
+addEngravedDiamond(-1.9, -4.95, 0.18);
+addEngravedDiamond(1.9, -4.95, 0.18);
+
 /* PITS */
 const pitMeshes = [];
 const pitMeshByIndex = new Array(18);
@@ -343,24 +390,6 @@ function createPit(x, z, index) {
         z
     };
 }
-
-const playerSideEmblem = createTextSprite('♛', {
-    fontSize: 90,
-    textColor: '#d8a42d',
-    scaleFactor: 0.009
-});
-
-playerSideEmblem.position.set(0, 1.22, 6.25);
-scene.add(playerSideEmblem);
-
-const computerSideEmblem = createTextSprite('◆', {
-    fontSize: 70,
-    textColor: '#2b1205',
-    scaleFactor: 0.007
-});
-
-computerSideEmblem.position.set(0, 1.22, -6.25);
-scene.add(computerSideEmblem);
 
 for (let i = 0; i < 9; i++) {
     createPit(startX + i * pitSpacing, topRowZ, 17 - i);
@@ -689,16 +718,16 @@ const storeCountSpriteA = createTextSprite('0', {
     textColor: '#fff4dc',
     scaleFactor: 0.0055
 });
-storeCountSpriteA.position.set(5.1, 1.92, -1.35);
-// scene.add(storeCountSpriteA);
+storeCountSpriteA.position.set(5.1, 1.93, 0);
+scene.add(storeCountSpriteA);
 
 const storeCountSpriteB = createTextSprite('0', {
     fontSize: 82,
     textColor: '#fff4dc',
     scaleFactor: 0.0055
 });
-storeCountSpriteB.position.set(-5.1, 1.92, -1.35);
-// scene.add(storeCountSpriteB);
+storeCountSpriteB.position.set(-5.1, 1.93, 0);
+scene.add(storeCountSpriteB);
 
 /* SYNC */
 function sync3DBoardFromGameState(state) {

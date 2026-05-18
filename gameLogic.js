@@ -232,8 +232,8 @@ function renderStores() {
     storeACountEl.textContent = storeA;
     storeBCountEl.textContent = storeB;
 
-    scoreAEl.textContent = `You : ${storeA}`;
-    scoreBEl.textContent = `Computer : ${storeB}`;
+    // Top score texts removed from page.
+    // Store counts are shown inside kazans in 3D.
 }
 
 function renderHistory() {
