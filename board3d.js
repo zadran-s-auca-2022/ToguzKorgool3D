@@ -661,8 +661,11 @@ function createSurfaceText(text, options = {}) {
         map: texture,
         transparent: true,
         depthWrite: false,
-        depthTest: true,
-        side: THREE.DoubleSide
+        depthTest: false,
+        side: THREE.DoubleSide,
+        polygonOffset: true,
+        polygonOffsetFactor: -4,
+        polygonOffsetUnits: -4
     });
 
     const scaleFactor = options.scaleFactor || 0.006;
@@ -714,8 +717,8 @@ for (let i = 0; i < 18; i++) {
 
     numText.position.set(
         base.x,
-        1.535,
-        isTopRow ? base.z - 0.9 : base.z + 0.9
+        1.565,
+        isTopRow ? base.z + 1.05 : base.z - 1.05
     );
 
     boardGroup.add(numText);
@@ -731,8 +734,8 @@ for (let i = 0; i < 18; i++) {
 
     countText.position.set(
         base.x,
-        1.535,
-        isTopRow ? base.z + 0.72 : base.z - 0.72
+        1.565,
+        isTopRow ? base.z - 1.0 : base.z + 1.0
     );
 
     boardGroup.add(countText);
@@ -747,7 +750,7 @@ const storeCountSpriteA = createSurfaceText('0', {
     padding: 28
 });
 
-storeCountSpriteA.position.set(5.1, 1.535, 0);
+storeCountSpriteA.position.set(5.1, 1.565, -1.28);
 boardGroup.add(storeCountSpriteA);
 
 const storeCountSpriteB = createSurfaceText('0', {
@@ -758,7 +761,7 @@ const storeCountSpriteB = createSurfaceText('0', {
     padding: 28
 });
 
-storeCountSpriteB.position.set(-5.1, 1.535, 0);
+storeCountSpriteB.position.set(-5.1, 1.565, -1.28);
 boardGroup.add(storeCountSpriteB);
 
 /* SYNC */
