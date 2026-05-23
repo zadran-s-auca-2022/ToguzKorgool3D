@@ -395,7 +395,7 @@ async function performMove(startIndex, player, addToHistory) {
     }
 
     currentPlayer = player === 'A' ? 'B' : 'A';
-    setStatus(currentPlayer === 'A' ? "Your turn" : "Computer's turn");
+    setStatus(currentPlayer === 'A' ? "Your turn" : "Opponent's turn");
     isAnimating = false;
     notify3D();
 
@@ -433,7 +433,7 @@ function finalizeGame() {
     if (storeA > storeB) {
         message = `Game over! You win (${storeA} : ${storeB})`;
     } else if (storeB > storeA) {
-        message = `Game over! Computer wins (${storeB} : ${storeA})`;
+        message = `Game over! Opponent wins (${storeB} : ${storeA})`;
     } else {
         message = `Game over! Draw (${storeA} : ${storeB})`;
     }
@@ -448,33 +448,77 @@ function finalizeGame() {
 function aiMove() {
     if (isGameOver || isAnimating || currentPlayer !== 'B') return;
 
-    let bestIndex = -1;
-    let bestCapture = -1;
+    const validMoves = [];
 
     for (let col = 0; col < NUM_PITS_PER_PLAYER; col++) {
         const index = NUM_PITS_PER_PLAYER + col;
-        if (pits[index] === 0) continue;
 
-        const captured = simulateCapture(index, 'B');
-        if (captured > bestCapture) {
-            bestCapture = captured;
-            bestIndex = index;
+        if (pits[index] > 0) {
+            validMoves.push(index);
         }
     }
 
-    if (bestIndex === -1) {
-        for (let col = 0; col < NUM_PITS_PER_PLAYER; col++) {
-            const index = NUM_PITS_PER_PLAYER + col;
-            if (pits[index] > 0) {
-                bestIndex = index;
-                break;
+    if (validMoves.length === 0) return;
+
+    let selectedMove = validMoves[0];
+
+    // ---------------- BEGINNER ----------------
+    if (aiDifficulty === 'beginner') {
+
+        selectedMove =
+            validMoves[Math.floor(Math.random() * validMoves.length)];
+
+    }
+
+    // ---------------- NORMAL ----------------
+    else if (aiDifficulty === 'normal') {
+
+        let bestCapture = -1;
+
+        for (const index of validMoves) {
+            const captured = simulateCapture(index, 'B');
+
+            if (captured > bestCapture) {
+                bestCapture = captured;
+                selectedMove = index;
+            }
+        }
+
+    }
+
+    // ---------------- EXPERT ----------------
+    else if (aiDifficulty === 'expert') {
+
+        let bestScore = -999999;
+
+        for (const index of validMoves) {
+
+            const captured = simulateCapture(index, 'B');
+
+            let score = captured * 100;
+
+            // Prefer larger pits
+            score += pits[index] * 3;
+
+            // Prefer center pits slightly
+            const centerBias =
+                4 - Math.abs((index - NUM_PITS_PER_PLAYER) - 4);
+
+            score += centerBias;
+
+            // Avoid emptying strong positions too early
+            if (pits[index] <= 1) {
+                score -= 5;
+            }
+
+            if (score > bestScore) {
+                bestScore = score;
+                selectedMove = index;
             }
         }
     }
 
-    if (bestIndex !== -1) {
-        performMove(bestIndex, 'B', true);
-    }
+    performMove(selectedMove, 'B', true);
 }
 
 function simulateCapture(startIndex, player) {
@@ -635,7 +679,7 @@ function showGameResult(resultText) {
         title.textContent = 'DRAW';
     }
 
-    score.textContent = `You: ${storeA} • Computer: ${storeB}`;
+    score.textContent = `You: ${storeA} • Opponent: ${storeB}`;
     overlay.classList.remove('hidden');
 }
 
