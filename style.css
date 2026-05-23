@@ -1606,3 +1606,16 @@ button,
 .score {
     display: none !important;
 }
+
+.settings-select {
+    width: 100%;
+    margin-top: 8px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 215, 120, 0.28);
+    background: rgba(15, 8, 3, 0.92);
+    color: #f7d48a;
+    font-family: 'Cinzel', serif;
+    font-size: 14px;
+    outline: none;
+}

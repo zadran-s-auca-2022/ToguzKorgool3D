@@ -16,6 +16,8 @@ let isGameOver = false;
 let soundEnabled = true;
 let aiEnabled = true;
 
+let aiDifficulty = localStorage.getItem('toguz_ai_difficulty') || 'normal';
+
 let moveHistory = [];
 let moveCounter = 0;
 
@@ -539,6 +541,17 @@ function initSettings() {
     }
 
     soundToggleEl.checked = soundEnabled;
+
+    const aiDifficultySelect = document.getElementById('aiDifficultySelect');
+
+    if (aiDifficultySelect) {
+        aiDifficultySelect.value = aiDifficulty;
+
+        aiDifficultySelect.addEventListener('change', () => {
+            aiDifficulty = aiDifficultySelect.value;
+            localStorage.setItem('toguz_ai_difficulty', aiDifficulty);
+        });
+    }
 
     soundToggleEl.addEventListener('change', () => {
         soundEnabled = soundToggleEl.checked;
