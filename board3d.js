@@ -628,25 +628,31 @@ function makeSurfaceTextTexture(text, options = {}) {
     canvas.height = fontSize + padding * 2;
 
     const ctx2 = canvas.getContext('2d');
+
     ctx2.clearRect(0, 0, canvas.width, canvas.height);
 
-    ctx2.font = `900 ${fontSize}px ${fontFamily}, serif`;
-    ctx2.textAlign = 'center';
-    ctx2.textBaseline = 'middle';
+ctx2.font = `900 ${fontSize}px ${fontFamily}, serif`;
+ctx2.textAlign = 'center';
+ctx2.textBaseline = 'middle';
 
-    /* carved shadow */
+const lines = String(text).split('\n');
+const lineHeight = fontSize * 0.9;
+const startY = canvas.height / 2 - ((lines.length - 1) * lineHeight) / 2;
+
+lines.forEach((line, index) => {
+    const y = startY + index * lineHeight;
+
     ctx2.lineWidth = 9;
     ctx2.strokeStyle = strokeColor;
-    ctx2.strokeText(text, canvas.width / 2 + 2, canvas.height / 2 + 3);
+    ctx2.strokeText(line, canvas.width / 2 + 2, y + 3);
 
-    /* bright engraved gold */
     ctx2.fillStyle = textColor;
-    ctx2.fillText(text, canvas.width / 2, canvas.height / 2);
+    ctx2.fillText(line, canvas.width / 2, y);
 
-    /* small highlight */
     ctx2.lineWidth = 2;
     ctx2.strokeStyle = 'rgba(255, 245, 190, 0.45)';
-    ctx2.strokeText(text, canvas.width / 2 - 1, canvas.height / 2 - 1);
+    ctx2.strokeText(line, canvas.width / 2 - 1, y - 1);
+});
 
     const texture = new THREE.CanvasTexture(canvas);
     texture.needsUpdate = true;
@@ -742,7 +748,7 @@ for (let i = 0; i < 18; i++) {
     pitCountSprites[i] = countText;
 }
 
-const storeCountSpriteA = createSurfaceText('0', {
+const storeCountSpriteA = createSurfaceText('YOU\n0', {
     fontSize: 96,
     textColor: '#fff1c4',
     strokeColor: 'rgba(45, 16, 2, 0.98)',
@@ -753,7 +759,7 @@ const storeCountSpriteA = createSurfaceText('0', {
 storeCountSpriteA.position.set(5.1, 1.565, -0.95);
 boardGroup.add(storeCountSpriteA);
 
-const storeCountSpriteB = createSurfaceText('0', {
+const storeCountSpriteB = createSurfaceText('OPPONENT\n0', {
     fontSize: 96,
     textColor: '#fff1c4',
     strokeColor: 'rgba(45, 16, 2, 0.98)',
@@ -763,28 +769,6 @@ const storeCountSpriteB = createSurfaceText('0', {
 
 storeCountSpriteB.position.set(-5.1, 1.565, -0.95);
 boardGroup.add(storeCountSpriteB);
-
-const storeLabelA = createSurfaceText('YOU', {
-    fontSize: 44,
-    textColor: '#ffd987',
-    strokeColor: 'rgba(35, 12, 2, 0.95)',
-    scaleFactor: 0.0042,
-    padding: 18
-});
-
-storeLabelA.position.set(5.1, 1.565, -1.7);
-boardGroup.add(storeLabelA);
-
-const storeLabelB = createSurfaceText('OPPONENT', {
-    fontSize: 38,
-    textColor: '#ffd987',
-    strokeColor: 'rgba(35, 12, 2, 0.95)',
-    scaleFactor: 0.0032,
-    padding: 18
-});
-
-storeLabelB.position.set(-5.1, 1.565, -1.7);
-boardGroup.add(storeLabelB);
 
 /* SYNC */
 function sync3DBoardFromGameState(state) {
@@ -806,8 +790,8 @@ function sync3DBoardFromGameState(state) {
     renderStoreStones('A', state.storeA || 0);
     renderStoreStones('B', state.storeB || 0);
 
-    updateSurfaceText(storeCountSpriteA, String(state.storeA || 0));
-    updateSurfaceText(storeCountSpriteB, String(state.storeB || 0));
+    updateSurfaceText(storeCountSpriteA, `YOU\n${state.storeA || 0}`);
+    updateSurfaceText(storeCountSpriteB, `OPPONENT\n${state.storeB || 0}`);
 }
 
 window.sync3DBoardFromGameState = sync3DBoardFromGameState;
