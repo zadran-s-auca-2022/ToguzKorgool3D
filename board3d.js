@@ -49,6 +49,10 @@ const warmLight = new THREE.PointLight(0xff9b35, 1.25, 40);
 warmLight.position.set(-8, 6, 8);
 scene.add(warmLight);
 
+const goldStoneLight = new THREE.PointLight(0xffd36a, 1.7, 28);
+goldStoneLight.position.set(0, 6.5, 3.5);
+scene.add(goldStoneLight);
+
 const rimLight = new THREE.DirectionalLight(0xffb15a, 1.8);
 rimLight.position.set(-12, 10, -10);
 scene.add(rimLight);
@@ -189,9 +193,11 @@ const kazanInnerMaterial = new THREE.MeshStandardMaterial({
 });
 
 const stoneMaterial = new THREE.MeshStandardMaterial({
-    color: 0xf1dfbd,
-    roughness: 0.34,
-    metalness: 0.04
+    color: 0xffc94a,
+    emissive: 0x5a2e00,
+    emissiveIntensity: 0.18,
+    roughness: 0.16,
+    metalness: 0.72
 });
 
 /* BOARD GROUP */
@@ -653,16 +659,17 @@ lines.forEach((line, index) => {
     y + fontSize / 2
 );
 
-    goldGradient.addColorStop(0, '#fff4b0');
-    goldGradient.addColorStop(0.35, '#ffd45a');
-    goldGradient.addColorStop(0.7, '#ffbf2f');
-    goldGradient.addColorStop(1, '#8a5200');
+    goldGradient.addColorStop(0, '#fff8c6');
+    goldGradient.addColorStop(0.22, '#ffe36e');
+    goldGradient.addColorStop(0.48, '#ffbf18');
+    goldGradient.addColorStop(0.72, '#c98500');
+    goldGradient.addColorStop(1, '#6e3b00');
 
     ctx2.fillStyle = goldGradient;
     ctx2.fillText(line, canvas.width / 2, y);
 
     ctx2.lineWidth = 4;
-    ctx2.strokeStyle = 'rgba(255, 240, 170, 1)';
+    ctx2.strokeStyle = 'rgba(255, 255, 210, 1)';
     ctx2.strokeText(line, canvas.width / 2 - 1, y - 1);
 });
 
@@ -762,7 +769,7 @@ for (let i = 0; i < 18; i++) {
 
 const storeCountSpriteA = createSurfaceText('YOU 0', {
     fontSize: 65,
-    textColor: '#ffcc4d',
+    textColor: 'hsl(39, 86%, 55%)',
     strokeColor: 'rgba(90, 40, 6, 1)',
     scaleFactor: 0.0044,
     padding: 28
@@ -773,8 +780,8 @@ boardGroup.add(storeCountSpriteA);
 
 const storeCountSpriteB = createSurfaceText('OPPONENT 0', {
     fontSize: 65,
-    textColor: '#ffcc4d',
-    strokeColor: 'rgba(90, 40, 6, 1)',
+    textColor: 'hsl(39, 86%, 55%)',
+    strokeColor: 'rgb(234, 151, 34)',
     scaleFactor: 0.0044,
     padding: 28
 });
