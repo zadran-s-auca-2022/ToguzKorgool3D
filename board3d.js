@@ -645,12 +645,24 @@ lines.forEach((line, index) => {
     ctx2.lineWidth = 9;
     ctx2.strokeStyle = strokeColor;
     ctx2.strokeText(line, canvas.width / 2 + 2, y + 3);
+    
+    const goldGradient = ctx2.createLinearGradient(
+    0,
+    y - fontSize / 2,
+    0,
+    y + fontSize / 2
+);
 
-    ctx2.fillStyle = textColor;
+    goldGradient.addColorStop(0, '#fff4b0');
+    goldGradient.addColorStop(0.35, '#ffd45a');
+    goldGradient.addColorStop(0.7, '#ffbf2f');
+    goldGradient.addColorStop(1, '#8a5200');
+
+    ctx2.fillStyle = goldGradient;
     ctx2.fillText(line, canvas.width / 2, y);
 
-    ctx2.lineWidth = 3;
-    ctx2.strokeStyle = 'rgba(255, 255, 220, 0.9)';
+    ctx2.lineWidth = 4;
+    ctx2.strokeStyle = 'rgba(255, 240, 170, 1)';
     ctx2.strokeText(line, canvas.width / 2 - 1, y - 1);
 });
 
@@ -749,10 +761,10 @@ for (let i = 0; i < 18; i++) {
 }
 
 const storeCountSpriteA = createSurfaceText('YOU 0', {
-    fontSize: 78,
-    textColor: '#ffe58f',
+    fontSize: 65,
+    textColor: '#ffcc4d',
     strokeColor: 'rgba(90, 40, 6, 1)',
-    scaleFactor: 0.0052,
+    scaleFactor: 0.0044,
     padding: 28
 });
 
@@ -760,10 +772,10 @@ storeCountSpriteA.position.set(5.1, 1.565, -0.95);
 boardGroup.add(storeCountSpriteA);
 
 const storeCountSpriteB = createSurfaceText('OPPONENT 0', {
-    fontSize: 72,
-    textColor: '#ffe58f',
+    fontSize: 65,
+    textColor: '#ffcc4d',
     strokeColor: 'rgba(90, 40, 6, 1)',
-    scaleFactor: 0.0048,
+    scaleFactor: 0.0044,
     padding: 28
 });
 
