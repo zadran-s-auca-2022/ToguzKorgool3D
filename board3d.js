@@ -649,8 +649,8 @@ lines.forEach((line, index) => {
     ctx2.fillStyle = textColor;
     ctx2.fillText(line, canvas.width / 2, y);
 
-    ctx2.lineWidth = 2;
-    ctx2.strokeStyle = 'rgba(255, 245, 190, 0.45)';
+    ctx2.lineWidth = 3;
+    ctx2.strokeStyle = 'rgba(255, 255, 220, 0.9)';
     ctx2.strokeText(line, canvas.width / 2 - 1, y - 1);
 });
 
@@ -748,22 +748,22 @@ for (let i = 0; i < 18; i++) {
     pitCountSprites[i] = countText;
 }
 
-const storeCountSpriteA = createSurfaceText('YOU\n0', {
-    fontSize: 62,
-    textColor: '#ffd76a',
-    strokeColor: 'rgba(70, 28, 4, 0.95)',
-    scaleFactor: 0.0042,
+const storeCountSpriteA = createSurfaceText('YOU 0', {
+    fontSize: 78,
+    textColor: '#ffe58f',
+    strokeColor: 'rgba(90, 40, 6, 1)',
+    scaleFactor: 0.0052,
     padding: 28
 });
 
 storeCountSpriteA.position.set(5.1, 1.565, -0.95);
 boardGroup.add(storeCountSpriteA);
 
-const storeCountSpriteB = createSurfaceText('OPPONENT\n0', {
-    fontSize: 54,
-    textColor: '#ffd76a',
-    strokeColor: 'rgba(70, 28, 4, 0.95)',
-    scaleFactor: 0.0036,
+const storeCountSpriteB = createSurfaceText('OPPONENT 0', {
+    fontSize: 72,
+    textColor: '#ffe58f',
+    strokeColor: 'rgba(90, 40, 6, 1)',
+    scaleFactor: 0.0048,
     padding: 28
 });
 
@@ -790,8 +790,8 @@ function sync3DBoardFromGameState(state) {
     renderStoreStones('A', state.storeA || 0);
     renderStoreStones('B', state.storeB || 0);
 
-    updateSurfaceText(storeCountSpriteA, `YOU\n${state.storeA || 0}`);
-    updateSurfaceText(storeCountSpriteB, `OPPONENT\n${state.storeB || 0}`);
+    updateSurfaceText(storeCountSpriteA, `YOU ${state.storeA || 0}`);
+    updateSurfaceText(storeCountSpriteB, `OPPONENT ${state.storeB || 0}`);
 }
 
 window.sync3DBoardFromGameState = sync3DBoardFromGameState;
