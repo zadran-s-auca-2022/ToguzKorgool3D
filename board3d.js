@@ -749,10 +749,10 @@ for (let i = 0; i < 18; i++) {
 }
 
 const storeCountSpriteA = createSurfaceText('YOU\n0', {
-    fontSize: 96,
-    textColor: '#fff1c4',
-    strokeColor: 'rgba(45, 16, 2, 0.98)',
-    scaleFactor: 0.0062,
+    fontSize: 62,
+    textColor: '#ffd76a',
+    strokeColor: 'rgba(70, 28, 4, 0.95)',
+    scaleFactor: 0.0042,
     padding: 28
 });
 
@@ -760,10 +760,10 @@ storeCountSpriteA.position.set(5.1, 1.565, -0.95);
 boardGroup.add(storeCountSpriteA);
 
 const storeCountSpriteB = createSurfaceText('OPPONENT\n0', {
-    fontSize: 96,
-    textColor: '#fff1c4',
-    strokeColor: 'rgba(45, 16, 2, 0.98)',
-    scaleFactor: 0.0062,
+    fontSize: 54,
+    textColor: '#ffd76a',
+    strokeColor: 'rgba(70, 28, 4, 0.95)',
+    scaleFactor: 0.0036,
     padding: 28
 });
 
