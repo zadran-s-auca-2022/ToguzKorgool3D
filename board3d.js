@@ -619,73 +619,68 @@ function renderStoreStones(side, count) {
 
 function makeSurfaceTextTexture(text, options = {}) {
     const fontSize = options.fontSize || 72;
-    const textColor = options.textColor || '#ffe8a6';
-    const strokeColor = options.strokeColor || 'rgba(45, 18, 2, 0.95)';
+    const strokeColor = options.strokeColor || 'rgba(70, 28, 4, 1)';
     const padding = options.padding || 26;
     const fontFamily = options.fontFamily || 'Cinzel';
 
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d');
-
-    ctx.font = `900 ${fontSize}px ${fontFamily}, serif`;
-    const textWidth = Math.ceil(ctx.measureText(text).width);
-
     const textureScale = 3;
 
-    canvas.width = (textWidth + padding * 2) * textureScale;
-    canvas.height = (fontSize + padding * 2) * textureScale;
-
-    ctx.scale(textureScale, textureScale);
-
-    const ctx2 = canvas.getContext('2d');
-    ctx2.scale(textureScale, textureScale);
-
-    ctx2.clearRect(0, 0, canvas.width, canvas.height);
-
-    ctx2.font = `900 ${fontSize}px ${fontFamily}, serif`;
-    ctx2.textAlign = 'center';
-    ctx2.textBaseline = 'middle';
+    const measureCanvas = document.createElement('canvas');
+    const measureCtx = measureCanvas.getContext('2d');
+    measureCtx.font = `900 ${fontSize * textureScale}px ${fontFamily}, serif`;
 
     const lines = String(text).split('\n');
-    const lineHeight = fontSize * 0.9;
+    const textWidth = Math.max(...lines.map(line => measureCtx.measureText(line).width));
+
+    const canvas = document.createElement('canvas');
+    canvas.width = Math.ceil(textWidth + padding * textureScale * 2);
+    canvas.height = Math.ceil((fontSize * textureScale * 1.15 * lines.length) + padding * textureScale * 2);
+
+    const ctx = canvas.getContext('2d');
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.font = `900 ${fontSize * textureScale}px ${fontFamily}, serif`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+
+    const lineHeight = fontSize * textureScale * 1.05;
     const startY = canvas.height / 2 - ((lines.length - 1) * lineHeight) / 2;
 
-lines.forEach((line, index) => {
-    const y = startY + index * lineHeight;
+    lines.forEach((line, index) => {
+        const y = startY + index * lineHeight;
 
-    ctx2.lineWidth = 9;
-    ctx2.strokeStyle = strokeColor;
-    ctx2.strokeText(line, canvas.width / 2 + 2, y + 3);
-    
-    const goldGradient = ctx2.createLinearGradient(
-    0,
-    y - fontSize / 2,
-    0,
-    y + fontSize / 2
-);
+        ctx.lineWidth = 11;
+        ctx.strokeStyle = strokeColor;
+        ctx.strokeText(line, canvas.width / 2 + 5, y + 7);
 
-    goldGradient.addColorStop(0, '#fff8c6');
-    goldGradient.addColorStop(0.22, '#ffe36e');
-    goldGradient.addColorStop(0.48, '#ffbf18');
-    goldGradient.addColorStop(0.72, '#c98500');
-    goldGradient.addColorStop(1, '#6e3b00');
+        const goldGradient = ctx.createLinearGradient(
+            0,
+            y - fontSize * textureScale / 2,
+            0,
+            y + fontSize * textureScale / 2
+        );
 
-    ctx2.fillStyle = goldGradient;
-    ctx2.fillText(line, canvas.width / 2, y);
+        goldGradient.addColorStop(0, '#fff8c8');
+        goldGradient.addColorStop(0.22, '#ffe36e');
+        goldGradient.addColorStop(0.48, '#ffbf18');
+        goldGradient.addColorStop(0.72, '#c98500');
+        goldGradient.addColorStop(1, '#6e3b00');
 
-    ctx2.lineWidth = 4;
-    ctx2.strokeStyle = 'rgba(255, 255, 210, 1)';
-    ctx2.strokeText(line, canvas.width / 2 - 1, y - 1);
-});
+        ctx.fillStyle = goldGradient;
+        ctx.fillText(line, canvas.width / 2, y);
+
+        ctx.lineWidth = 4;
+        ctx.strokeStyle = 'rgba(255, 255, 220, 0.95)';
+        ctx.strokeText(line, canvas.width / 2 - 3, y - 3);
+    });
 
     const texture = new THREE.CanvasTexture(canvas);
     texture.needsUpdate = true;
-
     texture.minFilter = THREE.LinearFilter;
     texture.magFilter = THREE.LinearFilter;
     texture.generateMipmaps = false;
 
-        return {
+    return {
         texture,
         width: canvas.width / textureScale,
         height: canvas.height / textureScale
