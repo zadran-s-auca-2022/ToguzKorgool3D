@@ -750,7 +750,7 @@ const storeCountSpriteA = createSurfaceText('0', {
     padding: 28
 });
 
-storeCountSpriteA.position.set(5.1, 1.565, -1.28);
+storeCountSpriteA.position.set(5.1, 1.565, -0.95);
 boardGroup.add(storeCountSpriteA);
 
 const storeCountSpriteB = createSurfaceText('0', {
@@ -761,8 +761,30 @@ const storeCountSpriteB = createSurfaceText('0', {
     padding: 28
 });
 
-storeCountSpriteB.position.set(-5.1, 1.565, -1.28);
+storeCountSpriteB.position.set(-5.1, 1.565, -0.95);
 boardGroup.add(storeCountSpriteB);
+
+const storeLabelA = createSurfaceText('YOU', {
+    fontSize: 44,
+    textColor: '#ffd987',
+    strokeColor: 'rgba(35, 12, 2, 0.95)',
+    scaleFactor: 0.0042,
+    padding: 18
+});
+
+storeLabelA.position.set(5.1, 1.565, -1.7);
+boardGroup.add(storeLabelA);
+
+const storeLabelB = createSurfaceText('OPPONENT', {
+    fontSize: 38,
+    textColor: '#ffd987',
+    strokeColor: 'rgba(35, 12, 2, 0.95)',
+    scaleFactor: 0.0032,
+    padding: 18
+});
+
+storeLabelB.position.set(-5.1, 1.565, -1.7);
+boardGroup.add(storeLabelB);
 
 /* SYNC */
 function sync3DBoardFromGameState(state) {
