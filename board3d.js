@@ -817,8 +817,8 @@ function sync3DBoardFromGameState(state) {
     renderStoreStones('A', state.storeA || 0);
     renderStoreStones('B', state.storeB || 0);
 
-    updateSurfaceText(storeCountSpriteA, `YOU  ${state.storeA || 0}`);
-    updateSurfaceText(storeCountSpriteB, `OPPONENT  ${state.storeB || 0}`);
+    updateSurfaceText(storeCountSpriteA, `YOU    ${state.storeA || 0}`);
+    updateSurfaceText(storeCountSpriteB, `OPPONENT    ${state.storeB || 0}`);
 }
 
 window.sync3DBoardFromGameState = sync3DBoardFromGameState;
