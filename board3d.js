@@ -630,20 +630,25 @@ function makeSurfaceTextTexture(text, options = {}) {
     ctx.font = `900 ${fontSize}px ${fontFamily}, serif`;
     const textWidth = Math.ceil(ctx.measureText(text).width);
 
-    canvas.width = textWidth + padding * 2;
-    canvas.height = fontSize + padding * 2;
+    const textureScale = 3;
+
+    canvas.width = (textWidth + padding * 2) * textureScale;
+    canvas.height = (fontSize + padding * 2) * textureScale;
+
+    ctx.scale(textureScale, textureScale);
 
     const ctx2 = canvas.getContext('2d');
+    ctx2.scale(textureScale, textureScale);
 
     ctx2.clearRect(0, 0, canvas.width, canvas.height);
 
-ctx2.font = `900 ${fontSize}px ${fontFamily}, serif`;
-ctx2.textAlign = 'center';
-ctx2.textBaseline = 'middle';
+    ctx2.font = `900 ${fontSize}px ${fontFamily}, serif`;
+    ctx2.textAlign = 'center';
+    ctx2.textBaseline = 'middle';
 
-const lines = String(text).split('\n');
-const lineHeight = fontSize * 0.9;
-const startY = canvas.height / 2 - ((lines.length - 1) * lineHeight) / 2;
+    const lines = String(text).split('\n');
+    const lineHeight = fontSize * 0.9;
+    const startY = canvas.height / 2 - ((lines.length - 1) * lineHeight) / 2;
 
 lines.forEach((line, index) => {
     const y = startY + index * lineHeight;
@@ -676,7 +681,15 @@ lines.forEach((line, index) => {
     const texture = new THREE.CanvasTexture(canvas);
     texture.needsUpdate = true;
 
-    return { texture, width: canvas.width, height: canvas.height };
+    texture.minFilter = THREE.LinearFilter;
+    texture.magFilter = THREE.LinearFilter;
+    texture.generateMipmaps = false;
+
+        return {
+        texture,
+        width: canvas.width / textureScale,
+        height: canvas.height / textureScale
+    };
 }
 
 function createSurfaceText(text, options = {}) {
