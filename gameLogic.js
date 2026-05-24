@@ -2,7 +2,7 @@ const NUM_PITS_PER_PLAYER = 9;
 const TOTAL_PITS = NUM_PITS_PER_PLAYER * 2;
 const INITIAL_STONES = 9;
 const TARGET_SCORE = 82;
-const SOW_DELAY = 200;
+let SOW_DELAY = Number(localStorage.getItem('toguz_animation_speed')) || 200;
 
 let pits = new Array(TOTAL_PITS).fill(INITIAL_STONES);
 let storeA = 0;
@@ -585,6 +585,27 @@ function initSettings() {
     }
 
     soundToggleEl.checked = soundEnabled;
+
+        const speedButtons = document.querySelectorAll('.speed-btn');
+
+        speedButtons.forEach((button) => {
+            if (Number(button.dataset.speed) === SOW_DELAY) {
+                button.classList.add('active');
+            } else {
+                button.classList.remove('active');
+            }
+
+            button.addEventListener('click', () => {
+                speedButtons.forEach((btn) => {
+                    btn.classList.remove('active');
+                });
+
+                button.classList.add('active');
+
+                SOW_DELAY = Number(button.dataset.speed);
+                localStorage.setItem('toguz_animation_speed', SOW_DELAY);
+            });
+        });
 
     const difficultyButtons =
     document.querySelectorAll('.difficulty-btn');
