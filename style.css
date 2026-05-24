@@ -1968,3 +1968,46 @@ button,
         filter: blur(0px);
     }
 }
+
+/* ===== SETTINGS GOLD DUST PARTICLES ===== */
+
+.settings-gold-dust {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+
+    background-image:
+        radial-gradient(circle, rgba(255, 215, 120, 0.55) 1px, transparent 2px),
+        radial-gradient(circle, rgba(255, 170, 45, 0.35) 1px, transparent 2px),
+        radial-gradient(circle, rgba(255, 240, 180, 0.25) 1px, transparent 2px);
+
+    background-size:
+        180px 180px,
+        260px 260px,
+        360px 360px;
+
+    background-position:
+        20px 40px,
+        100px 160px,
+        220px 90px;
+
+    opacity: 0.45;
+
+    animation: settingsDustMove 18s linear infinite;
+}
+
+@keyframes settingsDustMove {
+    from {
+        background-position:
+            20px 40px,
+            100px 160px,
+            220px 90px;
+    }
+
+    to {
+        background-position:
+            260px -180px,
+            -120px 360px,
+            420px 260px;
+    }
+}
