@@ -38,6 +38,12 @@ const settingsBtn = document.getElementById('settingsBtn');
 
 const historyListEl = document.getElementById('historyList');
 
+const historyContainerEl = document.getElementById('historyContainer');
+const historyToggleEl = document.getElementById('historyToggle');
+
+let historyVisible = localStorage.getItem('toguz_history_visible');
+historyVisible = historyVisible === null ? true : historyVisible === '1';
+
 const splashEl = document.getElementById('splash');
 
 const settingsOverlayEl = document.getElementById('settingsOverlay');
@@ -585,6 +591,17 @@ function initSettings() {
     }
 
     soundToggleEl.checked = soundEnabled;
+
+        if (historyToggleEl && historyContainerEl) {
+            historyToggleEl.checked = historyVisible;
+            historyContainerEl.classList.toggle('hidden', !historyVisible);
+
+            historyToggleEl.addEventListener('change', () => {
+                historyVisible = historyToggleEl.checked;
+                localStorage.setItem('toguz_history_visible', historyVisible ? '1' : '0');
+                historyContainerEl.classList.toggle('hidden', !historyVisible);
+            });
+        }
 
         const speedButtons = document.querySelectorAll('.speed-btn');
 
