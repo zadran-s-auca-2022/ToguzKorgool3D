@@ -586,14 +586,25 @@ function initSettings() {
 
     soundToggleEl.checked = soundEnabled;
 
-    const aiDifficultySelect = document.getElementById('aiDifficultySelect');
+    const difficultyButtons =
+    document.querySelectorAll('.difficulty-btn');
 
     if (aiDifficultySelect) {
         aiDifficultySelect.value = aiDifficulty;
 
-        aiDifficultySelect.addEventListener('change', () => {
-            aiDifficulty = aiDifficultySelect.value;
-            localStorage.setItem('toguz_ai_difficulty', aiDifficulty);
+        difficultyButtons.forEach((button) => {
+
+            button.addEventListener('click', () => {
+
+                difficultyButtons.forEach((btn) => {
+                    btn.classList.remove('active');
+                });
+
+                button.classList.add('active');
+
+                aiDifficulty = button.dataset.level;
+            });
+
         });
     }
 

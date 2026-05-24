@@ -1791,3 +1791,66 @@ button,
     background: #140b04;
     color: #ffd87a;
 }
+
+.difficulty-buttons {
+    display: flex;
+    gap: 12px;
+    margin-top: 12px;
+    margin-bottom: 28px;
+}
+
+.difficulty-btn {
+    background:
+        linear-gradient(
+            145deg,
+            rgba(45,20,5,0.95),
+            rgba(12,6,2,0.98)
+        );
+
+    border: 1px solid rgba(255, 210, 120, 0.45);
+
+    color: #f6d27a;
+
+    padding: 10px 22px;
+
+    border-radius: 999px;
+
+    font-family: "Cinzel", serif;
+    font-size: 15px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: all 0.25s ease;
+
+    box-shadow:
+        0 0 10px rgba(255,180,60,0.08),
+        inset 0 0 12px rgba(255,220,120,0.04);
+}
+
+.difficulty-btn:hover {
+    transform: translateY(-1px);
+
+    border-color: rgba(255,220,140,0.9);
+
+    box-shadow:
+        0 0 18px rgba(255,200,90,0.22),
+        inset 0 0 14px rgba(255,230,150,0.08);
+}
+
+.difficulty-btn.active {
+    background:
+        linear-gradient(
+            145deg,
+            #5a3408,
+            #241102
+        );
+
+    color: #ffe8a3;
+
+    border-color: rgba(255,220,130,1);
+
+    box-shadow:
+        0 0 20px rgba(255,210,90,0.32),
+        inset 0 0 14px rgba(255,240,180,0.12);
+}

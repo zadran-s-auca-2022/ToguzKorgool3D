@@ -162,13 +162,22 @@
 
                 <div class="settings-section">
                     <h3>AI Difficulty</h3>
-                    <label class="toggle">
-                        <select id="aiDifficultySelect" class="settings-select">
-                            <option value="beginner">Beginner</option>
-                            <option value="normal" selected>Normal</option>
-                            <option value="expert">Expert</option>
-                        </select>
-                    </label>
+
+                    <div class="difficulty-buttons">
+
+                        <button class="difficulty-btn" data-level="beginner">
+                            Beginner
+                        </button>
+
+                        <button class="difficulty-btn active" data-level="normal">
+                            Normal
+                        </button>
+
+                        <button class="difficulty-btn" data-level="expert">
+                            Expert
+                        </button>
+
+                    </div>
                 </div>
 
                 <div class="settings-section">
