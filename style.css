@@ -1662,10 +1662,10 @@ button,
 }
 
 .settings-panel {
-    width: 430px;
-    max-height: 78vh;
+    width: 560px;
+    max-height: none;
 
-    overflow-y: auto;
+    overflow: visible;
 
     border-radius: 26px;
 
@@ -1759,7 +1759,7 @@ button,
 }
 
 #aiDifficultySelect {
-    width: 190px;
+    width: 230px;
 
     padding: 10px 16px;
 
