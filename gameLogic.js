@@ -589,24 +589,20 @@ function initSettings() {
     const difficultyButtons =
     document.querySelectorAll('.difficulty-btn');
 
-    if (aiDifficultySelect) {
-        aiDifficultySelect.value = aiDifficulty;
+    difficultyButtons.forEach((button) => {
 
-        difficultyButtons.forEach((button) => {
+        button.addEventListener('click', () => {
 
-            button.addEventListener('click', () => {
-
-                difficultyButtons.forEach((btn) => {
-                    btn.classList.remove('active');
-                });
-
-                button.classList.add('active');
-
-                aiDifficulty = button.dataset.level;
+            difficultyButtons.forEach((btn) => {
+                btn.classList.remove('active');
             });
 
+            button.classList.add('active');
+
+            aiDifficulty = button.dataset.level;
         });
-    }
+
+    });
 
     soundToggleEl.addEventListener('change', () => {
         soundEnabled = soundToggleEl.checked;
