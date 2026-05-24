@@ -889,5 +889,14 @@ function animate() {
     renderer.render(scene, camera);
 }
 
+window.resetBoardCamera = function () {
+
+    camera.position.set(0, 18, 18);
+
+    controls.target.set(0, 1.1, 0);
+
+    controls.update();
+};
+
 
 animate();

@@ -50,6 +50,7 @@ const settingsOverlayEl = document.getElementById('settingsOverlay');
 const settingsCloseBtn = document.getElementById('settingsCloseBtn');
 const soundToggleEl = document.getElementById('soundToggle');
 const fullscreenBtn = document.getElementById('fullscreenBtn');
+const resetCameraBtn = document.getElementById('resetCameraBtn');
 
 const pitEls = new Array(TOTAL_PITS);
 const pitStoneContainers = new Array(TOTAL_PITS);
@@ -687,6 +688,17 @@ function initSettings() {
 
             });
         }
+
+            if (resetCameraBtn) {
+
+                resetCameraBtn.addEventListener('click', () => {
+
+                    if (typeof window.resetBoardCamera === 'function') {
+                        window.resetBoardCamera();
+                    }
+
+                });
+            }
 
         settingsCloseBtn.addEventListener('click', () => {
         settingsOverlayEl.classList.add('hidden');
