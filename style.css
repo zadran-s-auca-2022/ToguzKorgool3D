@@ -1672,8 +1672,8 @@ button,
     background:
         linear-gradient(
             145deg,
-            rgba(24,13,5,0.97),
-            rgba(7,3,1,0.98)
+            rgba(30, 10, 2, 0.92),
+            rgba(8, 3, 1, 0.96)
         );
 
     border: 1px solid rgba(255,205,90,0.22);
@@ -1811,12 +1811,12 @@ button,
 
     color: #f6d27a;
 
-    padding: 10px 22px;
+    padding: 8px 20px;
 
     border-radius: 999px;
 
     font-family: "Cinzel", serif;
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 600;
 
     cursor: pointer;
@@ -1847,6 +1847,8 @@ button,
         );
 
     color: #ffe8a3;
+
+    transform: translateY(-1px) scale(1.03);
 
     border-color: rgba(255,220,130,1);
 
