@@ -2192,3 +2192,59 @@ button,
         0 0 20px rgba(255,210,90,0.32),
         inset 0 0 14px rgba(255,240,180,0.12);
 }
+
+/* ===== FULLSCREEN BUTTON ===== */
+
+.fullscreen-btn {
+    background:
+        linear-gradient(
+            145deg,
+            rgba(45,20,5,0.95),
+            rgba(12,6,2,0.98)
+        );
+
+    border: 1px solid rgba(255, 210, 120, 0.45);
+
+    color: #f6d27a;
+
+    padding: 10px 24px;
+
+    border-radius: 999px;
+
+    font-family: "Cinzel", serif;
+    font-size: 14px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        all 0.28s ease,
+        transform 0.25s ease,
+        box-shadow 0.35s ease;
+
+    box-shadow:
+        0 0 10px rgba(255,180,60,0.08),
+        inset 0 0 12px rgba(255,220,120,0.04);
+}
+
+.fullscreen-btn:hover {
+
+    transform:
+        translateY(-2px)
+        scale(1.04);
+
+    border-color:
+        rgba(255,220,130,0.95);
+
+    color:
+        #fff1c0;
+
+    box-shadow:
+        0 0 26px rgba(255,210,90,0.35),
+        inset 0 0 14px rgba(255,230,160,0.08);
+
+    text-shadow:
+        0 0 10px rgba(255,220,120,0.65);
+}
+
+

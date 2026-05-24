@@ -49,6 +49,7 @@ const splashEl = document.getElementById('splash');
 const settingsOverlayEl = document.getElementById('settingsOverlay');
 const settingsCloseBtn = document.getElementById('settingsCloseBtn');
 const soundToggleEl = document.getElementById('soundToggle');
+const fullscreenBtn = document.getElementById('fullscreenBtn');
 
 const pitEls = new Array(TOTAL_PITS);
 const pitStoneContainers = new Array(TOTAL_PITS);
@@ -652,7 +653,42 @@ function initSettings() {
         settingsOverlayEl.classList.remove('hidden');
     });
 
-    settingsCloseBtn.addEventListener('click', () => {
+        if (fullscreenBtn) {
+            fullscreenBtn.addEventListener('click', async () => {
+
+                try {
+
+                    if (!document.fullscreenElement) {
+
+                        await document.documentElement.requestFullscreen();
+
+                        fullscreenBtn.textContent = 'Exit Fullscreen';
+
+                    } else {
+
+                        await document.exitFullscreen();
+
+                        fullscreenBtn.textContent = 'Fullscreen Mode';
+                    }
+
+                } catch (err) {
+                    console.error(err);
+                }
+
+            });
+
+            document.addEventListener('fullscreenchange', () => {
+
+                if (document.fullscreenElement) {
+                    fullscreenBtn.textContent = 'Exit Fullscreen';
+                } else {
+                    fullscreenBtn.textContent = 'Fullscreen Mode';
+                }
+
+            });
+        }
+
+        settingsCloseBtn.addEventListener('click', () => {
         settingsOverlayEl.classList.add('hidden');
     });
 }
