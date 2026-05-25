@@ -342,7 +342,8 @@ function resetGame() {
 function startMoveTimer() {
     clearInterval(moveTimerInterval);
 
-    if (!moveTimerEl || isGameOver || currentPlayer !== 'A') {
+    if (!moveTimerEl || isGameOver || currentPlayer !== 'A' || moveTimerLimit === 0) {
+        if (moveTimerEl) moveTimerEl.classList.add('hidden');
         return;
     }
 

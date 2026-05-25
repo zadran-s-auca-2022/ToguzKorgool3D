@@ -57,17 +57,17 @@
         <div id="status" class="status"></div>
 
         <div class="buttons">
-            <button id="aiBtn" class="btn">New Game</button>
+            <button id="aiBtn" class="btn btn-main-new">New Game</button>
 
-            <button id="resetCameraBtnMain" class="btn">
+            <button id="resetCameraBtnMain" class="btn btn-main-camera">
                 Reset Camera
             </button>
 
-            <button id="fullscreenBtnMain" class="btn">
+            <button id="fullscreenBtnMain" class="btn btn-main-fullscreen">
                 Fullscreen
             </button>
 
-            <button id="settingsBtn" class="btn btn-secondary">
+            <button id="settingsBtn" class="btn btn-secondary btn-main-settings">
                 Settings ⚙
             </button>
         </div>
@@ -211,6 +211,7 @@
                     <h3>Player Move Timer</h3>
 
                     <div class="timer-buttons">
+                        <button class="timer-btn" data-time="0">No Timer</button>
                         <button class="timer-btn active" data-time="30">30 sec</button>
                         <button class="timer-btn" data-time="60">1 min</button>
                         <button class="timer-btn" data-time="120">2 min</button>

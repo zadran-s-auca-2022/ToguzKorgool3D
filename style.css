@@ -1686,9 +1686,8 @@ button,
 
 .settings-panel {
     width: 560px;
-    max-height: none;
-
-    overflow: visible;
+    max-height: 82vh;
+    overflow: hidden;
 
     border-radius: 26px;
 
@@ -1742,6 +1741,9 @@ button,
 
 .settings-body {
     padding: 18px 22px 24px;
+    max-height: 68vh;
+    overflow-y: auto;
+    padding-right: 26px;
 }
 
 .settings-section {
@@ -2207,7 +2209,7 @@ button,
 
 .move-timer {
     position: fixed;
-    top: 82px;
+    top: 100px;
     left: 50%;
     transform: translateX(-50%);
 
@@ -2544,4 +2546,40 @@ button,
         opacity: 1;
         transform: scale(1) translateY(0);
     }
+}
+
+/* ===== MAIN HUD BUTTON COLOR ROLES ===== */
+
+.btn-main-new {
+    border-color: rgba(255, 210, 120, 0.65);
+    box-shadow:
+        0 0 22px rgba(255, 190, 70, 0.18),
+        inset 0 0 12px rgba(255, 230, 150, 0.06);
+}
+
+.btn-main-camera {
+    background:
+        linear-gradient(
+            180deg,
+            rgba(170, 120, 60, 0.18),
+            rgba(32, 17, 8, 0.96)
+        );
+}
+
+.btn-main-fullscreen {
+    background:
+        linear-gradient(
+            180deg,
+            rgba(110, 80, 45, 0.18),
+            rgba(18, 13, 9, 0.96)
+        );
+}
+
+.btn-main-settings {
+    background:
+        linear-gradient(
+            180deg,
+            rgba(70, 70, 70, 0.26),
+            rgba(14, 14, 14, 0.96)
+        );
 }
