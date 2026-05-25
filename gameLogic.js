@@ -33,6 +33,15 @@ const scoreAEl = document.getElementById('scoreA');
 const scoreBEl = document.getElementById('scoreB');
 
 const statusEl = document.getElementById('status');
+
+const moveTimerEl = document.getElementById('moveTimer');
+
+let moveTimerLimit =
+    Number(localStorage.getItem('toguz_move_timer')) || 30;
+
+let moveTimerInterval = null;
+let moveTimeLeft = moveTimerLimit;
+
 const aiBtn = document.getElementById('aiBtn');
 const settingsBtn = document.getElementById('settingsBtn');
 
@@ -310,6 +319,60 @@ function resetGame() {
 
     setStatus('New game started – You begin');
     renderAll();
+    startMoveTimer();
+}
+
+function startMoveTimer() {
+    clearInterval(moveTimerInterval);
+
+    if (!moveTimerEl || isGameOver || currentPlayer !== 'A') {
+        return;
+    }
+
+    moveTimeLeft = moveTimerLimit;
+    moveTimerEl.textContent = moveTimeLeft;
+    moveTimerEl.classList.remove('hidden', 'danger');
+
+    moveTimerInterval = setInterval(() => {
+        if (isGameOver || currentPlayer !== 'A' || isAnimating) {
+            clearInterval(moveTimerInterval);
+            return;
+        }
+
+        moveTimeLeft--;
+        moveTimerEl.textContent = moveTimeLeft;
+
+        moveTimerEl.classList.toggle('danger', moveTimeLeft <= 5);
+
+        if (moveTimeLeft <= 0) {
+            clearInterval(moveTimerInterval);
+            playerTimeOut();
+        }
+    }, 1000);
+}
+
+function stopMoveTimer() {
+    clearInterval(moveTimerInterval);
+
+    if (moveTimerEl) {
+        moveTimerEl.classList.add('hidden');
+        moveTimerEl.classList.remove('danger');
+    }
+}
+
+function playerTimeOut() {
+    if (isGameOver) return;
+
+    isGameOver = true;
+    storeB = TARGET_SCORE;
+    setStatus('TIME IS UP — You lose');
+
+    stopMoveTimer();
+    renderAll();
+
+    setTimeout(() => {
+        showGameResult('TIME IS UP — You lose');
+    }, 500);
 }
 
 function handlePitClick(index) {
@@ -325,6 +388,10 @@ async function performMove(startIndex, player, addToHistory) {
     if (isGameOver || isAnimating) return;
 
     isAnimating = true;
+
+    if (player === 'A') {
+        stopMoveTimer();
+    }
 
     const stones = pits[startIndex];
     if (stones === 0) {
@@ -421,6 +488,10 @@ async function performMove(startIndex, player, addToHistory) {
     isAnimating = false;
     notify3D();
 
+    if (currentPlayer === 'A') {
+        startMoveTimer();
+    }
+
     if (!isGameOver && currentPlayer === 'B' && aiEnabled) {
         setTimeout(aiMove, 500);
     }
@@ -449,6 +520,7 @@ function finalizeGame() {
     }
 
     isGameOver = true;
+        stopMoveTimer();
     renderAll();
 
     let message;
@@ -672,7 +744,38 @@ function initSettings() {
             });
         });
 
-    const difficultyButtons =
+        const timerButtons =
+            document.querySelectorAll('.timer-btn');
+
+        timerButtons.forEach((button) => {
+
+            const buttonTime = Number(button.dataset.time);
+
+            button.classList.toggle(
+                'active',
+                buttonTime === moveTimerLimit
+            );
+
+            button.addEventListener('click', () => {
+
+                timerButtons.forEach((btn) => {
+                    btn.classList.remove('active');
+                });
+
+                button.classList.add('active');
+
+                moveTimerLimit = buttonTime;
+                localStorage.setItem('toguz_move_timer', moveTimerLimit);
+
+                if (currentPlayer === 'A' && !isGameOver && !isAnimating) {
+                    startMoveTimer();
+                }
+
+            });
+
+        });
+    
+        const difficultyButtons =
     document.querySelectorAll('.difficulty-btn');
 
     difficultyButtons.forEach((button) => {

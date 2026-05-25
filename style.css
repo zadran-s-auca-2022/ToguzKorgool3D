@@ -2202,3 +2202,136 @@ button,
         0 0 20px rgba(255,210,90,0.32),
         inset 0 0 14px rgba(255,240,180,0.12);
 }
+
+/* ===== PLAYER MOVE TIMER ===== */
+
+.move-timer {
+    position: fixed;
+    top: 82px;
+    left: 50%;
+    transform: translateX(-50%);
+
+    z-index: 8;
+
+    min-width: 74px;
+    padding: 8px 20px;
+
+    border-radius: 999px;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(255,220,140,0.14),
+            rgba(20,8,2,0.88)
+        );
+
+    border: 1px solid rgba(255, 210, 120, 0.36);
+
+    color: #f7d48a;
+
+    font-family: 'Cinzel', serif;
+    font-size: 22px;
+    font-weight: 900;
+    letter-spacing: 1px;
+
+    text-align: center;
+
+    box-shadow:
+        0 8px 24px rgba(0,0,0,0.45),
+        inset 0 0 12px rgba(255,220,120,0.06);
+
+    text-shadow:
+        0 0 12px rgba(255,210,120,0.35);
+
+    pointer-events: none;
+}
+
+.move-timer.danger {
+    color: #ff5a4d;
+    border-color: rgba(255, 80, 70, 0.9);
+
+    animation: timerPulse 0.55s ease-in-out infinite;
+}
+
+@keyframes timerPulse {
+    0%, 100% {
+        transform: translateX(-50%) scale(1);
+    }
+
+    50% {
+        transform: translateX(-50%) scale(1.12);
+    }
+}
+
+/* ===== TIMER SETTING BUTTONS ===== */
+
+.timer-buttons {
+    display: flex;
+    gap: 12px;
+    margin-top: 12px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.timer-btn {
+    background:
+        linear-gradient(
+            145deg,
+            rgba(45,20,5,0.95),
+            rgba(12,6,2,0.98)
+        );
+
+    border: 1px solid rgba(255, 210, 120, 0.45);
+
+    color: #f6d27a;
+
+    padding: 8px 18px;
+
+    border-radius: 999px;
+
+    font-family: "Cinzel", serif;
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        all 0.28s ease,
+        box-shadow 0.35s ease,
+        transform 0.25s ease;
+
+    box-shadow:
+        0 0 10px rgba(255,180,60,0.08),
+        inset 0 0 12px rgba(255,220,120,0.04);
+}
+
+.timer-btn:hover {
+    transform: translateY(-2px) scale(1.04);
+
+    border-color: rgba(255,220,130,0.95);
+
+    color: #fff1c0;
+
+    box-shadow:
+        0 0 26px rgba(255,210,90,0.35),
+        inset 0 0 14px rgba(255,230,160,0.08);
+}
+
+.timer-btn.active {
+    background:
+        linear-gradient(
+            145deg,
+            #5a3408,
+            #241102
+        );
+
+    color: #ffe8a3;
+
+    transform: translateY(-1px) scale(1.03);
+
+    border-color: rgba(255,220,130,1);
+
+    box-shadow:
+        0 0 20px rgba(255,210,90,0.32),
+        inset 0 0 14px rgba(255,240,180,0.12);
+}

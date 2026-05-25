@@ -50,6 +50,10 @@
             <div class="history-list" id="historyList"></div>
         </div>
 
+        <div id="moveTimer" class="move-timer hidden">
+            30
+        </div>
+
         <div id="status" class="status"></div>
 
         <div class="buttons">
@@ -187,6 +191,17 @@
                         <input type="checkbox" id="historyToggle" checked />
                         Show move history
                     </label>
+                </div>
+
+                <div class="settings-section">
+                    <h3>Player Move Timer</h3>
+
+                    <div class="timer-buttons">
+                        <button class="timer-btn active" data-time="30">30 sec</button>
+                        <button class="timer-btn" data-time="60">1 min</button>
+                        <button class="timer-btn" data-time="120">2 min</button>
+                        <button class="timer-btn" data-time="300">5 min</button>
+                    </div>
                 </div>
 
                 <div class="settings-section">
