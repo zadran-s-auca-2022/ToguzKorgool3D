@@ -70,7 +70,7 @@ const settingsOverlayEl = document.getElementById('settingsOverlay');
 const settingsCloseBtn = document.getElementById('settingsCloseBtn');
 const soundToggleEl = document.getElementById('soundToggle');
 const volumeSliderEl = document.getElementById('volumeSlider');
-const confirmRestartToggleEl = document.getElementById('confirmRestartToggle');
+
 
 let masterVolume =
     Number(localStorage.getItem('toguz_master_volume'));
@@ -79,13 +79,6 @@ if (Number.isNaN(masterVolume)) {
     masterVolume = 0.7;
 }
 
-let confirmBeforeRestart =
-    localStorage.getItem('toguz_confirm_restart');
-
-confirmBeforeRestart =
-    confirmBeforeRestart === null
-        ? true
-        : confirmBeforeRestart === '1';
 const fullscreenBtn =
     document.getElementById('fullscreenBtnMain');
 
@@ -707,19 +700,6 @@ function initSettings() {
             });
         }
 
-        if (confirmRestartToggleEl) {
-            confirmRestartToggleEl.checked = confirmBeforeRestart;
-
-            confirmRestartToggleEl.addEventListener('change', () => {
-                confirmBeforeRestart = confirmRestartToggleEl.checked;
-
-                localStorage.setItem(
-                    'toguz_confirm_restart',
-                    confirmBeforeRestart ? '1' : '0'
-                );
-            });
-        }
-
         if (historyToggleEl && historyContainerEl) {
             historyToggleEl.checked = historyVisible;
             historyContainerEl.classList.toggle('hidden', !historyVisible);
@@ -907,7 +887,7 @@ let pendingRestart = false;
 
 aiBtn.addEventListener('click', () => {
 
-    if (confirmBeforeRestart && !isGameOver) {
+    if (!isGameOver) {
         pendingRestart = true;
         restartConfirmOverlay.classList.remove('hidden');
         return;
@@ -957,11 +937,6 @@ window.startGameFromSplash = startGameFromSplash;
 window.handlePitClick = handlePitClick;
 window.resetGame = resetGame;
 window.getCurrentGameState = getCurrentGameState;
-
-window.openRules = function () {
-    document.getElementById("settingsOverlay")
-        .classList.remove("hidden");
-};
 
 window.openRules = function () {
     document.getElementById("rulesOverlay").classList.remove("hidden");
