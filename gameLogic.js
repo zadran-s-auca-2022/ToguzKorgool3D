@@ -893,14 +893,41 @@ function initSettings() {
     });
 }
 
-aiBtn.addEventListener('click', () => {
-    if (confirmBeforeRestart && !isGameOver) {
-        const restartConfirmed =
-            confirm('Are you sure you want to restart the game?');
+const restartConfirmOverlay =
+    document.getElementById('restartConfirmOverlay');
 
-        if (!restartConfirmed) return;
+const restartConfirmBtn =
+    document.getElementById('restartConfirmBtn');
+
+const restartCancelBtn =
+    document.getElementById('restartCancelBtn');
+
+let pendingRestart = false;
+
+aiBtn.addEventListener('click', () => {
+
+    if (confirmBeforeRestart && !isGameOver) {
+        pendingRestart = true;
+        restartConfirmOverlay.classList.remove('hidden');
+        return;
     }
 
+    aiEnabled = true;
+    resetGame();
+
+});
+
+restartCancelBtn.addEventListener('click', () => {
+    pendingRestart = false;
+    restartConfirmOverlay.classList.add('hidden');
+});
+
+restartConfirmBtn.addEventListener('click', () => {
+    restartConfirmOverlay.classList.add('hidden');
+
+    if (!pendingRestart) return;
+
+    pendingRestart = false;
     aiEnabled = true;
     resetGame();
 });

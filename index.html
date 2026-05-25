@@ -275,7 +275,32 @@
         </div>
     </div>
 
-    <script defer src="gameLogic.js"></script>
+    <div id="restartConfirmOverlay" class="restart-confirm-overlay hidden">
+        <div class="restart-confirm-box">
+            <div class="restart-ornament">◆</div>
+
+            <h2>Restart Game?</h2>
+
+            <p>Are you sure you want to restart the current match?</p>
+
+            <div class="restart-divider">◆</div>
+
+            <div class="restart-confirm-buttons">
+
+                <button id="restartCancelBtn" class="restart-cancel-btn">
+                    Cancel
+                </button>
+
+                <button id="restartConfirmBtn" class="restart-confirm-btn">
+                    Restart
+                </button>
+
+            </div>
+        </div>
+    </div>
+
     <script type="module" src="board3d.js"></script>
+    <script defer src="gameLogic.js"></script>
+
 </body>
 </html>

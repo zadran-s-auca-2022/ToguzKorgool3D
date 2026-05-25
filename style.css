@@ -2358,3 +2358,190 @@ button,
 
     cursor: pointer;
 }
+
+.restart-confirm-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 50000;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: rgba(0,0,0,0.68);
+    backdrop-filter: blur(10px);
+}
+
+.restart-confirm-overlay.hidden {
+    display: none;
+}
+
+.restart-confirm-box {
+    position: relative;
+
+    width: 520px;
+    max-width: 88vw;
+
+    padding: 46px 42px 38px;
+
+    text-align: center;
+
+    border-radius: 24px;
+
+    background:
+        radial-gradient(circle at 50% 18%, rgba(255, 210, 100, 0.16), transparent 32%),
+        linear-gradient(145deg, rgba(35, 16, 5, 0.98), rgba(6, 3, 1, 0.98));
+
+    border: 1.5px solid rgba(255, 210, 100, 0.78);
+
+    box-shadow:
+        0 0 28px rgba(255, 190, 70, 0.38),
+        0 0 90px rgba(255, 140, 30, 0.18),
+        0 35px 100px rgba(0,0,0,0.92),
+        inset 0 0 34px rgba(255, 210, 120, 0.08);
+
+    animation: restartPopupIn 0.45s ease-out both;
+}
+
+.restart-confirm-box::before {
+    content: "";
+    position: absolute;
+    inset: 14px;
+
+    border-radius: 18px;
+    border: 1px solid rgba(255, 220, 130, 0.28);
+
+    pointer-events: none;
+}
+
+.restart-ornament {
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+
+    width: 48px;
+    height: 48px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #ffd56f;
+    font-size: 26px;
+
+    background:
+        radial-gradient(circle, #6d3c09, #120701);
+
+    border: 1px solid rgba(255, 210, 100, 0.85);
+    border-radius: 50%;
+
+    box-shadow:
+        0 0 22px rgba(255, 190, 70, 0.55);
+}
+
+.restart-confirm-box h2 {
+    margin: 8px 0 12px;
+
+    font-family: 'Cinzel', serif;
+    font-size: 34px;
+    font-weight: 900;
+
+    color: #ffe29a;
+
+    text-transform: uppercase;
+    letter-spacing: 1px;
+
+    text-shadow:
+        0 0 18px rgba(255, 210, 90, 0.42);
+}
+
+.restart-confirm-box p {
+    margin: 0;
+
+    color: rgba(255, 235, 190, 0.86);
+
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+.restart-divider {
+    margin: 24px auto 26px;
+
+    color: #d89b2d;
+    font-size: 20px;
+
+    text-shadow:
+        0 0 14px rgba(255, 190, 70, 0.65);
+}
+
+.restart-confirm-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 18px;
+}
+
+.restart-cancel-btn,
+.restart-confirm-btn {
+    min-width: 150px;
+
+    padding: 13px 26px;
+
+    border-radius: 999px;
+
+    font-family: 'Cinzel', serif;
+    font-size: 16px;
+    font-weight: 800;
+
+    cursor: pointer;
+
+    transition: 0.25s ease;
+}
+
+.restart-cancel-btn {
+    color: #f7d48a;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(255,220,140,0.08),
+            rgba(15,8,3,0.96)
+        );
+
+    border: 1px solid rgba(255, 210, 120, 0.35);
+}
+
+.restart-confirm-btn {
+    color: #2a1400;
+
+    background:
+        linear-gradient(
+            180deg,
+            #fff0b8,
+            #ffd06b 45%,
+            #c47a24
+        );
+
+    border: 1px solid rgba(255, 230, 150, 0.95);
+
+    box-shadow:
+        0 0 26px rgba(255,190,60,0.52),
+        inset 0 2px 10px rgba(255,255,255,0.35);
+}
+
+.restart-cancel-btn:hover,
+.restart-confirm-btn:hover {
+    transform: translateY(-3px) scale(1.04);
+}
+
+@keyframes restartPopupIn {
+    from {
+        opacity: 0;
+        transform: scale(0.82) translateY(24px);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
