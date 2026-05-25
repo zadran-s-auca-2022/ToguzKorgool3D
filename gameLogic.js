@@ -85,6 +85,12 @@ const fullscreenBtn =
 const resetCameraBtn =
     document.getElementById('resetCameraBtnMain');
 
+const demoWinBtn =
+    document.getElementById('demoWinBtn');
+
+const demoLoseBtn =
+    document.getElementById('demoLoseBtn');
+
 const pitEls = new Array(TOTAL_PITS);
 const pitStoneContainers = new Array(TOTAL_PITS);
 const pitCountEls = new Array(TOTAL_PITS);
@@ -872,6 +878,40 @@ function initSettings() {
         settingsCloseBtn.addEventListener('click', () => {
         settingsOverlayEl.classList.add('hidden');
     });
+
+    if (demoWinBtn) {
+        demoWinBtn.addEventListener('click', () => {
+            stopMoveTimer();
+
+            storeA = TARGET_SCORE;
+            storeB = 40;
+
+            isGameOver = true;
+            isAnimating = false;
+
+            setStatus('Demo result – You win');
+            renderAll();
+
+            showGameResult('Demo result – You win');
+        });
+    }
+
+    if (demoLoseBtn) {
+        demoLoseBtn.addEventListener('click', () => {
+            stopMoveTimer();
+
+            storeA = 40;
+            storeB = TARGET_SCORE;
+
+            isGameOver = true;
+            isAnimating = false;
+
+            setStatus('Demo result – You lose');
+            renderAll();
+
+            showGameResult('Demo result – You lose');
+        });
+    }
 }
 
 const restartConfirmOverlay =

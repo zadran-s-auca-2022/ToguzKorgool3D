@@ -2466,3 +2466,35 @@ button,
 
     border-color: rgba(120, 120, 120, 0.45) !important;
 }
+
+/* ===== DEMO RESULT BUTTONS ===== */
+
+.btn-demo-win {
+    min-width: 120px !important;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(90, 150, 70, 0.30),
+            rgba(12, 36, 12, 0.96)
+        ) !important;
+
+    border: 1px solid rgba(150, 230, 120, 0.48) !important;
+
+    color: #dfffcf !important;
+}
+
+.btn-demo-lose {
+    min-width: 120px !important;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(160, 55, 45, 0.30),
+            rgba(45, 8, 6, 0.96)
+        ) !important;
+
+    border: 1px solid rgba(255, 110, 90, 0.46) !important;
+
+    color: #ffd8d0 !important;
+}
