@@ -49,8 +49,11 @@ const splashEl = document.getElementById('splash');
 const settingsOverlayEl = document.getElementById('settingsOverlay');
 const settingsCloseBtn = document.getElementById('settingsCloseBtn');
 const soundToggleEl = document.getElementById('soundToggle');
-const fullscreenBtn = document.getElementById('fullscreenBtn');
-const resetCameraBtn = document.getElementById('resetCameraBtn');
+const fullscreenBtn =
+    document.getElementById('fullscreenBtnMain');
+
+const resetCameraBtn =
+    document.getElementById('resetCameraBtnMain');
 
 const pitEls = new Array(TOTAL_PITS);
 const pitStoneContainers = new Array(TOTAL_PITS);
