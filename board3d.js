@@ -18,7 +18,7 @@ const camera = new THREE.PerspectiveCamera(
     0.1,
     1000
 );
-camera.position.set(0, 21, 24);
+camera.position.set(0, 19, 21);
 
 /* RENDERER */
 const renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -891,7 +891,7 @@ function animate() {
 
 window.resetBoardCamera = function () {
 
-    camera.position.set(0, 21, 24);
+    camera.position.set(0, 19, 21);
 
     controls.target.set(0, 1.1, 0);
 
