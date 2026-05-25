@@ -32,6 +32,8 @@ root.appendChild(renderer.domElement);
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.target.set(0, 1.1, 0);
 controls.enableDamping = true;
+controls.autoRotate = false;
+controls.autoRotateSpeed = 0.55;
 controls.enablePan = false;
 controls.minDistance = 9;
 controls.maxDistance = 42;
@@ -905,6 +907,12 @@ window.setPitNumbersVisibility = function (visible) {
         sprite.visible = visible;
 
     });
+
+};
+
+window.setAutoRotate = function (enabled) {
+
+    controls.autoRotate = enabled;
 
 };
 
