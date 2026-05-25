@@ -41,12 +41,6 @@ const historyListEl = document.getElementById('historyList');
 const historyContainerEl = document.getElementById('historyContainer');
 const historyToggleEl = document.getElementById('historyToggle');
 
-const autoRotateToggleEl =
-    document.getElementById('autoRotateToggle');
-
-let autoRotateEnabled =
-    localStorage.getItem('toguz_auto_rotate') === '1';
-
 const pitNumbersToggleEl =
     document.getElementById('pitNumbersToggle');
 
@@ -622,38 +616,6 @@ function initSettings() {
                 historyVisible = historyToggleEl.checked;
                 localStorage.setItem('toguz_history_visible', historyVisible ? '1' : '0');
                 historyContainerEl.classList.toggle('hidden', !historyVisible);
-            });
-        }
-
-        if (autoRotateToggleEl) {
-
-            autoRotateToggleEl.checked =
-                autoRotateEnabled;
-
-            if (typeof window.setAutoRotate === 'function') {
-
-                window.setAutoRotate(
-                    autoRotateEnabled
-                );
-            }
-
-            autoRotateToggleEl.addEventListener('change', () => {
-
-                autoRotateEnabled =
-                    autoRotateToggleEl.checked;
-
-                localStorage.setItem(
-                    'toguz_auto_rotate',
-                    autoRotateEnabled ? '1' : '0'
-                );
-
-                if (typeof window.setAutoRotate === 'function') {
-
-                    window.setAutoRotate(
-                        autoRotateEnabled
-                    );
-                }
-
             });
         }
 
