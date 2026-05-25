@@ -2583,3 +2583,101 @@ button,
             rgba(14, 14, 14, 0.96)
         );
 }
+
+/* ===== DARK LUXURY SETTINGS FIX ===== */
+
+.settings-panel {
+    background:
+        linear-gradient(
+            145deg,
+            rgba(18, 7, 2, 0.98),
+            rgba(5, 2, 1, 0.99)
+        ) !important;
+
+    border: 1px solid rgba(150, 95, 28, 0.45) !important;
+
+    box-shadow:
+        0 30px 90px rgba(0,0,0,0.95),
+        0 0 28px rgba(120,70,20,0.12),
+        inset 0 0 26px rgba(255,160,45,0.035) !important;
+}
+
+.settings-body {
+    scrollbar-width: thin;
+    scrollbar-color: #9b6a24 rgba(10, 4, 1, 0.9);
+}
+
+.settings-body::-webkit-scrollbar {
+    width: 8px;
+}
+
+.settings-body::-webkit-scrollbar-track {
+    background: rgba(10, 4, 1, 0.9);
+    border-radius: 999px;
+}
+
+.settings-body::-webkit-scrollbar-thumb {
+    background:
+        linear-gradient(
+            180deg,
+            #d7a12f,
+            #6d3c08
+        );
+
+    border-radius: 999px;
+}
+
+.settings-body::-webkit-scrollbar-thumb:hover {
+    background:
+        linear-gradient(
+            180deg,
+            #ffd47e,
+            #8a530c
+        );
+}
+
+/* ===== STRONG MAIN HUD BUTTON DIFFERENCES ===== */
+
+.btn-main-new {
+    background:
+        linear-gradient(
+            180deg,
+            rgba(255, 210, 105, 0.28),
+            rgba(55, 28, 8, 0.98)
+        ) !important;
+
+    border-color: rgba(255, 220, 130, 0.8) !important;
+}
+
+.btn-main-camera {
+    background:
+        linear-gradient(
+            180deg,
+            rgba(150, 95, 45, 0.22),
+            rgba(30, 15, 6, 0.98)
+        ) !important;
+
+    border-color: rgba(190, 130, 65, 0.55) !important;
+}
+
+.btn-main-fullscreen {
+    background:
+        linear-gradient(
+            180deg,
+            rgba(75, 55, 35, 0.28),
+            rgba(15, 12, 9, 0.98)
+        ) !important;
+
+    border-color: rgba(150, 120, 85, 0.55) !important;
+}
+
+.btn-main-settings {
+    background:
+        linear-gradient(
+            180deg,
+            rgba(45, 45, 45, 0.36),
+            rgba(9, 9, 9, 0.98)
+        ) !important;
+
+    border-color: rgba(120, 120, 120, 0.45) !important;
+}
