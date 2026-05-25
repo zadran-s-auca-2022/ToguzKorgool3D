@@ -41,6 +41,17 @@ const historyListEl = document.getElementById('historyList');
 const historyContainerEl = document.getElementById('historyContainer');
 const historyToggleEl = document.getElementById('historyToggle');
 
+const pitNumbersToggleEl =
+    document.getElementById('pitNumbersToggle');
+
+let pitNumbersVisible =
+    localStorage.getItem('toguz_pit_numbers');
+
+pitNumbersVisible =
+    pitNumbersVisible === null
+        ? true
+        : pitNumbersVisible === '1';
+
 let historyVisible = localStorage.getItem('toguz_history_visible');
 historyVisible = historyVisible === null ? true : historyVisible === '1';
 
@@ -605,6 +616,38 @@ function initSettings() {
                 historyVisible = historyToggleEl.checked;
                 localStorage.setItem('toguz_history_visible', historyVisible ? '1' : '0');
                 historyContainerEl.classList.toggle('hidden', !historyVisible);
+            });
+        }
+
+        if (pitNumbersToggleEl) {
+
+            pitNumbersToggleEl.checked =
+                pitNumbersVisible;
+
+            if (typeof window.setPitNumbersVisibility === 'function') {
+
+                window.setPitNumbersVisibility(
+                    pitNumbersVisible
+                );
+            }
+
+            pitNumbersToggleEl.addEventListener('change', () => {
+
+                pitNumbersVisible =
+                    pitNumbersToggleEl.checked;
+
+                localStorage.setItem(
+                    'toguz_pit_numbers',
+                    pitNumbersVisible ? '1' : '0'
+                );
+
+                if (typeof window.setPitNumbersVisibility === 'function') {
+
+                    window.setPitNumbersVisibility(
+                        pitNumbersVisible
+                    );
+                }
+
             });
         }
 

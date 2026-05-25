@@ -898,5 +898,14 @@ window.resetBoardCamera = function () {
     controls.update();
 };
 
+window.setPitNumbersVisibility = function (visible) {
+
+    pitNumberSprites.forEach((sprite) => {
+
+        sprite.visible = visible;
+
+    });
+
+};
 
 animate();
