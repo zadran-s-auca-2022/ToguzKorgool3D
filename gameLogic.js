@@ -998,15 +998,15 @@ function showGameResult(resultText) {
 
     if (storeA > storeB) {
         overlay.classList.add('win-result');
-        crown.textContent = '◈';
+        crown.textContent = '';
         title.textContent = 'YOU WIN!';
     } else if (storeB > storeA) {
         overlay.classList.add('lose-result');
-        crown.textContent = '◆';
+        crown.textContent = '';
         title.textContent = 'YOU LOSE!';
     } else {
         overlay.classList.add('draw-result');
-        crown.textContent = '✦';
+        crown.textContent = '';
         title.textContent = 'DRAW';
     }
 

@@ -2505,66 +2505,283 @@ button,
     color: #ffd8d0 !important;
 }
 
-/* ===== TRADITIONAL RESULT STYLE ===== */
+/* ===== TRADITIONAL KYRGYZ RESULT WINDOW ===== */
 
+.game-result-card {
+    position: relative;
+
+    width: min(720px, 88vw);
+    padding: 70px 62px 48px;
+
+    text-align: center;
+
+    border-radius: 18px;
+
+    background:
+        radial-gradient(circle at 50% 20%, rgba(120, 48, 12, 0.34), transparent 36%),
+        repeating-linear-gradient(
+            45deg,
+            rgba(255, 180, 70, 0.045) 0px,
+            rgba(255, 180, 70, 0.045) 2px,
+            transparent 2px,
+            transparent 14px
+        ),
+        linear-gradient(
+            135deg,
+            rgba(82, 32, 8, 0.98),
+            rgba(22, 7, 2, 0.99)
+        );
+
+    border: 3px solid rgba(176, 93, 26, 0.95);
+
+    box-shadow:
+        0 0 0 8px rgba(45, 16, 3, 0.95),
+        0 0 0 11px rgba(168, 95, 28, 0.72),
+        0 36px 100px rgba(0,0,0,0.94),
+        inset 0 0 48px rgba(0,0,0,0.46),
+        inset 0 0 22px rgba(255,170,70,0.08);
+
+    animation: royalPopup 0.65s ease-out forwards;
+}
+
+/* inner carved frame */
 .game-result-card::before {
     content: "";
 
     position: absolute;
-    inset: 18px;
+    inset: 22px;
 
-    border-radius: 18px;
+    border-radius: 12px;
 
-    border: 1px solid rgba(225, 160, 70, 0.42);
+    border: 2px solid rgba(214, 132, 38, 0.58);
 
     background:
-        linear-gradient(90deg, transparent 0%, rgba(255,180,70,0.10) 50%, transparent 100%);
+        linear-gradient(90deg, rgba(255,190,80,0.14), transparent 18%, transparent 82%, rgba(255,190,80,0.14)),
+        linear-gradient(180deg, rgba(255,190,80,0.12), transparent 22%, transparent 78%, rgba(255,190,80,0.12));
 
     pointer-events: none;
 }
 
+/* traditional ornament row */
+.game-result-card::after {
+    content: "◈  ◆  ◈  ◆  ◈";
+
+    position: absolute;
+    top: 30px;
+    left: 0;
+    right: 0;
+
+    color: #d08a2c;
+
+    font-size: 20px;
+    letter-spacing: 16px;
+
+    text-shadow:
+        0 0 12px rgba(255, 165, 50, 0.45);
+
+    pointer-events: none;
+}
+
+/* center emblem instead of crown */
+.result-crown {
+    position: absolute;
+
+    top: -38px;
+    left: 50%;
+    transform: translateX(-50%);
+
+    width: 76px;
+    height: 76px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 34px;
+
+    color: #f0c06a;
+
+    background:
+        radial-gradient(circle, rgba(95, 38, 8, 1), rgba(18, 5, 1, 1));
+
+    border: 3px solid rgba(190, 105, 30, 0.95);
+
+    border-radius: 14px;
+
+    box-shadow:
+        0 0 24px rgba(190, 95, 25, 0.55),
+        inset 0 0 20px rgba(255, 180, 70, 0.10);
+
+    rotate: 45deg;
+}
+
+.result-crown::before {
+    content: "◈";
+    rotate: -45deg;
+}
+
+/* hide actual text symbol from JS */
+.result-crown {
+    font-size: 0;
+}
+
 .game-result-title {
+    position: relative;
+
+    margin-top: 10px;
+
     font-family: 'Cinzel', serif;
+    font-size: clamp(44px, 5vw, 68px);
+    font-weight: 900;
 
-    font-size: clamp(48px, 5vw, 72px);
+    letter-spacing: 2px;
+    text-transform: uppercase;
 
-    color: #f4d18a;
+    color: #f0c06a !important;
 
     background: none !important;
     -webkit-background-clip: initial !important;
     background-clip: initial !important;
 
     text-shadow:
-        0 0 14px rgba(210, 130, 45, 0.55),
-        0 5px 12px rgba(0,0,0,0.85);
+        0 2px 0 rgba(60, 22, 4, 0.9),
+        0 0 16px rgba(210, 120, 35, 0.48),
+        0 8px 18px rgba(0,0,0,0.9);
 }
 
 .result-divider {
-    color: #c47a24;
+    position: relative;
+
+    margin: 24px auto 26px;
+
+    width: 340px;
+
+    color: #c87922;
+
+    font-size: 0;
+}
+
+.result-divider::before {
+    content: "";
+
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+
+    height: 2px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            #a85b18,
+            #e0a248,
+            #a85b18,
+            transparent
+        );
+}
+
+.result-divider::after {
+    content: "◆";
+
+    position: relative;
+
+    font-size: 20px;
+    color: #e0a248;
+
+    background: #2b0d03;
+
+    padding: 0 14px;
+
+    text-shadow: 0 0 10px rgba(255, 170, 55, 0.5);
 }
 
 .game-result-score {
-    border: 1px solid rgba(210, 140, 55, 0.58);
+    display: inline-block;
 
-    background:
-        linear-gradient(
-            180deg,
-            rgba(80, 32, 8, 0.62),
-            rgba(15, 5, 1, 0.76)
-        );
+    min-width: 360px;
+
+    padding: 14px 36px;
+    margin-bottom: 34px;
+
+    font-family: 'Cinzel', serif;
+    font-size: 25px;
+    font-weight: 600;
 
     color: #f3d7a0;
+
+    border: 2px solid rgba(166, 91, 25, 0.75);
+
+    background:
+        repeating-linear-gradient(
+            90deg,
+            rgba(255,190,80,0.04) 0px,
+            rgba(255,190,80,0.04) 3px,
+            transparent 3px,
+            transparent 16px
+        ),
+        linear-gradient(
+            180deg,
+            rgba(72, 25, 6, 0.88),
+            rgba(14, 4, 1, 0.92)
+        );
+
+    box-shadow:
+        inset 0 0 20px rgba(0,0,0,0.45),
+        0 0 18px rgba(160, 80, 20, 0.14);
 }
 
 .result-btn {
+    position: relative;
+
+    padding: 17px 66px;
+
+    border-radius: 12px;
+
+    border: 2px solid rgba(220, 140, 45, 0.9);
+
     background:
         linear-gradient(
             180deg,
-            #d89b3b,
-            #8f4e12
+            #c77a24,
+            #783409
         ) !important;
 
-    color: #241204 !important;
+    color: #ffdf9a !important;
 
-    border-color: rgba(240, 180, 80, 0.95) !important;
+    font-family: 'Cinzel', serif;
+    font-size: 24px;
+    font-weight: 900;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 0 24px rgba(170, 85, 20, 0.38),
+        inset 0 0 18px rgba(255, 190, 80, 0.12);
+
+    transition: 0.25s ease;
+}
+
+.result-btn::before {
+    content: "◆";
+    margin-right: 12px;
+    color: #ffd27a;
+}
+
+.result-btn::after {
+    content: "◆";
+    margin-left: 12px;
+    color: #ffd27a;
+}
+
+.result-btn:hover {
+    transform: translateY(-3px);
+
+    background:
+        linear-gradient(
+            180deg,
+            #d89030,
+            #8e440d
+        ) !important;
 }
