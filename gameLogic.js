@@ -69,6 +69,23 @@ const splashEl = document.getElementById('splash');
 const settingsOverlayEl = document.getElementById('settingsOverlay');
 const settingsCloseBtn = document.getElementById('settingsCloseBtn');
 const soundToggleEl = document.getElementById('soundToggle');
+const volumeSliderEl = document.getElementById('volumeSlider');
+const confirmRestartToggleEl = document.getElementById('confirmRestartToggle');
+
+let masterVolume =
+    Number(localStorage.getItem('toguz_master_volume'));
+
+if (Number.isNaN(masterVolume)) {
+    masterVolume = 0.7;
+}
+
+let confirmBeforeRestart =
+    localStorage.getItem('toguz_confirm_restart');
+
+confirmBeforeRestart =
+    confirmBeforeRestart === null
+        ? true
+        : confirmBeforeRestart === '1';
 const fullscreenBtn =
     document.getElementById('fullscreenBtnMain');
 
@@ -98,7 +115,7 @@ function playBeep(freq = 800, duration = 0.05, volume = 0.04) {
     const gain = audioCtx.createGain();
 
     osc.frequency.value = freq;
-    gain.gain.value = volume;
+    gain.gain.value = volume * masterVolume;
 
     osc.connect(gain);
     gain.connect(audioCtx.destination);
@@ -680,6 +697,28 @@ function initSettings() {
 
     soundToggleEl.checked = soundEnabled;
 
+        if (volumeSliderEl) {
+            volumeSliderEl.value = Math.round(masterVolume * 100);
+
+            volumeSliderEl.addEventListener('input', () => {
+                masterVolume = Number(volumeSliderEl.value) / 100;
+                localStorage.setItem('toguz_master_volume', masterVolume);
+            });
+        }
+
+        if (confirmRestartToggleEl) {
+            confirmRestartToggleEl.checked = confirmBeforeRestart;
+
+            confirmRestartToggleEl.addEventListener('change', () => {
+                confirmBeforeRestart = confirmRestartToggleEl.checked;
+
+                localStorage.setItem(
+                    'toguz_confirm_restart',
+                    confirmBeforeRestart ? '1' : '0'
+                );
+            });
+        }
+
         if (historyToggleEl && historyContainerEl) {
             historyToggleEl.checked = historyVisible;
             historyContainerEl.classList.toggle('hidden', !historyVisible);
@@ -855,6 +894,13 @@ function initSettings() {
 }
 
 aiBtn.addEventListener('click', () => {
+    if (confirmBeforeRestart && !isGameOver) {
+        const restartConfirmed =
+            confirm('Are you sure you want to restart the game?');
+
+        if (!restartConfirmed) return;
+    }
+
     aiEnabled = true;
     resetGame();
 });

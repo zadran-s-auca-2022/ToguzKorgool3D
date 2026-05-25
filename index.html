@@ -174,6 +174,11 @@
                         <input type="checkbox" id="soundToggle" checked />
                         Enable sounds
                     </label>
+
+                    <div class="volume-control">
+                        <label for="volumeSlider">Sound volume</label>
+                        <input type="range" id="volumeSlider" min="0" max="100" value="70" />
+                    </div>
                 </div>
 
                 <div class="settings-section">
@@ -182,6 +187,15 @@
                     <label class="toggle">
                         <input type="checkbox" id="pitNumbersToggle" checked />
                         Show pit numbers
+                    </label>
+                </div>
+
+                <div class="settings-section">
+                    <h3>Restart Safety</h3>
+
+                    <label class="toggle">
+                        <input type="checkbox" id="confirmRestartToggle" checked />
+                        Confirm before restart
                     </label>
                 </div>
 
