@@ -1133,27 +1133,25 @@ button,
 .game-result-card {
     position: relative;
 
-    width: min(650px, 86vw);
-    padding: 74px 58px 48px;
+    width: min(680px, 86vw);
+    padding: 62px 58px 46px;
 
     text-align: center;
 
-    border-radius: 30px;
+    border-radius: 26px;
 
-    border: 1.5px solid rgba(255, 205, 85, 0.92);
+    border: 2px solid rgba(194, 126, 38, 0.88);
 
     background:
-        radial-gradient(circle at 50% 36%, rgba(255, 190, 70, 0.20), transparent 34%),
-        radial-gradient(circle at 50% 72%, rgba(255, 150, 30, 0.12), transparent 36%),
-        linear-gradient(145deg, rgba(43, 19, 4, 0.94), rgba(7, 3, 1, 0.97));
+        radial-gradient(circle at 50% 20%, rgba(140, 70, 18, 0.28), transparent 34%),
+        linear-gradient(135deg, rgba(70, 28, 8, 0.96), rgba(18, 7, 2, 0.98));
 
     box-shadow:
-        0 0 22px rgba(255, 205, 90, 0.38),
-        0 0 80px rgba(255, 150, 30, 0.24),
-        0 38px 120px rgba(0, 0, 0, 0.95),
-        inset 0 0 42px rgba(255, 215, 120, 0.10);
+        0 0 28px rgba(150, 85, 24, 0.45),
+        0 35px 95px rgba(0,0,0,0.92),
+        inset 0 0 38px rgba(255, 180, 70, 0.08);
 
-    animation: royalPopup 0.78s cubic-bezier(.16,1.25,.35,1) forwards;
+    animation: royalPopup 0.68s ease-out forwards;
 }
 
 /* inner border like the reference */
@@ -1171,21 +1169,20 @@ button,
 
 /* small corner ornaments */
 .game-result-card::after {
-    content: "❧        ❧";
+    content: "◆  ◈  ◆";
+
     position: absolute;
     top: 22px;
-    left: 28px;
-    right: 28px;
+    left: 0;
+    right: 0;
 
-    display: flex;
-    justify-content: space-between;
+    color: rgba(230, 165, 70, 0.85);
 
-    color: rgba(255, 205, 90, 0.82);
-
-    font-size: 34px;
+    font-size: 22px;
+    letter-spacing: 18px;
 
     text-shadow:
-        0 0 10px rgba(255, 180, 40, 0.45);
+        0 0 12px rgba(255, 180, 60, 0.42);
 
     pointer-events: none;
 }
@@ -1193,21 +1190,30 @@ button,
 .result-crown {
     position: absolute;
 
-    top: -74px;
+    top: -34px;
     left: 50%;
     transform: translateX(-50%);
 
-    font-size: 104px;
-    line-height: 1;
+    width: 70px;
+    height: 70px;
 
-    color: #ffd76d;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-    text-shadow:
-        0 0 16px rgba(255, 230, 140, 0.95),
-        0 0 42px rgba(255, 180, 40, 0.85),
-        0 8px 18px rgba(0,0,0,0.8);
+    font-size: 34px;
 
-    animation: crownFloat 1.9s ease-in-out infinite;
+    color: #f6d48a;
+
+    background:
+        radial-gradient(circle, rgba(112, 55, 13, 1), rgba(25, 8, 2, 1));
+
+    border: 2px solid rgba(220, 150, 55, 0.9);
+    border-radius: 50%;
+
+    box-shadow:
+        0 0 24px rgba(200, 120, 30, 0.55),
+        inset 0 0 18px rgba(255, 190, 80, 0.12);
 }
 
 .game-result-title {
@@ -2497,4 +2503,68 @@ button,
     border: 1px solid rgba(255, 110, 90, 0.46) !important;
 
     color: #ffd8d0 !important;
+}
+
+/* ===== TRADITIONAL RESULT STYLE ===== */
+
+.game-result-card::before {
+    content: "";
+
+    position: absolute;
+    inset: 18px;
+
+    border-radius: 18px;
+
+    border: 1px solid rgba(225, 160, 70, 0.42);
+
+    background:
+        linear-gradient(90deg, transparent 0%, rgba(255,180,70,0.10) 50%, transparent 100%);
+
+    pointer-events: none;
+}
+
+.game-result-title {
+    font-family: 'Cinzel', serif;
+
+    font-size: clamp(48px, 5vw, 72px);
+
+    color: #f4d18a;
+
+    background: none !important;
+    -webkit-background-clip: initial !important;
+    background-clip: initial !important;
+
+    text-shadow:
+        0 0 14px rgba(210, 130, 45, 0.55),
+        0 5px 12px rgba(0,0,0,0.85);
+}
+
+.result-divider {
+    color: #c47a24;
+}
+
+.game-result-score {
+    border: 1px solid rgba(210, 140, 55, 0.58);
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(80, 32, 8, 0.62),
+            rgba(15, 5, 1, 0.76)
+        );
+
+    color: #f3d7a0;
+}
+
+.result-btn {
+    background:
+        linear-gradient(
+            180deg,
+            #d89b3b,
+            #8f4e12
+        ) !important;
+
+    color: #241204 !important;
+
+    border-color: rgba(240, 180, 80, 0.95) !important;
 }
