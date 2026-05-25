@@ -18,7 +18,7 @@ const camera = new THREE.PerspectiveCamera(
     0.1,
     1000
 );
-camera.position.set(0, 18, 18);
+camera.position.set(0, 21, 24);
 
 /* RENDERER */
 const renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -34,7 +34,7 @@ controls.target.set(0, 1.1, 0);
 controls.enableDamping = true;
 controls.enablePan = false;
 controls.minDistance = 9;
-controls.maxDistance = 34;
+controls.maxDistance = 42;
 controls.maxPolarAngle = Math.PI / 2.05;
 
 /* LIGHTS */
@@ -891,7 +891,7 @@ function animate() {
 
 window.resetBoardCamera = function () {
 
-    camera.position.set(0, 18, 18);
+    camera.position.set(0, 21, 24);
 
     controls.target.set(0, 1.1, 0);
 
