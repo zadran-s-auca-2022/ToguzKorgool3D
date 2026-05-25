@@ -994,16 +994,18 @@ button,
     position: fixed;
 
     left: 50%;
-    bottom: 24px;
+    bottom: 18px;
 
     transform: translateX(-50%);
 
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-wrap: wrap;
 
-    gap: 16px;
+    flex-wrap: nowrap;
+    width: max-content;
+
+    gap: 10px;
 
     z-index: 10;
 }
@@ -1012,8 +1014,8 @@ button,
 .btn {
     position: relative;
 
-    min-width: 190px;
-    padding: 18px 34px;
+    min-width: 150px;
+    padding: 13px 24px;
 
     border-radius: 999px;
 
@@ -1028,7 +1030,7 @@ button,
 
     color: #f7d48a;
 
-    font-size: 20px;
+    font-size: 15px;
     font-weight: 700;
     letter-spacing: 1px;
 
