@@ -741,11 +741,11 @@ for (let i = 0; i < 18; i++) {
     const isTopRow = i >= 9;
 
     const numText = createSurfaceText(String(pitNumberForIndex(i)), {
-        fontSize: 58,
-        textColor: '#ffd987',
-        strokeColor: 'rgba(35, 12, 2, 0.95)',
-        scaleFactor: 0.0043,
-        padding: 18
+        fontSize: 46,
+        textColor: '#b98242',
+        strokeColor: 'rgba(45, 18, 4, 0.85)',
+        scaleFactor: 0.0036,
+        padding: 16
     });
 
     numText.position.set(
@@ -758,11 +758,11 @@ for (let i = 0; i < 18; i++) {
     pitNumberSprites[i] = numText;
 
     const countText = createSurfaceText('9', {
-        fontSize: 74,
-        textColor: '#fff1c4',
-        strokeColor: 'rgba(45, 16, 2, 0.98)',
-        scaleFactor: 0.0048,
-        padding: 22
+        fontSize: 86,
+        textColor: '#ffe8a3',
+        strokeColor: 'rgba(30, 8, 1, 1)',
+        scaleFactor: 0.0052,
+        padding: 24
     });
 
     countText.position.set(
