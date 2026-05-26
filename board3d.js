@@ -741,11 +741,11 @@ for (let i = 0; i < 18; i++) {
     const isTopRow = i >= 9;
 
     const numText = createSurfaceText(String(pitNumberForIndex(i)), {
-        fontSize: 56,
-        textColor: 'rgb(245, 193, 23)',
-        strokeColor: 'rgba(45, 18, 4, 0.85)',
-        scaleFactor: 0.0036,
-        padding: 16
+        fontSize: 58,
+        textColor: 'rgb(233, 180, 34)',
+        strokeColor: 'rgba(40, 15, 3, 0.88)',
+        scaleFactor: 0.0042,
+        padding: 18
     });
 
     numText.position.set(

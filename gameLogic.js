@@ -36,8 +36,13 @@ const statusEl = document.getElementById('status');
 
 const moveTimerEl = document.getElementById('moveTimer');
 
+let savedTimer =
+    localStorage.getItem('toguz_move_timer');
+
 let moveTimerLimit =
-    Number(localStorage.getItem('toguz_move_timer')) || 30;
+    savedTimer === null
+        ? 0
+        : Number(savedTimer);
 
 let moveTimerInterval = null;
 let moveTimeLeft = moveTimerLimit;
@@ -777,10 +782,11 @@ function initSettings() {
 
             const buttonTime = Number(button.dataset.time);
 
-            button.classList.toggle(
-                'active',
-                buttonTime === moveTimerLimit
-            );
+            button.classList.remove('active');
+
+            if (buttonTime === moveTimerLimit) {
+                button.classList.add('active');
+            }
 
             button.addEventListener('click', () => {
 
