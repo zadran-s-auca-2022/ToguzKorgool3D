@@ -2570,7 +2570,7 @@ button,
 .game-result-card::after {
     content: "◆ ───── ◈ ───── ◆";
     position: absolute;
-    top: 28px;
+    top: 38px;
     left: 0;
     right: 0;
     color: #c98632;
@@ -2581,7 +2581,7 @@ button,
 
 .result-crown {
     position: absolute;
-    top: -36px;
+    top: -26px;
     left: 50%;
     transform: translateX(-50%) rotate(45deg);
     width: 62px;
