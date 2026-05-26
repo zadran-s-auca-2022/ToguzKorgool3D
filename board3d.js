@@ -776,22 +776,22 @@ for (let i = 0; i < 18; i++) {
 }
 
 const storeCountSpriteA = createSurfaceText('YOU 0', {
-    fontSize: 86,
+    fontSize: 75,
     textColor: '#ffe8a3',
     strokeColor: 'rgba(30, 8, 1, 1)',
-    scaleFactor: 0.0052,
-    padding: 24
+    scaleFactor: 0.0050,
+    padding: 22
 });
 
 storeCountSpriteA.position.set(5.1, 1.565, -0.95);
 boardGroup.add(storeCountSpriteA);
 
 const storeCountSpriteB = createSurfaceText('OPPONENT 0', {
-    fontSize: 86,
+    fontSize: 75,
     textColor: '#ffe8a3',
     strokeColor: 'rgba(30, 8, 1, 1)',
-    scaleFactor: 0.0052,
-    padding: 24
+    scaleFactor: 0.0050,
+    padding: 22
 });
 
 storeCountSpriteB.position.set(-5.1, 1.565, -0.95);
