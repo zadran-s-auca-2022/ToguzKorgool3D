@@ -741,11 +741,11 @@ for (let i = 0; i < 18; i++) {
     const isTopRow = i >= 9;
 
     const numText = createSurfaceText(String(pitNumberForIndex(i)), {
-        fontSize: 58,
+        fontSize: 62,
         textColor: 'rgb(233, 180, 34)',
         strokeColor: 'rgba(40, 15, 3, 0.88)',
-        scaleFactor: 0.0042,
-        padding: 18
+        scaleFactor: 0.0048,
+        padding: 19
     });
 
     numText.position.set(
@@ -776,22 +776,22 @@ for (let i = 0; i < 18; i++) {
 }
 
 const storeCountSpriteA = createSurfaceText('YOU 0', {
-    fontSize: 65,
-    textColor: 'hsl(39, 86%, 55%)',
-    strokeColor: 'rgba(90, 40, 6, 1)',
-    scaleFactor: 0.0044,
-    padding: 28
+    fontSize: 86,
+    textColor: '#ffe8a3',
+    strokeColor: 'rgba(30, 8, 1, 1)',
+    scaleFactor: 0.0052,
+    padding: 24
 });
 
 storeCountSpriteA.position.set(5.1, 1.565, -0.95);
 boardGroup.add(storeCountSpriteA);
 
 const storeCountSpriteB = createSurfaceText('OPPONENT 0', {
-    fontSize: 65,
-    textColor: 'hsl(39, 86%, 55%)',
-    strokeColor: 'rgb(234, 151, 34)',
-    scaleFactor: 0.0044,
-    padding: 28
+    fontSize: 86,
+    textColor: '#ffe8a3',
+    strokeColor: 'rgba(30, 8, 1, 1)',
+    scaleFactor: 0.0052,
+    padding: 24
 });
 
 storeCountSpriteB.position.set(-5.1, 1.565, -0.95);
