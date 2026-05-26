@@ -2733,67 +2733,68 @@ button,
     }
 }
 
-/* ===== HIDDEN DEMO BUTTONS ===== */
+/* ===== DEMO BUTTONS ===== */
 
 .btn-demo-win,
 .btn-demo-lose {
     position: fixed !important;
 
-    right: 14px !important;
+    right: 12px !important;
 
-    min-width: 34px !important;
-    width: 34px !important;
-    height: 28px !important;
+    min-width: 26px !important;
+    width: 26px !important;
+    height: 26px !important;
 
     padding: 0 !important;
 
     font-size: 0 !important;
 
-    border-radius: 8px !important;
+    border-radius: 6px !important;
 
-    opacity: 0.18;
+    opacity: 0.12;
 
-    z-index: 30 !important;
+    z-index: 999999 !important;
 
     box-shadow: none !important;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .btn-demo-win {
-    bottom: 52px !important;
+    bottom: 42px !important;
 
-    background: rgba(60, 120, 50, 0.35) !important;
-    border: 1px solid rgba(120, 200, 100, 0.28) !important;
+    background: rgba(50, 120, 50, 0.18) !important;
+    border: 1px solid rgba(100, 200, 100, 0.12) !important;
 }
 
 .btn-demo-lose {
-    bottom: 18px !important;
+    bottom: 10px !important;
 
-    background: rgba(130, 45, 35, 0.35) !important;
-    border: 1px solid rgba(220, 90, 70, 0.28) !important;
+    background: rgba(120, 40, 40, 0.18) !important;
+    border: 1px solid rgba(220, 90, 70, 0.12) !important;
 }
 
 .btn-demo-win::after {
     content: "W";
 
-    font-size: 11px;
-    font-weight: 900;
+    font-size: 9px;
+    font-weight: bold;
 
-    color: rgba(210,255,190,0.75);
+    color: rgba(220,255,220,0.45);
 }
 
 .btn-demo-lose::after {
     content: "L";
 
-    font-size: 11px;
-    font-weight: 900;
+    font-size: 9px;
+    font-weight: bold;
 
-    color: rgba(255,210,200,0.75);
+    color: rgba(255,220,220,0.45);
 }
 
 .btn-demo-win:hover,
 .btn-demo-lose:hover {
-    opacity: 0.75;
-
-    transform: none !important;
+    opacity: 0.45;
 }
-
