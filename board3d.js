@@ -751,7 +751,7 @@ for (let i = 0; i < 18; i++) {
     numText.position.set(
         base.x,
         1.575,
-        isTopRow ? base.z + 1.35 : base.z - 1.35
+        isTopRow ? base.z - 1.35 : base.z + 1.35
     );
 
     boardGroup.add(numText);
