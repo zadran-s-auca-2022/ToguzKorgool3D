@@ -742,7 +742,7 @@ for (let i = 0; i < 18; i++) {
 
     const numText = createSurfaceText(String(pitNumberForIndex(i)), {
         fontSize: 62,
-        textColor: 'hsl(54, 94%, 50%)',
+        textColor: 'rgb(248, 223, 4)',
         strokeColor: 'rgba(40, 15, 3, 0.88)',
         scaleFactor: 0.0048,
         padding: 19
