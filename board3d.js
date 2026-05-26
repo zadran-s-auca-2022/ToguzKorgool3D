@@ -750,8 +750,8 @@ for (let i = 0; i < 18; i++) {
 
     numText.position.set(
         base.x,
-        1.575,
-        isTopRow ? base.z - 1.35 : base.z + 1.35
+        1.58,
+        isTopRow ? base.z - 1.78 : base.z + 1.78
     );
 
     boardGroup.add(numText);
@@ -767,8 +767,8 @@ for (let i = 0; i < 18; i++) {
 
     countText.position.set(
         base.x,
-        1.565,
-        isTopRow ? base.z - 1.0 : base.z + 1.0
+        1.585,
+        isTopRow ? base.z + 0.92 : base.z - 0.92
     );
 
     boardGroup.add(countText);
