@@ -2505,401 +2505,233 @@ button,
     color: #ffd8d0 !important;
 }
 
-/* ===== TRADITIONAL KYRGYZ RESULT WINDOW ===== */
-
-.game-result-card {
-    position: relative;
-
-    width: min(720px, 88vw);
-    padding: 70px 62px 48px;
-
-    text-align: center;
-
-    border-radius: 18px;
-
-    background:
-        radial-gradient(circle at 50% 20%, rgba(120, 48, 12, 0.34), transparent 36%),
-        repeating-linear-gradient(
-            45deg,
-            rgba(255, 180, 70, 0.045) 0px,
-            rgba(255, 180, 70, 0.045) 2px,
-            transparent 2px,
-            transparent 14px
-        ),
-        linear-gradient(
-            135deg,
-            rgba(82, 32, 8, 0.98),
-            rgba(22, 7, 2, 0.99)
-        );
-
-    border: 3px solid rgba(176, 93, 26, 0.95);
-
-    box-shadow:
-        0 0 0 8px rgba(45, 16, 3, 0.95),
-        0 0 0 11px rgba(168, 95, 28, 0.72),
-        0 36px 100px rgba(0,0,0,0.94),
-        inset 0 0 48px rgba(0,0,0,0.46),
-        inset 0 0 22px rgba(255,170,70,0.08);
-
-    animation: royalPopup 0.65s ease-out forwards;
-}
-
-/* inner carved frame */
-.game-result-card::before {
-    content: "";
-
-    position: absolute;
-    inset: 22px;
-
-    border-radius: 12px;
-
-    border: 2px solid rgba(214, 132, 38, 0.58);
-
-    background:
-        linear-gradient(90deg, rgba(255,190,80,0.14), transparent 18%, transparent 82%, rgba(255,190,80,0.14)),
-        linear-gradient(180deg, rgba(255,190,80,0.12), transparent 22%, transparent 78%, rgba(255,190,80,0.12));
-
-    pointer-events: none;
-}
-
-/* ===== TRADITIONAL WOODEN RESULT WINDOW ===== */
+/* ===== FINAL RESULT WINDOW ===== */
 
 .game-result-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 20000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
     background:
-        radial-gradient(circle at center, rgba(120, 60, 15, 0.18), transparent 36%),
-        linear-gradient(180deg, rgba(5, 2, 0, 0.94), rgba(0, 0, 0, 0.98));
+        radial-gradient(circle at center, rgba(120,60,15,0.18), transparent 36%),
+        linear-gradient(180deg, rgba(5,2,0,0.94), rgba(0,0,0,0.98));
     backdrop-filter: blur(10px);
 }
 
+.game-result-overlay.hidden {
+    display: none;
+}
+
+.gold-confetti {
+    position: absolute;
+    inset: 0;
+    background-image:
+        radial-gradient(circle, rgba(210,130,45,0.45) 1px, transparent 2px),
+        radial-gradient(circle, rgba(255,190,80,0.22) 1px, transparent 2px);
+    background-size: 180px 180px, 280px 280px;
+    opacity: 0.38;
+    animation: confettiMove 10s linear infinite;
+}
+
 .game-result-card {
     position: relative;
-
-    width: min(760px, 88vw);
-    padding: 76px 70px 54px;
-
+    width: min(620px, 82vw);
+    padding: 54px 48px 38px;
     text-align: center;
-
-    border-radius: 26px;
-
+    border-radius: 24px;
+    border: 2px solid rgba(170,92,25,0.95);
     background:
-        linear-gradient(
-            135deg,
-            rgba(58, 25, 8, 0.96),
-            rgba(20, 8, 2, 0.99)
-        );
-
-    border: 2px solid rgba(170, 92, 25, 0.95);
-
+        radial-gradient(circle at 50% 18%, rgba(120,70,28,0.18), transparent 34%),
+        repeating-linear-gradient(0deg, rgba(255,255,255,0.018) 0px, rgba(255,255,255,0.018) 1px, transparent 1px, transparent 5px),
+        linear-gradient(135deg, rgba(42,18,6,0.99), rgba(13,5,2,0.99));
     box-shadow:
-        0 0 0 8px rgba(35, 13, 3, 0.95),
-        0 0 0 11px rgba(130, 72, 22, 0.85),
+        0 0 0 8px rgba(35,13,3,0.95),
+        0 0 0 11px rgba(130,72,22,0.85),
         0 40px 110px rgba(0,0,0,0.95),
         inset 0 0 60px rgba(0,0,0,0.55),
         inset 0 0 24px rgba(210,130,45,0.12);
-
-    animation: royalPopup 0.65s ease-out forwards;
+    animation:
+        resultWoodIn 0.55s cubic-bezier(.16,1.25,.35,1) both,
+        resultSoftGlow 3.2s ease-in-out infinite 0.6s;
 }
 
 .game-result-card::before {
     content: "";
-
     position: absolute;
-    inset: 24px;
-
-    border-radius: 18px;
-
-    border: 1px solid rgba(210, 132, 38, 0.78);
-
-    box-shadow:
-        inset 0 0 18px rgba(0,0,0,0.65);
-
+    inset: 22px;
+    border-radius: 16px;
+    border: 1px solid rgba(210,132,38,0.78);
     pointer-events: none;
 }
 
 .game-result-card::after {
-    content: "◆ ───────── ◈ ───────── ◆";
-
+    content: "◆ ───── ◈ ───── ◆";
     position: absolute;
-    top: 34px;
+    top: 28px;
     left: 0;
     right: 0;
-
     color: #c98632;
-
-    font-size: 18px;
-    letter-spacing: 4px;
-
-    text-shadow:
-        0 0 10px rgba(220, 140, 45, 0.42);
-
+    font-size: 15px;
+    letter-spacing: 3px;
     pointer-events: none;
 }
 
 .result-crown {
     position: absolute;
-
-    top: -46px;
+    top: -36px;
     left: 50%;
     transform: translateX(-50%) rotate(45deg);
-
-    width: 78px;
-    height: 78px;
-
-    background:
-        linear-gradient(
-            145deg,
-            #7a3a0d,
-            #241006
-        );
-
-    border: 2px solid rgba(190, 105, 32, 0.95);
-
+    width: 62px;
+    height: 62px;
+    background: linear-gradient(145deg, #7a3a0d, #241006);
+    border: 2px solid rgba(190,105,32,0.95);
     border-radius: 10px;
-
     box-shadow:
-        0 0 26px rgba(180, 95, 25, 0.55),
-        inset 0 0 22px rgba(255, 190, 80, 0.10);
+        0 0 22px rgba(180,95,25,0.42),
+        inset 0 0 18px rgba(255,190,80,0.10);
+    font-size: 0;
 }
 
 .result-crown::before {
     content: "◈";
-
     position: absolute;
     inset: 0;
-
     display: flex;
     align-items: center;
     justify-content: center;
-
     transform: rotate(-45deg);
-
     color: #e2a44b;
-
-    font-size: 30px;
-
-    text-shadow:
-        0 0 12px rgba(255, 175, 60, 0.5);
-}
-
-.result-crown {
-    font-size: 0;
+    font-size: 24px;
 }
 
 .game-result-title {
     margin-top: 12px;
-    margin-bottom: 26px;
-
+    margin-bottom: 18px;
     font-family: 'Cinzel', serif;
-    font-size: clamp(54px, 6vw, 86px);
+    font-size: clamp(42px, 4.6vw, 64px);
     font-weight: 900;
-
     letter-spacing: 3px;
     text-transform: uppercase;
-
     color: #d7a15b !important;
-
     background: none !important;
     -webkit-background-clip: initial !important;
     background-clip: initial !important;
-
     text-shadow:
-        0 2px 0 rgba(38, 14, 3, 1),
-        0 0 18px rgba(210, 130, 45, 0.45),
+        0 2px 0 rgba(38,14,3,1),
+        0 0 18px rgba(210,130,45,0.45),
         0 8px 20px rgba(0,0,0,0.95);
 }
 
 .result-divider {
-    position: relative;
-
-    width: 330px;
-    margin: 20px auto 30px;
-
-    font-size: 0;
-}
-
-.result-divider::before {
-    content: "";
-
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 50%;
-
+    margin: 18px auto 26px;
+    width: 240px;
     height: 2px;
-
-    background:
-        linear-gradient(
-            90deg,
-            transparent,
-            #9b571c,
-            #d99a43,
-            #9b571c,
-            transparent
-        );
-}
-
-.result-divider::after {
-    content: "◈";
-
-    position: relative;
-
-    padding: 0 14px;
-
-    color: #d99a43;
-    background: #2a0d03;
-
-    font-size: 20px;
-
-    text-shadow:
-        0 0 10px rgba(255, 165, 50, 0.42);
+    background: linear-gradient(90deg, transparent, rgba(220,150,55,0.95), transparent);
+    border-radius: 999px;
 }
 
 .game-result-score {
     display: inline-block;
-
-    min-width: 460px;
-
-    padding: 16px 42px;
-    margin-bottom: 34px;
-
+    min-width: 340px;
+    padding: 12px 30px;
+    margin-bottom: 26px;
+    border-radius: 10px;
+    border: 1px solid rgba(180,105,30,0.85);
+    background: linear-gradient(180deg, rgba(60,25,8,0.96), rgba(18,7,2,0.98));
+    color: #f0d3a2;
     font-family: 'Cinzel', serif;
-    font-size: 28px;
-    font-weight: 600;
-
-    color: #cbb08a;
-
-    border: 2px solid rgba(155, 82, 22, 0.88);
-
-    background:
-        linear-gradient(
-            180deg,
-            rgba(42, 16, 5, 0.96),
-            rgba(14, 5, 1, 0.98)
-        );
-
-    box-shadow:
-        inset 0 0 18px rgba(0,0,0,0.65),
-        0 0 16px rgba(160, 80, 20, 0.18);
+    font-size: 22px;
+    font-weight: 500;
 }
 
 .result-btn {
-    position: relative;
-
-    padding: 18px 76px;
-
+    padding: 14px 56px;
     border-radius: 12px;
-
-    border: 2px solid rgba(190, 115, 38, 0.96);
-
-    background:
-        linear-gradient(
-            180deg,
-            #c89454,
-            #8b4a18
-        ) !important;
-
-    color: #241204 !important;
-
+    border: 2px solid rgba(220,170,90,0.92);
+    background: linear-gradient(180deg, #b98242, #6f3510) !important;
+    color: #1d0c02 !important;
     font-family: 'Cinzel', serif;
-    font-size: 28px;
+    font-size: 22px;
     font-weight: 900;
-
     cursor: pointer;
-
     box-shadow:
-        0 0 24px rgba(170, 85, 20, 0.36),
-        inset 0 0 18px rgba(255, 210, 120, 0.16);
-
+        0 0 24px rgba(170,85,20,0.36),
+        inset 0 0 18px rgba(255,210,120,0.16);
     transition: 0.25s ease;
 }
 
-.game-result-card {
-    background:
-        radial-gradient(circle at 50% 18%, rgba(120, 70, 28, 0.18), transparent 34%),
-        repeating-linear-gradient(
-            0deg,
-            rgba(255,255,255,0.018) 0px,
-            rgba(255,255,255,0.018) 1px,
-            transparent 1px,
-            transparent 5px
-        ),
-        linear-gradient(
-            135deg,
-            rgba(42, 18, 6, 0.99),
-            rgba(13, 5, 2, 0.99)
-        ) !important;
-}
-
-.result-btn {
-    background:
-        linear-gradient(
-            180deg,
-            #b98242,
-            #6f3510
-        ) !important;
-
-    color: #1d0c02 !important;
-}
-
 .result-btn:hover {
-    transform: translateY(-3px);
+    transform: translateY(-3px) scale(1.03);
+}
 
+/* LOSE RESULT */
+.lose-result {
     background:
-        linear-gradient(
-            180deg,
-            #d6a263,
-            #9b551d
-        ) !important;
+        radial-gradient(circle at center, rgba(100,25,10,0.18), transparent 34%),
+        linear-gradient(180deg, rgba(5,1,1,0.96), rgba(0,0,0,0.99));
 }
 
-/* ===== SMALLER RESULT WINDOW + ANIMATION ===== */
-
-.game-result-card {
-    width: min(620px, 82vw) !important;
-    padding: 54px 48px 38px !important;
-
-    animation:
-        resultWoodIn 0.55s cubic-bezier(.16, 1.25, .35, 1) both,
-        resultSoftGlow 3.2s ease-in-out infinite 0.6s !important;
+.lose-result .gold-confetti {
+    background-image:
+        radial-gradient(circle, rgba(170,50,22,0.42) 1px, transparent 2px),
+        radial-gradient(circle, rgba(255,100,45,0.20) 1px, transparent 2px);
 }
 
-.game-result-title {
-    font-size: clamp(42px, 4.6vw, 64px) !important;
-    margin-bottom: 18px !important;
+.lose-result .game-result-card {
+    border-color: rgba(120,45,22,0.92) !important;
+    background:
+        radial-gradient(circle at 50% 20%, rgba(70,18,8,0.22), transparent 35%),
+        repeating-linear-gradient(0deg, rgba(255,255,255,0.012) 0px, rgba(255,255,255,0.012) 1px, transparent 1px, transparent 6px),
+        linear-gradient(135deg, rgba(28,10,5,0.99), rgba(8,3,2,1)) !important;
 }
 
-.game-result-score {
-    min-width: 340px !important;
-    padding: 12px 30px !important;
-    font-size: 22px !important;
-    margin-bottom: 26px !important;
+.lose-result .game-result-title {
+    color: #b96a4b !important;
+    text-shadow:
+        0 2px 0 rgba(20,6,2,1),
+        0 0 18px rgba(160,55,25,0.35),
+        0 8px 18px rgba(0,0,0,0.96);
 }
 
-.result-btn {
-    padding: 14px 56px !important;
-    font-size: 22px !important;
+.lose-result .result-crown {
+    background: linear-gradient(145deg, #4a170a, #180605) !important;
+    border-color: rgba(135,55,25,0.92) !important;
 }
 
-.result-crown {
-    width: 62px !important;
-    height: 62px !important;
-    top: -36px !important;
+.lose-result .result-crown::before {
+    content: "✦";
+    color: #a65432;
+}
+
+.lose-result .game-result-score {
+    border-color: rgba(110,42,18,0.9);
+    color: #c8a58f;
+    background: linear-gradient(180deg, rgba(26,10,5,0.98), rgba(10,4,2,1));
+}
+
+.lose-result .result-btn {
+    background: linear-gradient(180deg, #8d4d2d, #55210f) !important;
+    border-color: rgba(145,68,30,0.95) !important;
+    color: #f0d2bb !important;
+}
+
+/* DRAW RESULT */
+.draw-result .game-result-title {
+    color: #c7b08a !important;
 }
 
 @keyframes resultWoodIn {
     from {
         opacity: 0;
-        transform:
-            translateY(28px)
-            scale(0.86);
+        transform: translateY(28px) scale(0.86);
         filter: blur(8px);
     }
-
     to {
         opacity: 1;
-        transform:
-            translateY(0)
-            scale(1);
+        transform: translateY(0) scale(1);
         filter: blur(0);
     }
 }
@@ -2907,20 +2739,28 @@ button,
 @keyframes resultSoftGlow {
     0%, 100% {
         box-shadow:
-            0 0 0 8px rgba(35, 13, 3, 0.95),
-            0 0 0 11px rgba(130, 72, 22, 0.85),
+            0 0 0 8px rgba(35,13,3,0.95),
+            0 0 0 11px rgba(130,72,22,0.85),
             0 40px 110px rgba(0,0,0,0.95),
             inset 0 0 60px rgba(0,0,0,0.55),
             inset 0 0 24px rgba(210,130,45,0.12);
     }
-
     50% {
         box-shadow:
-            0 0 0 8px rgba(35, 13, 3, 0.95),
-            0 0 0 11px rgba(160, 90, 28, 0.92),
+            0 0 0 8px rgba(35,13,3,0.95),
+            0 0 0 11px rgba(160,90,28,0.92),
             0 40px 120px rgba(0,0,0,0.98),
-            0 0 30px rgba(180, 95, 25, 0.22),
+            0 0 30px rgba(180,95,25,0.22),
             inset 0 0 65px rgba(0,0,0,0.55),
             inset 0 0 30px rgba(230,150,55,0.16);
+    }
+}
+
+@keyframes confettiMove {
+    from {
+        background-position: 20px 30px, 80px 120px;
+    }
+    to {
+        background-position: 120px 260px, -160px 220px;
     }
 }
