@@ -129,8 +129,4 @@ function createWarmTone() {
 
 // ===== START AFTER FIRST USER CLICK =====
 
-window.addEventListener('click', () => {
-
-    startAmbientSound();
-
-}, { once: true });
+window.startAmbientSound = startAmbientSound;

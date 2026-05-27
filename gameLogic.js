@@ -970,6 +970,10 @@ document.addEventListener('DOMContentLoaded', () => {
 function startGameFromSplash(e) {
     if (e) e.stopPropagation();
 
+    if (typeof window.startAmbientSound === 'function') {
+        window.startAmbientSound();
+    }
+
     splashEl.style.opacity = '0';
 
     setTimeout(() => {
