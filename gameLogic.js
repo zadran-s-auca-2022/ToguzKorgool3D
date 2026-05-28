@@ -50,20 +50,6 @@ let moveTimeLeft = moveTimerLimit;
 const aiBtn = document.getElementById('aiBtn');
 const settingsBtn = document.getElementById('settingsBtn');
 
-// ===== BUTTON SOUND EVENTS =====
-
-document.querySelectorAll('button').forEach((btn) => {
-
-    btn.addEventListener('mouseenter', () => {
-        playHoverSound();
-    });
-
-    btn.addEventListener('click', () => {
-        playButtonClickSound();
-    });
-
-});
-
 const historyListEl = document.getElementById('historyList');
 
 const historyContainerEl = document.getElementById('historyContainer');
@@ -1005,6 +991,8 @@ let pendingRestart = false;
 
 aiBtn.addEventListener('click', () => {
 
+    playButtonClickSound();
+
     if (!isGameOver) {
         pendingRestart = true;
         restartConfirmOverlay.classList.remove('hidden');
@@ -1062,16 +1050,12 @@ window.getCurrentGameState = getCurrentGameState;
 
 window.openRules = function () {
 
-    playPopupOpenSound();
-
     document
         .getElementById("rulesOverlay")
         .classList.remove("hidden");
 };
 
 window.closeRules = function () {
-
-    playPopupCloseSound();
 
     document
         .getElementById("rulesOverlay")
