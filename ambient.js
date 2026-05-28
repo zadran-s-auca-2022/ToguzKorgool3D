@@ -1,21 +1,20 @@
-// ===== TOGUZ KORGOOL CALM AMBIENT SOUND =====
+// ===== LUXURY CHESS ROOM AMBIENCE =====
 
 let toguzAmbientStarted = false;
 let toguzAmbientCtx = null;
 let toguzAmbientMasterGain = null;
-let toguzAmbientNodes = [];
 
 window.startAmbientSound = async function () {
+
     if (toguzAmbientStarted) return;
 
     toguzAmbientStarted = true;
 
-    const Ctx = window.AudioContext || window.webkitAudioContext;
+    const Ctx =
+        window.AudioContext ||
+        window.webkitAudioContext;
 
-    if (!Ctx) {
-        console.log('AudioContext not supported');
-        return;
-    }
+    if (!Ctx) return;
 
     toguzAmbientCtx = new Ctx();
 
@@ -23,51 +22,67 @@ window.startAmbientSound = async function () {
         await toguzAmbientCtx.resume();
     }
 
-    toguzAmbientMasterGain = toguzAmbientCtx.createGain();
+    // ===== MASTER =====
 
-    // A little louder, but still soft
-    toguzAmbientMasterGain.gain.value = 0.32;
+    toguzAmbientMasterGain =
+        toguzAmbientCtx.createGain();
 
-    toguzAmbientMasterGain.connect(toguzAmbientCtx.destination);
+    toguzAmbientMasterGain.gain.value = 0.38;
 
-    createCalmAir();
-    createSoftWoodRoom();
-    createGentleNaturePulse();
-
-    console.log('Calm ambient sound running');
-};
-
-// ===== VERY SOFT AIR / WIND =====
-
-function createCalmAir() {
-    const bufferSize = toguzAmbientCtx.sampleRate * 4;
-
-    const noiseBuffer = toguzAmbientCtx.createBuffer(
-        1,
-        bufferSize,
-        toguzAmbientCtx.sampleRate
+    toguzAmbientMasterGain.connect(
+        toguzAmbientCtx.destination
     );
 
-    const data = noiseBuffer.getChannelData(0);
+    createWarmRoomAir();
+    createFireplaceTone();
+    createLuxuryRoomMovement();
+};
+
+// ===== SOFT ROOM AIR =====
+
+function createWarmRoomAir() {
+
+    const bufferSize =
+        toguzAmbientCtx.sampleRate * 4;
+
+    const noiseBuffer =
+        toguzAmbientCtx.createBuffer(
+            1,
+            bufferSize,
+            toguzAmbientCtx.sampleRate
+        );
+
+    const data =
+        noiseBuffer.getChannelData(0);
 
     for (let i = 0; i < bufferSize; i++) {
-        data[i] = (Math.random() * 2 - 1) * 0.55;
+
+        data[i] =
+            (Math.random() * 2 - 1) * 0.22;
     }
 
-    const noise = toguzAmbientCtx.createBufferSource();
+    const noise =
+        toguzAmbientCtx.createBufferSource();
+
     noise.buffer = noiseBuffer;
     noise.loop = true;
 
-    const lowpass = toguzAmbientCtx.createBiquadFilter();
+    const lowpass =
+        toguzAmbientCtx.createBiquadFilter();
+
     lowpass.type = 'lowpass';
-    lowpass.frequency.value = 850;
+    lowpass.frequency.value = 950;
 
-    const highpass = toguzAmbientCtx.createBiquadFilter();
+    const highpass =
+        toguzAmbientCtx.createBiquadFilter();
+
     highpass.type = 'highpass';
-    highpass.frequency.value = 180;
+    highpass.frequency.value = 320;
 
-    const gain = toguzAmbientCtx.createGain();
-    gain.gain.value = 0.12;
+    const gain =
+        toguzAmbientCtx.createGain();
+
+    gain.gain.value = 0.09;
 
     noise.connect(lowpass);
     lowpass.connect(highpass);
@@ -77,71 +92,110 @@ function createCalmAir() {
     noise.start();
 
     setInterval(() => {
-        gain.gain.linearRampToValueAtTime(
-            0.09 + Math.random() * 0.06,
-            toguzAmbientCtx.currentTime + 4
-        );
-    }, 4000);
 
-    toguzAmbientNodes.push(noise, lowpass, highpass, gain);
+        gain.gain.linearRampToValueAtTime(
+            0.06 + Math.random() * 0.04,
+            toguzAmbientCtx.currentTime + 5
+        );
+
+    }, 5000);
 }
 
-// ===== WARM SOFT ROOM TONE =====
+// ===== FIREPLACE ATMOSPHERE =====
 
-function createSoftWoodRoom() {
-    const osc1 = toguzAmbientCtx.createOscillator();
-    const osc2 = toguzAmbientCtx.createOscillator();
+function createFireplaceTone() {
+
+    const osc1 =
+        toguzAmbientCtx.createOscillator();
+
+    const osc2 =
+        toguzAmbientCtx.createOscillator();
 
     osc1.type = 'sine';
-    osc2.type = 'sine';
+    osc2.type = 'triangle';
 
-    osc1.frequency.value = 96;
-    osc2.frequency.value = 144;
+    osc1.frequency.value = 72;
+    osc2.frequency.value = 108;
 
-    const gain = toguzAmbientCtx.createGain();
-    gain.gain.value = 0.035;
+    const filter =
+        toguzAmbientCtx.createBiquadFilter();
 
-    const filter = toguzAmbientCtx.createBiquadFilter();
     filter.type = 'lowpass';
-    filter.frequency.value = 260;
+    filter.frequency.value = 180;
+
+    const gain =
+        toguzAmbientCtx.createGain();
+
+    gain.gain.value = 0.028;
 
     osc1.connect(filter);
     osc2.connect(filter);
+
     filter.connect(gain);
     gain.connect(toguzAmbientMasterGain);
 
     osc1.start();
     osc2.start();
 
-    toguzAmbientNodes.push(osc1, osc2, filter, gain);
+    // breathing movement
+
+    setInterval(() => {
+
+        gain.gain.linearRampToValueAtTime(
+            0.018 + Math.random() * 0.018,
+            toguzAmbientCtx.currentTime + 4
+        );
+
+    }, 4000);
 }
 
-// ===== GENTLE NATURAL SOFT PULSE =====
+// ===== OCCASIONAL ROOM MOVEMENT =====
 
-function createGentleNaturePulse() {
+function createLuxuryRoomMovement() {
+
     setInterval(() => {
-        if (!toguzAmbientCtx || !toguzAmbientMasterGain) return;
 
-        const osc = toguzAmbientCtx.createOscillator();
-        const gain = toguzAmbientCtx.createGain();
+        const osc =
+            toguzAmbientCtx.createOscillator();
+
+        const gain =
+            toguzAmbientCtx.createGain();
+
+        const filter =
+            toguzAmbientCtx.createBiquadFilter();
 
         osc.type = 'sine';
-        osc.frequency.value = 260 + Math.random() * 80;
 
-        gain.gain.setValueAtTime(0, toguzAmbientCtx.currentTime);
-        gain.gain.linearRampToValueAtTime(
-            0.035,
-            toguzAmbientCtx.currentTime + 0.8
+        osc.frequency.value =
+            180 + Math.random() * 90;
+
+        filter.type = 'lowpass';
+        filter.frequency.value = 320;
+
+        gain.gain.setValueAtTime(
+            0,
+            toguzAmbientCtx.currentTime
         );
+
+        gain.gain.linearRampToValueAtTime(
+            0.012,
+            toguzAmbientCtx.currentTime + 1
+        );
+
         gain.gain.linearRampToValueAtTime(
             0,
-            toguzAmbientCtx.currentTime + 3.2
+            toguzAmbientCtx.currentTime + 4
         );
 
-        osc.connect(gain);
+        osc.connect(filter);
+        filter.connect(gain);
         gain.connect(toguzAmbientMasterGain);
 
         osc.start();
-        osc.stop(toguzAmbientCtx.currentTime + 3.4);
-    }, 6500);
+
+        osc.stop(
+            toguzAmbientCtx.currentTime + 4.2
+        );
+
+    }, 7000);
 }
