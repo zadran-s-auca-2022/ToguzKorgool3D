@@ -892,7 +892,6 @@ function initSettings() {
     });
 
     settingsBtn.addEventListener('click', () => {
-        playPopupOpenSound();
         settingsOverlayEl.classList.remove('hidden');
     });
 
@@ -943,7 +942,6 @@ function initSettings() {
             }
 
         settingsCloseBtn.addEventListener('click', () => {
-        playPopupCloseSound();
         settingsOverlayEl.classList.add('hidden');
     });
 
@@ -1033,6 +1031,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function startGameFromSplash(e) {
     if (e) e.stopPropagation();
+
+    playButtonClickSound();
 
     if (typeof window.startAmbientSound === 'function') {
         window.startAmbientSound();
