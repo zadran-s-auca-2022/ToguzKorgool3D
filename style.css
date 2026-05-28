@@ -2834,3 +2834,39 @@ button,
             #8a530c
         );
 }
+
+/* ===== MOVE HISTORY GOLD SCROLLBAR ===== */
+
+.history-list {
+    scrollbar-width: thin;
+    scrollbar-color: #d7a12f rgba(10, 4, 1, 0.9);
+}
+
+.history-list::-webkit-scrollbar {
+    width: 8px;
+}
+
+.history-list::-webkit-scrollbar-track {
+    background: rgba(10, 4, 1, 0.9);
+    border-radius: 999px;
+}
+
+.history-list::-webkit-scrollbar-thumb {
+    background:
+        linear-gradient(
+            180deg,
+            #d7a12f,
+            #6d3c08
+        );
+
+    border-radius: 999px;
+}
+
+.history-list::-webkit-scrollbar-thumb:hover {
+    background:
+        linear-gradient(
+            180deg,
+            #ffd47e,
+            #8a530c
+        );
+}
