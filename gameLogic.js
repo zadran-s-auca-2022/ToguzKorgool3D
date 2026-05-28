@@ -132,7 +132,13 @@ function playBeep(freq = 800, duration = 0.05, volume = 0.04) {
 }
 
 function playSowSound() {
-    playBeep(900, 0.04, 0.03);
+    if (!soundEnabled) return;
+
+    const s = sowSound.cloneNode();
+
+    s.volume = masterVolume * 0.42;
+
+    s.play().catch(() => {});
 }
 
 function playCaptureSound() {
@@ -449,12 +455,6 @@ async function performMove(startIndex, player, addToHistory) {
         }
 
         renderAll();
-
-        const s = sowSound.cloneNode();
-
-        s.volume = masterVolume * 0.42;
-
-        s.play().catch(() => {});
 
         await delay(SOW_DELAY);
 
