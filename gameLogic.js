@@ -14,6 +14,9 @@ let currentPlayer = 'A';
 let isAnimating = false;
 let isGameOver = false;
 let soundEnabled = true;
+const sowSound = new Audio('sounds/sow.mp3');
+
+sowSound.volume = 0.38;
 let aiEnabled = true;
 
 let aiDifficulty = localStorage.getItem('toguz_ai_difficulty') || 'normal';
@@ -446,6 +449,13 @@ async function performMove(startIndex, player, addToHistory) {
         }
 
         renderAll();
+
+        const s = sowSound.cloneNode();
+
+        s.volume = masterVolume * 0.42;
+
+        s.play().catch(() => {});
+
         await delay(SOW_DELAY);
 
         stonesToSow--;
