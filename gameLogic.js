@@ -162,15 +162,19 @@ function playWinSound() {
 
     if (!soundEnabled) return;
 
-    playBeep(700, 0.08, 0.05);
+    playBeep(700, 0.06, 0.05);
 
     setTimeout(() => {
-        playBeep(920, 0.12, 0.06);
-    }, 90);
+        playBeep(950, 0.08, 0.06);
+    }, 70);
 
     setTimeout(() => {
-        playBeep(1200, 0.16, 0.08);
-    }, 180);
+        playBeep(1250, 0.12, 0.07);
+    }, 140);
+
+    setTimeout(() => {
+        playBeep(1550, 0.16, 0.08);
+    }, 220);
 }
 
 function playLoseSound() {
