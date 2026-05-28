@@ -50,6 +50,20 @@ let moveTimeLeft = moveTimerLimit;
 const aiBtn = document.getElementById('aiBtn');
 const settingsBtn = document.getElementById('settingsBtn');
 
+// ===== BUTTON SOUND EVENTS =====
+
+document.querySelectorAll('button').forEach((btn) => {
+
+    btn.addEventListener('mouseenter', () => {
+        playHoverSound();
+    });
+
+    btn.addEventListener('click', () => {
+        playButtonClickSound();
+    });
+
+});
+
 const historyListEl = document.getElementById('historyList');
 
 const historyContainerEl = document.getElementById('historyContainer');
@@ -130,6 +144,62 @@ function playBeep(freq = 800, duration = 0.05, volume = 0.04) {
 
 function playSowSound() {
     playBeep(900, 0.04, 0.03);
+}
+
+// ===== UI SOUNDS =====
+
+function playHoverSound() {
+    if (!soundEnabled) return;
+
+    playBeep(1200, 0.015, 0.015);
+}
+
+function playButtonClickSound() {
+    if (!soundEnabled) return;
+
+    playBeep(700, 0.03, 0.03);
+}
+
+function playPopupOpenSound() {
+    if (!soundEnabled) return;
+
+    playBeep(520, 0.05, 0.05);
+}
+
+function playPopupCloseSound() {
+    if (!soundEnabled) return;
+
+    playBeep(420, 0.04, 0.04);
+}
+
+function playWinSound() {
+
+    if (!soundEnabled) return;
+
+    playBeep(700, 0.08, 0.05);
+
+    setTimeout(() => {
+        playBeep(920, 0.12, 0.06);
+    }, 90);
+
+    setTimeout(() => {
+        playBeep(1200, 0.16, 0.08);
+    }, 180);
+}
+
+function playLoseSound() {
+
+    if (!soundEnabled) return;
+
+    playBeep(500, 0.08, 0.05);
+
+    setTimeout(() => {
+        playBeep(320, 0.12, 0.06);
+    }, 120);
+
+    setTimeout(() => {
+        playBeep(180, 0.18, 0.08);
+    }, 240);
 }
 
 function playCaptureSound() {
@@ -832,6 +902,7 @@ function initSettings() {
     });
 
     settingsBtn.addEventListener('click', () => {
+        playPopupOpenSound();
         settingsOverlayEl.classList.remove('hidden');
     });
 
@@ -882,6 +953,7 @@ function initSettings() {
             }
 
         settingsCloseBtn.addEventListener('click', () => {
+        playPopupCloseSound();
         settingsOverlayEl.classList.add('hidden');
     });
 
@@ -989,11 +1061,21 @@ window.resetGame = resetGame;
 window.getCurrentGameState = getCurrentGameState;
 
 window.openRules = function () {
-    document.getElementById("rulesOverlay").classList.remove("hidden");
+
+    playPopupOpenSound();
+
+    document
+        .getElementById("rulesOverlay")
+        .classList.remove("hidden");
 };
 
 window.closeRules = function () {
-    document.getElementById("rulesOverlay").classList.add("hidden");
+
+    playPopupCloseSound();
+
+    document
+        .getElementById("rulesOverlay")
+        .classList.add("hidden");
 };
 
 function showGameResult(resultText) {
@@ -1007,12 +1089,22 @@ function showGameResult(resultText) {
     overlay.classList.remove('win-result', 'lose-result', 'draw-result');
 
     if (storeA > storeB) {
+
+        playWinSound();
+
         overlay.classList.add('win-result');
+
         crown.textContent = '';
+
         title.textContent = 'YOU WIN!';
     } else if (storeB > storeA) {
+
+        playLoseSound();
+
         overlay.classList.add('lose-result');
+
         crown.textContent = '';
+
         title.textContent = 'YOU LOSE!';
     } else {
         overlay.classList.add('draw-result');
