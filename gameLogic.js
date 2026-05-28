@@ -14,9 +14,6 @@ let currentPlayer = 'A';
 let isAnimating = false;
 let isGameOver = false;
 let soundEnabled = true;
-const sowSound = new Audio('sounds/sow.mp3');
-
-sowSound.volume = 0.38;
 let aiEnabled = true;
 
 let aiDifficulty = localStorage.getItem('toguz_ai_difficulty') || 'normal';
@@ -132,13 +129,42 @@ function playBeep(freq = 800, duration = 0.05, volume = 0.04) {
 }
 
 function playSowSound() {
+
     if (!soundEnabled) return;
 
-    const s = sowSound.cloneNode();
+    const ctx = getAudioContext();
 
-    s.volume = masterVolume * 0.42;
+    const osc1 = ctx.createOscillator();
+    const osc2 = ctx.createOscillator();
 
-    s.play().catch(() => {});
+    const gain = ctx.createGain();
+
+    osc1.type = 'triangle';
+    osc2.type = 'sine';
+
+    osc1.frequency.value = 520;
+    osc2.frequency.value = 760;
+
+    gain.gain.setValueAtTime(
+        0.028 * masterVolume,
+        ctx.currentTime
+    );
+
+    gain.gain.exponentialRampToValueAtTime(
+        0.0001,
+        ctx.currentTime + 0.08
+    );
+
+    osc1.connect(gain);
+    osc2.connect(gain);
+
+    gain.connect(ctx.destination);
+
+    osc1.start();
+    osc2.start();
+
+    osc1.stop(ctx.currentTime + 0.08);
+    osc2.stop(ctx.currentTime + 0.08);
 }
 
 function playCaptureSound() {
@@ -455,7 +481,6 @@ async function performMove(startIndex, player, addToHistory) {
         }
 
         renderAll();
-
         await delay(SOW_DELAY);
 
         stonesToSow--;
