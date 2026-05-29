@@ -2915,15 +2915,15 @@ button,
 }
 
 .intro-language-switcher{
-    position:absolute;
+    position: fixed;
 
-    top:-120px;
-    right:-860px;
+    top: 175px;
+    right: 175px;
 
-    display:flex;
-    gap:10px;
+    display: flex;
+    gap: 10px;
 
-    z-index:20;
+    z-index: 10050;
 }
 
 .intro-lang-btn{
