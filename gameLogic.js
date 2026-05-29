@@ -936,10 +936,32 @@ function applyLanguage() {
     }
 
     const playAgainBtn =
-        document.querySelector('.play-again-btn');
+        document.querySelector('.result-btn');
 
     if (playAgainBtn) {
         playAgainBtn.textContent = t('playAgain');
+    }
+
+    const restartTitle =
+    document.querySelector('.restart-confirm-box h2');
+
+    if (restartTitle) {
+        restartTitle.textContent = t('restartGame');
+    }
+
+    const restartText =
+        document.querySelector('.restart-confirm-box p');
+
+    if (restartText) {
+        restartText.textContent = t('restartConfirm');
+    }
+
+    if (restartCancelBtn) {
+        restartCancelBtn.textContent = t('cancel');
+    }
+
+    if (restartConfirmBtn) {
+        restartConfirmBtn.textContent = t('restart');
     }
 
     const difficultyBtns = document.querySelectorAll('.difficulty-btn');
@@ -1150,13 +1172,7 @@ function initSettings() {
             });
 
             document.addEventListener('fullscreenchange', () => {
-
-                if (document.fullscreenElement) {
-                    fullscreenBtn.textContent = t('fullscreenExit');
-                } else {
-                    fullscreenBtn.textContent = t('fullscreen');
-                }
-
+                applyLanguage();
             });
         }
 
