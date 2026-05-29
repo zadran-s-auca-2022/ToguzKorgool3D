@@ -800,7 +800,18 @@ const translations = {
         expert: 'Expert',
         language: 'Language',
         startGame: 'Start Game',
-        learnRules: 'Learn The Rules'
+        learnRules: 'Learn The Rules',
+        playAgain: 'PLAY AGAIN',
+        restartGame: 'RESTART GAME?',
+        restartConfirm: 'ARE YOU SURE YOU WANT TO RESTART THE CURRENT MATCH?',
+        cancel: 'CANCEL',
+        restart: 'RESTART',
+        introText: 'OUTSMART YOUR OPPONENT IN THIS ANCIENT KYRGYZ STRATEGY GAME. EVERY MOVE MATTERS. EVERY TURN TELLS A STORY.',
+        fullscreenExit: 'EXIT FULLSCREEN',
+        mainTitle: 'TOGUZ KORGOOL',
+        oneMin: '1 MIN',
+        twoMin: '2 MIN',
+        fiveMin: '5 MIN'
     },
 
     ky: {
@@ -836,7 +847,18 @@ const translations = {
         expert: 'Күчтүү',
         language: 'Тил',
         startGame: 'Оюнду баштоо',
-        learnRules: 'Эрежелерди үйрөнүү'
+        learnRules: 'Эрежелерди үйрөнүү',
+        playAgain: 'КАЙРА ОЙНОО',
+        restartGame: 'ОЮНДУ КАЙРА БАШТАЙСЫЗБЫ?',
+        restartConfirm: 'Учурдагы оюнду кайра баштоону каалайсызбы?',
+        cancel: 'ЖАБУУ',
+        restart: 'КАЙРА БАШТОО',
+        introText: 'БУЛ БАЙЫРКЫ КЫРГЫЗ СТРАТЕГИЯ ОЮНУНДА АТААНДАШЫҢЫЗДЫ ЖЕҢИҢИЗ. АР БИР ЖҮРҮШ МААНИЛҮҮ.',
+        fullscreenExit: 'ТОЛУК ЭКРАНДАН ЧЫГУУ',
+        mainTitle: 'ТОГУЗ КОРГООЛ',
+        oneMin: '1 МҮНӨТ',
+        twoMin: '2 МҮНӨТ',
+        fiveMin: '5 МҮНӨТ'
     }
 };
 
@@ -854,7 +876,10 @@ window.getLanguageLabels = function () {
 function applyLanguage() {
     aiBtn.textContent = t('newGame');
     resetCameraBtn.textContent = t('resetCamera');
-    fullscreenBtn.textContent = t('fullscreen');
+    fullscreenBtn.textContent =
+        document.fullscreenElement
+            ? t('fullscreenExit')
+            : t('fullscreen');
     settingsBtn.textContent = t('settings');
 
     const historyTitle = document.querySelector('.history-title');
@@ -865,6 +890,13 @@ function applyLanguage() {
 
     const rulesBtn = document.querySelector('.intro-rules-btn span:last-child');
     if (rulesBtn) rulesBtn.textContent = t('learnRules');
+
+    const mainTitle =
+        document.querySelector('.game-title');
+
+    if (mainTitle) {
+        mainTitle.textContent = t('mainTitle');
+    }
 
     const settingsSections = document.querySelectorAll('.settings-section h3');
     if (settingsSections[0]) settingsSections[0].textContent = t('sound');
@@ -884,12 +916,31 @@ function applyLanguage() {
     if (toggles[2]) toggles[2].lastChild.textContent = ' ' + t('showMoveHistory');
 
     const timerBtns = document.querySelectorAll('.timer-btn');
+
     if (timerBtns[0]) timerBtns[0].textContent = t('noTimer');
+    if (timerBtns[1]) timerBtns[1].textContent = '30 SEC';
+    if (timerBtns[2]) timerBtns[2].textContent = t('oneMin');
+    if (timerBtns[3]) timerBtns[3].textContent = t('twoMin');
+    if (timerBtns[4]) timerBtns[4].textContent = t('fiveMin');
 
     const speedBtns = document.querySelectorAll('.speed-btn');
     if (speedBtns[0]) speedBtns[0].textContent = t('slow');
     if (speedBtns[1]) speedBtns[1].textContent = t('normal');
     if (speedBtns[2]) speedBtns[2].textContent = t('fast');
+
+    const introParagraph =
+        document.querySelector('.intro-description');
+
+    if (introParagraph) {
+        introParagraph.textContent = t('introText');
+    }
+
+    const playAgainBtn =
+        document.querySelector('.play-again-btn');
+
+    if (playAgainBtn) {
+        playAgainBtn.textContent = t('playAgain');
+    }
 
     const difficultyBtns = document.querySelectorAll('.difficulty-btn');
     if (difficultyBtns[0]) difficultyBtns[0].textContent = t('beginner');
@@ -998,35 +1049,6 @@ function initSettings() {
                 button.classList.add('active');
             }
 
-            const languageButtons =
-                document.querySelectorAll('.language-btn');
-
-            languageButtons.forEach((button) => {
-
-                button.classList.toggle(
-                    'active',
-                    button.dataset.lang === currentLanguage
-                );
-
-                button.addEventListener('click', () => {
-
-                    languageButtons.forEach((btn) => {
-                        btn.classList.remove('active');
-                    });
-
-                    button.classList.add('active');
-
-                    currentLanguage = button.dataset.lang;
-
-                    localStorage.setItem(
-                        'toguz_language',
-                        currentLanguage
-                    );
-
-                    applyLanguage();
-                });
-            });
-
             button.addEventListener('click', () => {
 
                 timerButtons.forEach((btn) => {
@@ -1044,6 +1066,35 @@ function initSettings() {
 
             });
 
+        });
+
+        const languageButtons =
+            document.querySelectorAll('.language-btn');
+
+        languageButtons.forEach((button) => {
+
+            button.classList.toggle(
+                'active',
+                button.dataset.lang === currentLanguage
+            );
+
+            button.addEventListener('click', () => {
+
+                languageButtons.forEach((btn) => {
+                    btn.classList.remove('active');
+                });
+
+                button.classList.add('active');
+
+                currentLanguage = button.dataset.lang;
+
+                localStorage.setItem(
+                    'toguz_language',
+                    currentLanguage
+                );
+
+                applyLanguage();
+            });
         });
     
         const difficultyButtons =
@@ -1083,13 +1134,13 @@ function initSettings() {
 
                         await document.documentElement.requestFullscreen();
 
-                        fullscreenBtn.textContent = 'Exit Fullscreen';
+                        fullscreenBtn.textContent = t('fullscreenExit');
 
                     } else {
 
                         await document.exitFullscreen();
 
-                        fullscreenBtn.textContent = 'Fullscreen Mode';
+                        fullscreenBtn.textContent = t('fullscreen');
                     }
 
                 } catch (err) {
@@ -1101,9 +1152,9 @@ function initSettings() {
             document.addEventListener('fullscreenchange', () => {
 
                 if (document.fullscreenElement) {
-                    fullscreenBtn.textContent = 'Exit Fullscreen';
+                    fullscreenBtn.textContent = t('fullscreenExit');
                 } else {
-                    fullscreenBtn.textContent = 'Fullscreen Mode';
+                    fullscreenBtn.textContent = t('fullscreen');
                 }
 
             });
