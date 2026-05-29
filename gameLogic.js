@@ -86,6 +86,9 @@ if (Number.isNaN(masterVolume)) {
 
 const fullscreenBtn =
     document.getElementById('fullscreenBtnMain');
+    
+const mainMenuBtn =
+    document.getElementById('mainMenuBtn');
 
 const resetCameraBtn =
     document.getElementById('resetCameraBtnMain');
@@ -811,7 +814,8 @@ const translations = {
         mainTitle: 'TOGUZ KORGOOL',
         oneMin: '1 MIN',
         twoMin: '2 MIN',
-        fiveMin: '5 MIN'
+        fiveMin: '5 MIN',
+        mainMenu: 'Main Menu'
     },
 
     ky: {
@@ -858,7 +862,8 @@ const translations = {
         mainTitle: 'ТОГУЗ КОРГООЛ',
         oneMin: '1 МҮНӨТ',
         twoMin: '2 МҮНӨТ',
-        fiveMin: '5 МҮНӨТ'
+        fiveMin: '5 МҮНӨТ',
+        mainMenu: 'Башкы меню',
     }
 };
 
@@ -881,6 +886,14 @@ function applyLanguage() {
             ? t('fullscreenExit')
             : t('fullscreen');
     settingsBtn.textContent = t('settings');
+
+    const mainMenuBtnEl =
+        document.getElementById('mainMenuBtn');
+
+    if (mainMenuBtnEl) {
+        mainMenuBtnEl.textContent =
+            t('mainMenu');
+    }
 
     const historyTitle = document.querySelector('.history-title');
     if (historyTitle) historyTitle.textContent = t('moveHistory');
@@ -1285,6 +1298,33 @@ function initSettings() {
             });
         }
 
+        if (mainMenuBtn) {
+
+            mainMenuBtn.addEventListener('click', () => {
+
+                playButtonSound();
+
+                const splash =
+                    document.getElementById('splash');
+
+                const container =
+                    document.querySelector('.container');
+
+                if (splash) {
+                    splash.classList.remove('hidden');
+                    splash.style.display = 'flex';
+                }
+
+                if (container) {
+                    container.style.display = 'none';
+                }
+
+                if (typeof resetCamera === 'function') {
+                    resetCamera();
+                }
+            });
+        }
+
             if (resetCameraBtn) {
 
                 resetCameraBtn.addEventListener('click', () => {
@@ -1394,6 +1434,8 @@ function startGameFromSplash(e) {
     }
 
     splashEl.style.opacity = '0';
+
+    document.querySelector('.container').style.display = 'block';
 
     setTimeout(() => {
         splashEl.style.display = 'none';
