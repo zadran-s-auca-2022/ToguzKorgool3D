@@ -892,7 +892,7 @@ function applyLanguage() {
 
     if (mainMenuBtnEl) {
         mainMenuBtnEl.textContent =
-            t('mainMenu');
+            '← ' + t('mainMenu');
     }
 
     const historyTitle = document.querySelector('.history-title');
