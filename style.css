@@ -2871,3 +2871,45 @@ button,
             #8a530c
         );
 }
+
+/* ===== LANGUAGE BUTTONS ===== */
+
+.language-buttons {
+    display: flex;
+    gap: 12px;
+    margin-top: 12px;
+}
+
+.language-btn {
+    background:
+        linear-gradient(
+            145deg,
+            rgba(45,20,5,0.95),
+            rgba(12,6,2,0.98)
+        );
+
+    border: 1px solid rgba(255, 210, 120, 0.45);
+    color: #f6d27a;
+    padding: 8px 20px;
+    border-radius: 999px;
+    font-family: "Cinzel", serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.language-btn.active {
+    background:
+        linear-gradient(
+            145deg,
+            #5a3408,
+            #241102
+        );
+
+    color: #ffe8a3;
+    border-color: rgba(255,220,130,1);
+
+    box-shadow:
+        0 0 20px rgba(255,210,90,0.32),
+        inset 0 0 14px rgba(255,240,180,0.12);
+}

@@ -398,7 +398,7 @@ function resetGame() {
     moveHistory = [];
     moveCounter = 0;
 
-    setStatus('New game started – You begin');
+    setStatus(t('newStatus'));
     renderAll();
     startMoveTimer();
 }
@@ -566,7 +566,11 @@ async function performMove(startIndex, player, addToHistory) {
     }
 
     currentPlayer = player === 'A' ? 'B' : 'A';
-    setStatus(currentPlayer === 'A' ? "Your turn" : "Opponent's turn");
+    setStatus(
+        currentPlayer === 'A'
+            ? t('yourTurn')
+            : t('opponentTurn')
+    );
     isAnimating = false;
     notify3D();
 
@@ -754,6 +758,63 @@ function simulateCapture(startIndex, player) {
     return captured;
 }
 
+let currentLanguage =
+    localStorage.getItem('toguz_language') || 'en';
+
+const translations = {
+    en: {
+        newGame: 'New Game',
+        resetCamera: 'Reset Camera',
+        fullscreen: 'Fullscreen Mode',
+        settings: 'Settings ⚙',
+        history: 'Move History',
+        startStatus: 'Click "Start Game" to begin',
+        newStatus: 'New game started – You begin',
+        yourTurn: 'Your turn',
+        opponentTurn: "Opponent's turn",
+        win: 'YOU WIN!',
+        lose: 'YOU LOSE!',
+        draw: 'DRAW',
+        you: 'You',
+        opponent: 'Opponent'
+    },
+
+    ky: {
+        newGame: 'Жаңы оюн',
+        resetCamera: 'Камераны кайтаруу',
+        fullscreen: 'Толук экран',
+        settings: 'Жөндөөлөр ⚙',
+        history: 'Жүрүш тарыхы',
+        startStatus: 'Оюнду баштоо үчүн "Start Game" басыңыз',
+        newStatus: 'Жаңы оюн башталды – сиз баштайсыз',
+        yourTurn: 'Сиздин жүрүш',
+        opponentTurn: 'Каршылаштын жүрүшү',
+        win: 'СИЗ ЖЕҢДИҢИЗ!',
+        lose: 'СИЗ УТУЛДУҢУЗ!',
+        draw: 'ТЕҢ ЧЫГУУ',
+        you: 'Сиз',
+        opponent: 'Каршылаш'
+    }
+};
+
+function t(key) {
+    return translations[currentLanguage][key] || translations.en[key];
+}
+
+function applyLanguage() {
+    aiBtn.textContent = t('newGame');
+    resetCameraBtn.textContent = t('resetCamera');
+    fullscreenBtn.textContent = t('fullscreen');
+    settingsBtn.textContent = t('settings');
+
+    const historyTitle = document.querySelector('.history-title');
+    if (historyTitle) historyTitle.textContent = t('history');
+
+    if (!isGameOver) {
+        setStatus(t('startStatus'));
+    }
+}
+
 function initSettings() {
     const saved = localStorage.getItem('toguz_sound');
     if (saved !== null) {
@@ -847,6 +908,35 @@ function initSettings() {
             if (buttonTime === moveTimerLimit) {
                 button.classList.add('active');
             }
+
+            const languageButtons =
+                document.querySelectorAll('.language-btn');
+
+            languageButtons.forEach((button) => {
+
+                button.classList.toggle(
+                    'active',
+                    button.dataset.lang === currentLanguage
+                );
+
+                button.addEventListener('click', () => {
+
+                    languageButtons.forEach((btn) => {
+                        btn.classList.remove('active');
+                    });
+
+                    button.classList.add('active');
+
+                    currentLanguage = button.dataset.lang;
+
+                    localStorage.setItem(
+                        'toguz_language',
+                        currentLanguage
+                    );
+
+                    applyLanguage();
+                });
+            });
 
             button.addEventListener('click', () => {
 
@@ -1025,7 +1115,7 @@ document.addEventListener('DOMContentLoaded', () => {
     buildBoard();
     initSettings();
 
-    setStatus('Click "Start Game" to begin');
+    applyLanguage();
     renderAll();
 });
 
@@ -1084,7 +1174,7 @@ function showGameResult(resultText) {
 
         crown.textContent = '';
 
-        title.textContent = 'YOU WIN!';
+        title.textContent = t('win');
     } else if (storeB > storeA) {
 
         playLoseSound();
@@ -1093,14 +1183,15 @@ function showGameResult(resultText) {
 
         crown.textContent = '';
 
-        title.textContent = 'YOU LOSE!';
+        title.textContent = t('lose');
     } else {
         overlay.classList.add('draw-result');
         crown.textContent = '';
-        title.textContent = 'DRAW';
+        title.textContent = t('draw');
     }
 
-    score.textContent = `You: ${storeA} • Opponent: ${storeB}`;
+    score.textContent =
+    `${t('you')}: ${storeA} • ${t('opponent')}: ${storeB}`;
     overlay.classList.remove('hidden');
 }
 
