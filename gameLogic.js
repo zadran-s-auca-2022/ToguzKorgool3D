@@ -1189,29 +1189,6 @@ function initSettings() {
 
         });
 
-        const introLangButtons =
-            document.querySelectorAll('.intro-lang-btn');
-
-        introLangButtons.forEach((btn) => {
-
-            btn.classList.toggle(
-                'active',
-                btn.dataset.lang === currentLanguage
-            );
-
-            btn.onclick = () => {
-
-                currentLanguage = btn.dataset.lang;
-
-                localStorage.setItem(
-                    'toguz_language',
-                    currentLanguage
-                );
-
-                applyLanguage();
-            };
-        });
-
         const languageButtons =
             document.querySelectorAll('.language-btn');
 

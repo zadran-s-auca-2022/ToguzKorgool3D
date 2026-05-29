@@ -2914,66 +2914,6 @@ button,
         inset 0 0 14px rgba(255,240,180,0.12);
 }
 
-.intro-language-switcher{
-    position: fixed;
-
-    top: 175px;
-    right: 175px;
-
-    display: flex;
-    gap: 10px;
-
-    z-index: 10050;
-}
-
-.intro-lang-btn{
-    padding:8px 16px;
-
-    border-radius:999px;
-
-    border:1px solid rgba(212,160,70,0.38);
-
-    background:rgba(20,10,4,0.72);
-
-    color:#e7c57c;
-
-    font-family:'Cinzel',serif;
-    font-size:12px;
-    font-weight:700;
-    letter-spacing:1px;
-
-    cursor:pointer;
-
-    transition:all 0.25s ease;
-
-    backdrop-filter:blur(6px);
-}
-
-.intro-lang-btn:hover{
-    transform:translateY(-1px);
-
-    border-color:#f3d487;
-
-    box-shadow:
-        0 0 14px rgba(255,210,120,0.22);
-}
-
-.intro-lang-btn.active{
-    background:
-        linear-gradient(
-            135deg,
-            #f6d27b,
-            #c98a2c
-        );
-
-    color:#2c1204;
-
-    border-color:#ffd97f;
-
-    box-shadow:
-        0 0 16px rgba(255,210,120,0.34);
-}
-
 .btn-main-menu {
     min-width: 210px;
 }
