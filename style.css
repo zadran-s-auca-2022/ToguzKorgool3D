@@ -2913,3 +2913,55 @@ button,
         0 0 20px rgba(255,210,90,0.32),
         inset 0 0 14px rgba(255,240,180,0.12);
 }
+
+.intro-language-switcher{
+    display:flex;
+    gap:14px;
+    margin-bottom:28px;
+    justify-content:center;
+    align-items:center;
+}
+
+.intro-lang-btn{
+    padding:10px 24px;
+    border-radius:999px;
+    border:1px solid rgba(212,160,70,0.45);
+
+    background:rgba(30,14,6,0.82);
+
+    color:#e8c98a;
+
+    font-family:'Cinzel',serif;
+    font-size:15px;
+    font-weight:700;
+    letter-spacing:1px;
+
+    cursor:pointer;
+
+    transition:all 0.25s ease;
+}
+
+.intro-lang-btn:hover{
+    transform:translateY(-2px);
+
+    border-color:#f2cf7a;
+
+    box-shadow:
+        0 0 18px rgba(255,210,120,0.22);
+}
+
+.intro-lang-btn.active{
+    background:
+        linear-gradient(
+            135deg,
+            #f8d27a,
+            #c98b2d
+        );
+
+    color:#2b1204;
+
+    border-color:#ffd97f;
+
+    box-shadow:
+        0 0 22px rgba(255,210,120,0.45);
+}
