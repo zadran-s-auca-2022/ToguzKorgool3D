@@ -742,7 +742,7 @@ for (let i = 0; i < 18; i++) {
 
     const numText = createSurfaceText(String(pitNumberForIndex(i)), {
         fontSize: 62,
-        textColor: 'rgb(248, 223, 4)',
+        textColor: 'rgb(233, 180, 34)',
         strokeColor: 'rgba(40, 15, 3, 0.88)',
         scaleFactor: 0.0048,
         padding: 19
@@ -791,7 +791,7 @@ const storeCountSpriteB = createSurfaceText('OPPONENT 0', {
     textColor: '#ffe8a3',
     strokeColor: 'rgba(30, 8, 1, 1)',
     scaleFactor: 0.0050,
-    padding: 22
+    padding: 2
 });
 
 storeCountSpriteB.position.set(-5.1, 1.565, -0.95);
@@ -817,8 +817,13 @@ function sync3DBoardFromGameState(state) {
     renderStoreStones('A', state.storeA || 0);
     renderStoreStones('B', state.storeB || 0);
 
-    updateSurfaceText(storeCountSpriteA, `YOU    ${state.storeA || 0}`);
-    updateSurfaceText(storeCountSpriteB, `OPPONENT    ${state.storeB || 0}`);
+const labels =
+    window.getLanguageLabels
+        ? window.getLanguageLabels()
+        : { you: 'YOU', opponent: 'OPPONENT' };
+
+    updateSurfaceText(storeCountSpriteA, `${labels.you.toUpperCase()}    ${state.storeA || 0}`);
+    updateSurfaceText(storeCountSpriteB, `${labels.opponent.toUpperCase()}    ${state.storeB || 0}`);
 }
 
 window.sync3DBoardFromGameState = sync3DBoardFromGameState;

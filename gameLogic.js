@@ -356,10 +356,15 @@ function renderHistory() {
         const div = document.createElement('div');
         div.classList.add('history-entry');
         div.textContent =
-            `${entry.num}. Player ${entry.player} – pit ${entry.pit} ` +
-            `(stones ${entry.stonesMoved} → moved ${entry.steps}, ` +
-            `last: ${entry.lastPit}, captured ${entry.captured}, ` +
-            `A:${entry.storeA}, B:${entry.storeB})`;
+            currentLanguage === 'ky'
+                ? `${entry.num}. Оюнчу ${entry.player} – оюк ${entry.pit} ` +
+                `(таш ${entry.stonesMoved} → жүрүш ${entry.steps}, ` +
+                `акыркы: ${entry.lastPit}, алды ${entry.captured}, ` +
+                `A:${entry.storeA}, B:${entry.storeB})`
+                : `${entry.num}. Player ${entry.player} – pit ${entry.pit} ` +
+                `(stones ${entry.stonesMoved} → moved ${entry.steps}, ` +
+                `last: ${entry.lastPit}, captured ${entry.captured}, ` +
+                `A:${entry.storeA}, B:${entry.storeB})`;
         historyListEl.appendChild(div);
     }
     historyListEl.scrollTop = historyListEl.scrollHeight;
@@ -776,7 +781,26 @@ const translations = {
         lose: 'YOU LOSE!',
         draw: 'DRAW',
         you: 'You',
-        opponent: 'Opponent'
+        opponent: 'Opponent',
+        sound: 'Sound',
+        enableSounds: 'Enable sounds',
+        volume: 'Sound volume',
+        boardNumbers: 'Board Numbers',
+        showPitNumbers: 'Show pit numbers',
+        moveHistory: 'Move History',
+        showMoveHistory: 'Show move history',
+        timer: 'Player Move Timer',
+        noTimer: 'No Timer',
+        animationSpeed: 'Animation Speed',
+        slow: 'Slow',
+        normal: 'Normal',
+        fast: 'Fast',
+        aiDifficulty: 'AI Difficulty',
+        beginner: 'Beginner',
+        expert: 'Expert',
+        language: 'Language',
+        startGame: 'Start Game',
+        learnRules: 'Learn The Rules'
     },
 
     ky: {
@@ -793,13 +817,39 @@ const translations = {
         lose: 'СИЗ УТУЛДУҢУЗ!',
         draw: 'ТЕҢ ЧЫГУУ',
         you: 'Сиз',
-        opponent: 'Каршылаш'
+        opponent: 'Каршылаш',
+        sound: 'Үн',
+        enableSounds: 'Үндү күйгүзүү',
+        volume: 'Үндүн деңгээли',
+        boardNumbers: 'Такта номерлери',
+        showPitNumbers: 'Оюк номерлерин көрсөтүү',
+        moveHistory: 'Жүрүш тарыхы',
+        showMoveHistory: 'Жүрүш тарыхын көрсөтүү',
+        timer: 'Оюнчу убактысы',
+        noTimer: 'Убакыт жок',
+        animationSpeed: 'Анимация ылдамдыгы',
+        slow: 'Жай',
+        normal: 'Орточо',
+        fast: 'Тез',
+        aiDifficulty: 'AI деңгээли',
+        beginner: 'Башталгыч',
+        expert: 'Күчтүү',
+        language: 'Тил',
+        startGame: 'Оюнду баштоо',
+        learnRules: 'Эрежелерди үйрөнүү'
     }
 };
 
 function t(key) {
     return translations[currentLanguage][key] || translations.en[key];
 }
+
+window.getLanguageLabels = function () {
+    return {
+        you: t('you'),
+        opponent: t('opponent')
+    };
+};
 
 function applyLanguage() {
     aiBtn.textContent = t('newGame');
@@ -808,7 +858,46 @@ function applyLanguage() {
     settingsBtn.textContent = t('settings');
 
     const historyTitle = document.querySelector('.history-title');
-    if (historyTitle) historyTitle.textContent = t('history');
+    if (historyTitle) historyTitle.textContent = t('moveHistory');
+
+    const splashStartBtn = document.getElementById('splashStartBtn');
+    if (splashStartBtn) splashStartBtn.textContent = '▶ ' + t('startGame');
+
+    const rulesBtn = document.querySelector('.intro-rules-btn span:last-child');
+    if (rulesBtn) rulesBtn.textContent = t('learnRules');
+
+    const settingsSections = document.querySelectorAll('.settings-section h3');
+    if (settingsSections[0]) settingsSections[0].textContent = t('sound');
+    if (settingsSections[1]) settingsSections[1].textContent = t('language');
+    if (settingsSections[2]) settingsSections[2].textContent = t('boardNumbers');
+    if (settingsSections[3]) settingsSections[3].textContent = t('moveHistory');
+    if (settingsSections[4]) settingsSections[4].textContent = t('timer');
+    if (settingsSections[5]) settingsSections[5].textContent = t('animationSpeed');
+    if (settingsSections[6]) settingsSections[6].textContent = t('aiDifficulty');
+
+    const soundLabel = document.querySelector('label[for="volumeSlider"]');
+    if (soundLabel) soundLabel.textContent = t('volume');
+
+    const toggles = document.querySelectorAll('.toggle');
+    if (toggles[0]) toggles[0].lastChild.textContent = ' ' + t('enableSounds');
+    if (toggles[1]) toggles[1].lastChild.textContent = ' ' + t('showPitNumbers');
+    if (toggles[2]) toggles[2].lastChild.textContent = ' ' + t('showMoveHistory');
+
+    const timerBtns = document.querySelectorAll('.timer-btn');
+    if (timerBtns[0]) timerBtns[0].textContent = t('noTimer');
+
+    const speedBtns = document.querySelectorAll('.speed-btn');
+    if (speedBtns[0]) speedBtns[0].textContent = t('slow');
+    if (speedBtns[1]) speedBtns[1].textContent = t('normal');
+    if (speedBtns[2]) speedBtns[2].textContent = t('fast');
+
+    const difficultyBtns = document.querySelectorAll('.difficulty-btn');
+    if (difficultyBtns[0]) difficultyBtns[0].textContent = t('beginner');
+    if (difficultyBtns[1]) difficultyBtns[1].textContent = t('normal');
+    if (difficultyBtns[2]) difficultyBtns[2].textContent = t('expert');
+
+    renderHistory();
+    notify3D();
 
     if (!isGameOver) {
         setStatus(t('startStatus'));
