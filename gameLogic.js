@@ -1279,25 +1279,23 @@ function initSettings() {
 
             mainMenuBtn.addEventListener('click', () => {
 
-                playButtonSound();
+                playButtonClickSound();
 
-                const splash =
-                    document.getElementById('splash');
+                if (splashEl) {
+                    splashEl.style.display = 'flex';
+                    splashEl.style.opacity = '1';
+                    splashEl.classList.remove('hidden');
+                }
 
                 const container =
                     document.querySelector('.container');
-
-                if (splash) {
-                    splash.classList.remove('hidden');
-                    splash.style.display = 'flex';
-                }
 
                 if (container) {
                     container.style.display = 'none';
                 }
 
-                if (typeof resetCamera === 'function') {
-                    resetCamera();
+                if (typeof window.resetBoardCamera === 'function') {
+                    window.resetBoardCamera();
                 }
             });
         }
