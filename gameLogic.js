@@ -964,6 +964,92 @@ function applyLanguage() {
         restartConfirmBtn.textContent = t('restart');
     }
 
+    const introTitle = document.querySelector('.intro-title');
+    if (introTitle) {
+        introTitle.innerHTML =
+            currentLanguage === 'ky'
+                ? 'Тогуз<br>Коргоол'
+                : 'Toguz<br>Korgool';
+    }
+
+    const introTopline = document.querySelector('.intro-topline');
+    if (introTopline) {
+        introTopline.textContent =
+            currentLanguage === 'ky'
+                ? 'Акылмандыктын байыркы оюну'
+                : 'A legendary game of wisdom';
+    }
+
+    const introDividerText = document.querySelector('.intro-divider p');
+    if (introDividerText) {
+        introDividerText.textContent =
+            currentLanguage === 'ky'
+                ? 'Ойлон • Ут • Жең'
+                : 'Plan • Capture • Win';
+    }
+
+    const introTagline = document.querySelector('.intro-tagline');
+    if (introTagline) {
+        introTagline.textContent = t('introText');
+    }
+
+    const rulesTitle = document.querySelector('.rules-header h2');
+    const rulesBody = document.querySelector('.rules-body');
+
+    if (rulesTitle && rulesBody) {
+        if (currentLanguage === 'ky') {
+            rulesTitle.textContent = 'Тогуз Коргоолду кантип ойнойт';
+
+            rulesBody.innerHTML = `
+                <h3>Максат</h3>
+                <p>Компьютерге караганда көбүрөөк таш топтоо. Биринчи болуп 82 ташка жеткен оюнчу жеңет.</p>
+
+                <h3>Тактанын түзүлүшү</h3>
+                <p>Тактада жалпы 18 оюк бар: ар бир оюнчуда 9 оюк. Ар бир оюк 9 таш менен башталат. Ар бир оюнчуда топтолгон таштар үчүн казан бар.</p>
+
+                <h3>Оюнчулар</h3>
+                <p>Сиз Player A катары ойнойсуз. Компьютер Player B катары ойнойт. Оюнду дайыма сиз баштайсыз.</p>
+
+                <h3>Жүрүш кантип жасалат</h3>
+                <p>Өз оюгуңузду тандаңыз. Эгер оюкта 1 гана таш болсо, ал кийинки оюкка жылат. Эгер таш бирден көп болсо, бир таш ошол оюкта калат, калган таштар такта боюнча бирден таратылат.</p>
+
+                <h3>Таштарды алуу</h3>
+                <p>Эгер акыркы таш атаандаштын оюгуна түшүп, ал оюктагы таштардын саны жуп болсо, ошол таштар сиздин казанга өтөт.</p>
+
+                <h3>Туз / Сөөл эрежеси</h3>
+                <p>Эгер акыркы таш атаандаштын оюгуна түшүп, ал жерде так 3 таш болсо, ал оюк сиздин тузуңуз боло алат. Тузга түшкөн таштар автоматтык түрдө казанга өтөт.</p>
+
+                <h3>Жеңиш</h3>
+                <p>Оюн бир оюнчу 82 же андан көп таш топтогондо, же бир тарапта таш калбай калганда бүтөт. Көп таш топтогон оюнчу жеңет.</p>
+            `;
+        } else {
+            rulesTitle.textContent = 'How to Play Toguz Korgool';
+
+            rulesBody.innerHTML = `
+                <h3>Goal</h3>
+                <p>Collect more stones than the computer. The first player to reach 82 stones wins.</p>
+
+                <h3>Board Setup</h3>
+                <p>The board has 18 pits in total: 9 pits for each player. Each pit starts with 9 stones. Each player also has a kazan, which stores captured stones.</p>
+
+                <h3>Players</h3>
+                <p>You play as Player A. The computer plays as Player B. You always start the game first.</p>
+
+                <h3>How a Turn Works</h3>
+                <p>On your turn, choose one of your own pits. If the selected pit has only 1 stone, that stone moves to the next pit. If the selected pit has more than 1 stone, one stone stays in the selected pit and the remaining stones are sown one by one counter-clockwise around the board.</p>
+
+                <h3>Capturing Stones</h3>
+                <p>If your last stone lands in one of the opponent’s pits and the total number of stones in that pit becomes even, all stones from that pit are captured and moved to your kazan.</p>
+
+                <h3>Tuz / Sool Rule</h3>
+                <p>If your last stone lands in an opponent’s pit and that pit becomes exactly 3 stones, that pit can become your tuz.</p>
+
+                <h3>Winning the Game</h3>
+                <p>The game ends when one player reaches 82 or more stones in their kazan. The player with more stones wins.</p>
+            `;
+        }
+    }
+
     const difficultyBtns = document.querySelectorAll('.difficulty-btn');
     if (difficultyBtns[0]) difficultyBtns[0].textContent = t('beginner');
     if (difficultyBtns[1]) difficultyBtns[1].textContent = t('normal');
