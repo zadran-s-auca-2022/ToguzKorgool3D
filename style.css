@@ -2915,53 +2915,61 @@ button,
 }
 
 .intro-language-switcher{
+    position:absolute;
+
+    top:34px;
+    right:38px;
+
     display:flex;
-    gap:14px;
-    margin-bottom:28px;
-    justify-content:center;
-    align-items:center;
+    gap:10px;
+
+    z-index:20;
 }
 
 .intro-lang-btn{
-    padding:10px 24px;
+    padding:8px 16px;
+
     border-radius:999px;
-    border:1px solid rgba(212,160,70,0.45);
 
-    background:rgba(30,14,6,0.82);
+    border:1px solid rgba(212,160,70,0.38);
 
-    color:#e8c98a;
+    background:rgba(20,10,4,0.72);
+
+    color:#e7c57c;
 
     font-family:'Cinzel',serif;
-    font-size:15px;
+    font-size:12px;
     font-weight:700;
     letter-spacing:1px;
 
     cursor:pointer;
 
     transition:all 0.25s ease;
+
+    backdrop-filter:blur(6px);
 }
 
 .intro-lang-btn:hover{
-    transform:translateY(-2px);
+    transform:translateY(-1px);
 
-    border-color:#f2cf7a;
+    border-color:#f3d487;
 
     box-shadow:
-        0 0 18px rgba(255,210,120,0.22);
+        0 0 14px rgba(255,210,120,0.22);
 }
 
 .intro-lang-btn.active{
     background:
         linear-gradient(
             135deg,
-            #f8d27a,
-            #c98b2d
+            #f6d27b,
+            #c98a2c
         );
 
-    color:#2b1204;
+    color:#2c1204;
 
     border-color:#ffd97f;
 
     box-shadow:
-        0 0 22px rgba(255,210,120,0.45);
+        0 0 16px rgba(255,210,120,0.34);
 }
