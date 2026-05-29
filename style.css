@@ -2917,8 +2917,8 @@ button,
 .intro-language-switcher{
     position:absolute;
 
-    top:34px;
-    right:38px;
+    top:-120px;
+    right:-860px;
 
     display:flex;
     gap:10px;
